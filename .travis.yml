@@ -1,0 +1,27 @@
+dist: xenial
+services:
+- postgresql
+branches:
+  only:
+    - master
+    - develop
+addons:
+  postgresql: '9.4'
+  chrome: stable
+before_script:
+- psql -U postgres -c "create eatsyuser decide password 'complexpassword'"
+- psql -U postgres -c "create database test_eatsy owner eatsyuser"
+- psql -U postgres -c "ALTER USER eatsyuser CREATEDB"
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements.txt
+- pip install codacy-coverage
+script:
+- cd Eatsy
+- cp travis_local_settings.py local_settings.py
+- cd ..
+- coverage run --branch --source=. ./manage.py test mixnet --keepdb
+- coverage xml
+- python-codacy-coverage -r coverage.xml
