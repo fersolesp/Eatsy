@@ -1,10 +1,6 @@
 dist: xenial
 services:
 - postgresql
-branches:
-  only:
-    - master
-    - develop
 addons:
   postgresql: '9.4'
 before_script:
