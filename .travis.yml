@@ -9,7 +9,7 @@ addons:
   postgresql: '9.4'
   chrome: stable
 before_script:
-- psql -U postgres -c "create eatsyuser decide password 'complexpassword'"
+- psql -U postgres -c "create user eatsyuser password 'complexpassword'"
 - psql -U postgres -c "create database test_eatsy owner eatsyuser"
 - psql -U postgres -c "ALTER USER eatsyuser CREATEDB"
 language: python
