@@ -1,0 +1,87 @@
+{% load static %}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>{% block title %}Eatsy!{% endblock %}</title>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}?{% now "U" %}" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<body>
+    <div class="navbar">
+        <!-- Navbar -->
+        <div>
+            <b-navbar toggleable="lg" type="dark" variant="primary">
+            <b-navbar-brand href="/">
+                <img src="{% static 'img/Logo_texto_derecha.png' %}" alt="Close modal" />
+            </b-navbar-brand>
+        </div>
+        <div>
+            <!-- Search -->
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+
+            <!-- Collapse -->
+
+            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <div>
+            <b-navbar-nav>
+                <b-nav-item href="/user/perfil/" v-if="user != null">Mi perfil</b-nav-item>
+                <b-nav-item href="/product/list/" v-if="user != null && user.is_staff">Productos</b-nav-item>
+                <b-nav-item href="/admin/voting/voting" v-if="user != null && user.is_staff">Cerrar sesión</b-nav-item>
+            </b-navbar-nav>
+        </div>
+    </div>  
+    <div class="container-fluid page-content">
+        <div class="row ml-1 mb-1">
+            <div class="col-8 nombreProducto">Búsqueda de productos</div>
+        </div>
+        <form action="/">
+            <div class="row ml-1">
+                <div class="col-8">
+                    <input class="w-100 h-100 form-control mr-sm-2 border border-dark" type="text" name="query" placeholder="Buscar...">
+                </div>
+                <div class="col-2">
+                    <button class="w-100 btn btn-warning btn-md" type="submit">Aplicar filtros</button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                {% for product in products %}
+                    {% if forloop.counter0|divisibleby:3 %}
+                        <div class="row">
+                    {% endif %}
+                    <div class="col-4 d-flex product-card">
+                        <div class="container-fluid product-card-inner">
+                            <div class="row-fluid">
+                                <div class="col d-flex">
+                                    <img class="m-auto product-img" src="{{product.foto}}" alt="">
+                                </div>
+                            </div>
+                            <div class="row-fluid text-center nombreProducto mt-3">
+                                <div class="col">
+                                    {{product.titulo}}
+                                </div>
+                            </div>
+                            <div class="row-fluid nombreProducto mt-3">
+                                <div class="col d-flex">
+                                    <a class="m-auto btn btn-warning btn-md" href="show/{{product.id}}">Ver detalles</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter0|add:"-2"|divisibleby:3 or forloop.last %}  
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-auto m-auto botonAdd"> <a href="#" class="btn btn-warning btn-lg d-flex" role="button" aria-disabled="true"><i class="fas fa-plus h3 align-self-center m-0"></i></a> </div>
+</body>
