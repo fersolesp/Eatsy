@@ -1,8 +1,28 @@
 body {
-    background-image: url("fondo.png") ; 
+    background-image: url("fondo.png");
+    background-size: cover;
 }
 
 .navbar {
     display: flex;
     background-color: rgb(118, 179, 146);
+}
+
+.tabla { 
+    display: grid;
+    grid-template-columns: none;
+    width:100%;
+}
+
+.columnaIzq {
+    margin: 50px;
+    margin-right: 200px;
+}
+
+.columnaDer {
+    margin: 50px;
+}
+
+.page-content {
+    padding: 5em;
 }

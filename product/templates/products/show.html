@@ -9,6 +9,37 @@
         <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
     </head>
     <body>
+        <script>
+            function change_to_tab_1() {
+                let pest_1 = document.getElementById("p-1");
+                let pest_2 = document.getElementById("p-2");
+                let pest_3 = document.getElementById("p-3");
+
+                pest_1.style.display = "inherit";
+                pest_2.style.display = "none";
+                pest_3.style.display = "none";
+            }
+
+            function change_to_tab_2() {
+                let pest_1 = document.getElementById("p-1");
+                let pest_2 = document.getElementById("p-2");
+                let pest_3 = document.getElementById("p-3");
+
+                pest_1.style.display = "none";
+                pest_2.style.display = "inherit";
+                pest_3.style.display = "none";
+            }
+
+            function change_to_tab_3() {
+                let pest_1 = document.getElementById("p-1");
+                let pest_2 = document.getElementById("p-2");
+                let pest_3 = document.getElementById("p-3");
+
+                pest_1.style.display = "none";
+                pest_2.style.display = "none";
+                pest_3.style.display = "inherit";
+            }
+        </script>
         <div class="navbar">
             <!-- Navbar -->
             <div>
@@ -35,28 +66,41 @@
                     <b-nav-item href="/admin/voting/voting" v-if="user != null && user.is_staff">Cerrar sesión</b-nav-item>
                 </b-navbar-nav>
             </div>
-        </div>       
-
-            <table>
-                <tr>
-                    <td>
-                        <img src="#"></img>
-                        </br>
-                        Hola, columna 1
-                    </td>
-                    <td>
-                        <ul class="nav">
-                            <li class="nav-item">
-                              <a class="nav-link active" href="#">Descripción</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="#">Valoraciones</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="#">Ubicaciones</a>
-                            </li>
-                          </ul>
-                    </td>
-                </tr>
-            </table>
+        </div>   
+        <div class="container-fluid page-content">
+            <div class="row">
+                <div class="col-4">
+                    <div class="row mb-3">
+                        <div class="col-auto m-auto">{{product.titulo}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-auto m-auto">
+                            <img src="{{product.foto}}" alt="" width="300px">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-auto m-auto">Estrellitas</div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-4 d-flex" onclick="change_to_tab_1()">
+                            <span class="m-auto">Descripción</span>
+                        </div>
+                        <div class="col-4 d-flex" onclick="change_to_tab_2()">
+                            <span class="m-auto">Valoraciones</span>
+                        </div>
+                        <div class="col-4 d-flex" onclick="change_to_tab_3()">
+                            <span class="m-auto">Ubicaciones</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="p-1">{{product.descripcion}}</div>
+                        <div class="col" id="p-2">Pestaña 2</div>
+                        <div class="col" id="p-3">{{product.ubicaciones}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>change_to_tab_1()</script>    
     </body>
