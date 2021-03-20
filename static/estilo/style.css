@@ -11,3 +11,33 @@ body {
 .page-content {
     padding: 5em;
 }
+
+.nombreProducto {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.botonProducto {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.botonProducto:hover {
+    background-color: rgb(118, 179, 146);
+}
+
+hr {
+    background-color: black;
+    height: 1px;
+    width: 100%;
+}
+
+.botonAdd {
+    position: absolute;
+    bottom: 70;
+    right: 70;
+}
