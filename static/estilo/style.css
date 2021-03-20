@@ -1,8 +1,24 @@
 body {
-    background-image: url("fondo.png") ; 
+    background-image: url("fondo.png");
 }
 
 .navbar {
     display: flex;
     background-color: rgb(118, 179, 146);
 }
+
+.tabla { 
+    display: grid;
+    grid-template-columns: none;
+    width:100%;
+}
+
+.columnaIzq {
+    margin: 50px;
+}
+
+.columnaDer {
+    margin: 50px;
+}
+
+
