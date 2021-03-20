@@ -1,0 +1,62 @@
+{% load static %}
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <title>{% block title %}Eatsy!{% endblock %}</title>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+        <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    </head>
+    <body>
+        <div class="navbar">
+            <!-- Navbar -->
+            <div>
+                <b-navbar toggleable="lg" type="dark" variant="primary">
+                <b-navbar-brand href="/">
+                    <img src="{% static 'img/Logo_texto_derecha.png' %}" alt="Close modal" />
+                </b-navbar-brand>
+            </div>
+            <div>
+                <!-- Search -->
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+
+                <!-- Collapse -->
+
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+            <div>
+                <b-navbar-nav>
+                    <b-nav-item href="/user/perfil/" v-if="user != null">Mi perfil</b-nav-item>
+                    <b-nav-item href="/product/list/" v-if="user != null && user.is_staff">Productos</b-nav-item>
+                    <b-nav-item href="/admin/voting/voting" v-if="user != null && user.is_staff">Cerrar sesión</b-nav-item>
+                </b-navbar-nav>
+            </div>
+        </div>       
+
+            <table>
+                <tr>
+                    <td>
+                        <img src="#"></img>
+                        </br>
+                        Hola, columna 1
+                    </td>
+                    <td>
+                        <ul class="nav">
+                            <li class="nav-item">
+                              <a class="nav-link active" href="#">Descripción</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">Valoraciones</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">Ubicaciones</a>
+                            </li>
+                          </ul>
+                    </td>
+                </tr>
+            </table>
+    </body>
