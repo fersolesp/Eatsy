@@ -10,8 +10,27 @@ def showProduct(request, productId):
         return render(request, 'products/show.html', {'product': product})
 
 def listProduct(request):
-
     products_list = Producto.objects.all()
+
+    # FILTRO
+    # Para filtrar productos: ?dietas=1,2
+    # Para mostrar todos los productos: ?dietas=
+    # Sin ?dietas= muestra solo los productos que cumplan las dietas del usuario
+    dietas = request.GET.get('dietas')
+    if dietas == None:
+        dietas_user = []
+        for dieta in dietas_user:
+                products_list = products_list.filter(dietas__id=dieta)
+    elif dietas != '':
+        for dieta in dietas.split(','):
+            products_list = products_list.filter(dietas__id=dieta)
+
+    # ORDEN
+    #order = request.GET.get('order')
+    #if order == 1:
+    #    products_list.order_by()
+    #else if order == 2:
+    #    products_list.order_by()
 
     page = request.GET.get('page')
     paginator = Paginator(products_list,10)
