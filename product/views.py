@@ -26,7 +26,27 @@ def listProduct(request):
     else:
         products_list = Producto.objects.filter(estado='Aceptado')
     
-    print(Producto.objects.filter(titulo__icontains ='Pizza Prosciutto & Funghi',estado='Aceptado'))
+    # FILTRO
+    # Para filtrar productos: ?dietas=1,2
+    # Para mostrar todos los productos: ?dietas=
+    # Sin ?dietas= muestra solo los productos que cumplan las dietas del usuario
+    dietas = request.GET.get('dietas')
+    if dietas == None:
+        # Para el segundo sprint
+        dietas_user = []
+        for dieta in dietas_user:
+                products_list = products_list.filter(dietas__id=dieta)
+    elif dietas != '':
+        for dieta in dietas.split(','):
+            products_list = products_list.filter(dietas__id=dieta)
+
+    # ORDEN
+    #order = request.GET.get('order')
+    #if order == 1:
+    #    products_list.order_by()
+    #else if order == 2:
+    #    products_list.order_by()
+
     page = request.GET.get('page')
     paginator = Paginator(products_list,10)
 
@@ -49,5 +69,6 @@ def findProduct(request):
                 filteredProducts = Producto.objects.filter(titulo__icontains = productName)
             else:
                 filteredProducts = Producto.objects.filter(titulo__icontains = productName,estado='Aceptado')
+
             return render(request, 'products/list.html', {'products': filteredProducts})
 
