@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from product.models import Producto
+from product.forms import ProductForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
@@ -44,3 +45,11 @@ def listProduct(request):
         products = paginator.page(paginator.num_pages)
     
     return render(request, 'products/list.html', {'products': products})
+
+def findProduct(request):
+    if request.method=='GET':
+        form = ProductForm(request.GET, request.FILES)
+        if form.is_valid():
+            productName = form.cleaned_data['productName']
+            filteredProducts = Producto.objects.filter(titulo__icontains = productName)
+            return render(request, 'products/list.html', {'products': filteredProducts})
