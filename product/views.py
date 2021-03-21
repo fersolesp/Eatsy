@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from product.models import Producto
 from django.shortcuts import redirect
 from django.contrib import messages
+from product.forms import ProductForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
@@ -25,7 +26,7 @@ def listProduct(request):
     else:
         products_list = Producto.objects.filter(estado='Aceptado')
     
-    print(products_list)
+    print(Producto.objects.filter(titulo__icontains ='Pizza Prosciutto & Funghi',estado='Aceptado'))
     page = request.GET.get('page')
     paginator = Paginator(products_list,10)
 
@@ -37,3 +38,16 @@ def listProduct(request):
         products = paginator.page(paginator.num_pages)
     
     return render(request, 'products/list.html', {'products': products})
+
+
+def findProduct(request):
+    if request.method=='GET':
+        form = ProductForm(request.GET, request.FILES)
+        if form.is_valid():
+            productName = form.cleaned_data['productName']
+            if(request.user.is_superuser):
+                filteredProducts = Producto.objects.filter(titulo__icontains = productName)
+            else:
+                filteredProducts = Producto.objects.filter(titulo__icontains = productName,estado='Aceptado')
+            return render(request, 'products/list.html', {'products': filteredProducts})
+
