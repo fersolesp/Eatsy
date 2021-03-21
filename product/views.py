@@ -1,9 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from product.models import Producto
-from product.forms import ProductForm
+from product.forms import ProductForm, CreateProductForm, CreateNewUbication
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+
 # Create your views here.
+
+
+def createProduct(request):
+    form=CreateProductForm()
+    formUbicacion = CreateNewUbication
+    return render(request,'products/create.html', {'form':form , 'formUbicacion':formUbicacion})
 
 def showProduct(request, productId):
     if request.method == 'GET':
