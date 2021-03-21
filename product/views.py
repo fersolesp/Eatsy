@@ -18,6 +18,7 @@ def listProduct(request):
     # Sin ?dietas= muestra solo los productos que cumplan las dietas del usuario
     dietas = request.GET.get('dietas')
     if dietas == None:
+        # Para el segundo sprint
         dietas_user = []
         for dieta in dietas_user:
                 products_list = products_list.filter(dietas__id=dieta)
