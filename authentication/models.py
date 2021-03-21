@@ -15,3 +15,6 @@ class Perfil(models.Model):
     )
 
     dieta = models.CharField(max_length=12, choices=Dieta_Enum, default='Vegetariano', blank=False, verbose_name="Dieta")
+
+    def __str__(self):
+        return self.user.username
