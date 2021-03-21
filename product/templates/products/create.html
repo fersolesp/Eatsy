@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -29,17 +28,44 @@
         <div class="row justify-content-center">
             <div class="card col-12" style="background-color: #a3c7ab ;">
                 <form method="POST" class="post-form" action="/products/create">{% csrf_token %}
-                    <div class="form-group" style="display: inline-block;">
-                        <div style="display: inline-block;">
-                            {{form.as_p}}
+                    <div class="form-group" style="margin-left: 2%;">
+                        <br/>
+                        <div class="row">
+                            <div><label>Imagen:&nbsp;</label></div>
+                            <div>{{ form.foto}}</div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div><label>Nombre:&nbsp;</label></div>
+                            <div>{{ form.nombre}}</div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div><label>Descripción:&nbsp;</label></div>
+                            <div>{{ form.descripcion}}</div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div><label>Precio:&nbsp;</label></div>
+                            <div>{{ form.precio}}</div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div><label>Etiqueta:&nbsp;</label></div>
+                            <div>{{ form.dieta}}</div>
+                        </div>
+                        <br/>
+                        <div class="row"> 
+                            <div><label>Ubicaciones:&nbsp;</label></div>
+                            <div style="margin-right: 1%;">{{form.ubicaciones}}</div>
+                            
+                            <a onclick="mostrarMapa()" id="link">
+                                <img height="20px" width="20px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
+                            </a>
                         </div>
 
                         <!-- Button trigger modal -->
-                        <div>
-                            <a onclick="mostrarMapa()" class="btn btn-primary" id="link" style="display: inline-block;">
-                            Añadir ubicacion nueva
-                            </a>
-                        </div>
+                        
                     </div>
                     <!-- Modal -->
 

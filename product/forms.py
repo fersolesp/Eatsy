@@ -12,8 +12,8 @@ class CustomMMCF(forms.ModelMultipleChoiceField):
 class CreateProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False)
     nombre = forms.CharField(label='Nombre', widget=forms.TextInput(attrs={'class' : 'form-control'}) )
-    descripcion = forms.CharField(label='Descripción', widget= forms.Textarea(attrs={'class' : 'form-control'}))
-    precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, widget=forms.NumberInput(attrs={'style' : 'margin-left:25px'}))
+    descripcion = forms.CharField(label='Descripción', widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 800px'}))
+    precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, widget=forms.NumberInput(attrs={'class':'form-control'}))
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
         ('Vegetariano', 'Vegetariano'),
@@ -22,9 +22,9 @@ class CreateProductForm(forms.ModelForm):
         ('Marisco', 'Marisco'),
         ('Frutos secos', 'Frutos secos'),
     )
-    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum)
+    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
 
-    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all())
+    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
 
     class Meta:
         model = Ubicacion
