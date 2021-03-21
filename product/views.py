@@ -26,6 +26,27 @@ def listProduct(request):
     
     return render(request, 'products/list.html', {'products': products})
 
+def listProductByEstado(request, estado):
+
+    if(estado.lower() == "aceptado"):
+        estado = "Aceptado"
+    else:
+        estado = "Pendiente"
+
+    products_list = Producto.objects.filter(estado=estado)
+
+    page = request.GET.get('page')
+    paginator = Paginator(products_list,10)
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    
+    return render(request, 'products/list.html', {'products': products})
+
 def findProduct(request):
     if request.method=='GET':
         form = ProductForm(request.GET, request.FILES)
