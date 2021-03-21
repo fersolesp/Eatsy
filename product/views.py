@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import redirect
 
 from product.models import Producto
 from product.forms import ProductForm, ReporteForm
@@ -10,11 +10,22 @@ from product.forms import ProductForm, ReporteForm
 def showProduct(request, productId):
     if request.method == 'GET':
         product = get_object_or_404(Producto, pk=productId)
-        return render(request, 'products/show.html', {'product': product})
+        if product.estado=='Pendiente' and request.user.is_superuser:
+            return render(request, 'products/show.html', {'product': product})
+        elif product.estado=='Aceptado':
+            return render(request, 'products/show.html', {'product': product})
+        else:
+            messages.error(request,'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
+            return redirect('/admin')
+
 
 def listProduct(request):
-    products_list = Producto.objects.all()
 
+    if(request.user.is_superuser):
+        products_list = Producto.objects.all()
+    else:
+        products_list = Producto.objects.filter(estado='Aceptado')
+    
     # FILTRO
     # Para filtrar productos: ?dietas=1,2
     # Para mostrar todos los productos: ?dietas=
@@ -48,12 +59,17 @@ def listProduct(request):
     
     return render(request, 'products/list.html', {'products': products})
 
+
 def findProduct(request):
     if request.method=='GET':
         form = ProductForm(request.GET, request.FILES)
         if form.is_valid():
             productName = form.cleaned_data['productName']
-            filteredProducts = Producto.objects.filter(titulo__icontains = productName)
+            if(request.user.is_superuser):
+                filteredProducts = Producto.objects.filter(titulo__icontains = productName)
+            else:
+                filteredProducts = Producto.objects.filter(titulo__icontains = productName,estado='Aceptado')
+
             return render(request, 'products/list.html', {'products': filteredProducts})
 
 def reportProduct(request, productId):
