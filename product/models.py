@@ -1,5 +1,6 @@
 from django.db import models
 from authentication.models import Perfil
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Ubicacion(models.Model):
@@ -58,3 +59,23 @@ class UbicacionProducto(models.Model):
 
     def __str__(self):
         return self.ubicacion.nombre
+
+class CausaReporte(models.Model):
+    causa = models.CharField(max_length=160, null=False, blank=False)
+
+    def __str__(self):
+        return self.causa
+
+class Reporte(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+    causa = CausaReporte._meta.get_field('causa')
+    comentarios = models.TextField(null=False, blank=False)
+
+    # Más antiguos primero
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return '{} ({})'.format(self.producto.titulo, self.causa)

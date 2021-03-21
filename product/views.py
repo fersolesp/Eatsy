@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from product.models import Producto
-from product.forms import ProductForm
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import redirect
+
+from product.models import Producto
+from product.forms import ProductForm, ReporteForm
 
 # Create your views here.
-
 def showProduct(request, productId):
     if request.method == 'GET':
         product = get_object_or_404(Producto, pk=productId)
@@ -53,3 +55,20 @@ def findProduct(request):
             productName = form.cleaned_data['productName']
             filteredProducts = Producto.objects.filter(titulo__icontains = productName)
             return render(request, 'products/list.html', {'products': filteredProducts})
+
+def reportProduct(request, productId):
+    producto = get_object_or_404(Producto, pk=productId)
+
+    if request.method == 'GET':
+        form = ReporteForm()
+    elif request.method == 'POST':
+        form = ReporteForm(request.POST)
+
+        if form.is_valid():
+            reporte = form.save(commit=False)
+            reporte.producto = Producto(id=productId)
+            reporte.user = User(id=1) # CORREGIR CUANDO HAYA LOGIN
+            reporte.save()
+            return redirect('product:show', producto.id)
+
+    return render(request, 'products/addReport.html', {'form': form})
