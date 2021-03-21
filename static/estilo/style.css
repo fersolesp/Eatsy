@@ -10,6 +10,7 @@ body {
 
 .page-content {
     padding: 5em;
+    padding-top: 2em;
 }
 
 .nombreProducto {
@@ -37,7 +38,39 @@ hr {
 }
 
 .botonAdd {
-    position: absolute;
+    position: fixed;
     bottom: 70;
     right: 70;
+}
+
+.botonAdd a{
+    border-radius: 10em !important;
+    color: white;
+    height: 2.85em;
+
+    
+    box-shadow: 2px 2px 2px darkgray;
+}
+
+.product-card{
+    padding: 2em;
+    padding: 2em;
+    padding: 2em;
+}
+
+.product-card-inner{
+    display: grid;
+
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+
+    padding: 2em;
+
+    border: 1px solid black;
+    border-radius: 0.5em;
+    background-color:rgb(163, 199, 171);
+}
+
+.product-img{
+    width: 60%;
 }
