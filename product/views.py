@@ -29,7 +29,7 @@ def listProduct(request):
 def findProduct(request):
     if request.method=='GET':
         form = ProductForm(request.GET, request.FILES)
-        if (form.is_valid):
+        if form.is_valid():
             productName = form.cleaned_data['productName']
             filteredProducts = Producto.objects.get(titulo__icontains = productName)
-            return render(request, 'products/list.html', {'filteredProducts': filteredProducts})
+            return render(request, 'products/list.html', {'products': filteredProducts})
