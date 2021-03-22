@@ -81,3 +81,82 @@ hr {
 .product-img{
     width: 60%;
 }
+
+.header{
+    padding-bottom: 10px;
+    background-color: #75cfb8;
+  }
+  
+  .imgheader{
+    position: relative;
+    width: 200px !important;
+  }
+  
+  
+  .comida{
+    width: 100%;
+  }
+  .border-success{
+    padding-top: 25px;
+    background-color: #bbdfc8 !important;
+    border: 0px !important;
+  }
+  .border-wrong{
+    padding-top: 25px;
+    background-color: #f0e5d8 !important;
+    border: 0px !important;
+  }
+  .card-img-top {
+    width:200px !important;
+    box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
+  }
+  
+  
+  .titleblock{
+    font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 3rem;
+    text-align: center;
+  }
+  .bodyblock{
+    
+    text-align: justify;
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.3rem;
+    color: gray;
+  }
+  
+  #bodyblock1{
+    padding-top: 4.5%;
+  }
+  .bloqueverde{
+    position: relative;
+    width: 100% !important;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: #bbdfc8;
+  }
+  .bloquemarron{
+    position: relative;
+    width:  100%  !important;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: #f0e5d8;
+  }
+  .btn-primary{
+    width: 200px !important;
+    margin-top: 20px !important;
+    transition: all 0.5s !important;
+    background-color: #ffc478 !important;
+    border-color: #ffc478 !important;
+  }
+  #thanks{
+    width: 400px;
+  }
+  .btn-primary:hover{
+    background-color: #75cfb8 !important;
+    border-color: #75cfb8 !important;
+  }
+  #textocorreo{
+    text-align: center;
+  }
+  
