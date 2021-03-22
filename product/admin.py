@@ -1,5 +1,5 @@
 from django.contrib import admin
-from product.models import Dieta, Producto, UbicacionProducto, Ubicacion, CausaReporte, Reporte
+from product.models import Dieta, Producto, UbicacionProducto, Ubicacion, CausaReporte, Reporte, Valoracion, Aportacion
 
 class ReporteAdmin(admin.ModelAdmin):
     list_display = ['producto', 'fecha', 'causa']
@@ -11,3 +11,5 @@ admin.site.register(Ubicacion)
 admin.site.register(UbicacionProducto)
 admin.site.register(CausaReporte)
 admin.site.register(Reporte, ReporteAdmin)
+admin.site.register(Valoracion)
+admin.site.register(Aportacion)
