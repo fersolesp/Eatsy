@@ -1,5 +1,6 @@
 from django import forms
-from .models import Producto, Ubicacion
+from .models import Reporte, CausaReporte, Producto, Ubicacion
+
 class ProductForm(forms.Form):
     productName = forms.CharField(label='Product Name', max_length=100)
 
@@ -35,3 +36,12 @@ class CreateNewUbication(forms.Form):
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput )
     lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput )
 
+class ReporteForm(forms.ModelForm):
+    class Meta:
+        model = Reporte
+        fields = ['causa', 'comentarios']
+
+    causa = forms.ModelChoiceField(
+        queryset = CausaReporte.objects.all(),
+        widget = forms.RadioSelect
+    )

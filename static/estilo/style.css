@@ -1,0 +1,76 @@
+body {
+    background-image: url("fondo.png");
+    background-size: cover;
+}
+
+.navbar {
+    display: flex;
+    background-color: rgb(118, 179, 146);
+}
+
+.page-content {
+    padding: 5em;
+    padding-top: 2em;
+}
+
+.nombreProducto {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.botonProducto {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.botonProducto:hover {
+    background-color: rgb(118, 179, 146);
+}
+
+hr {
+    background-color: black;
+    height: 1px;
+    width: 100%;
+}
+
+.botonAdd {
+    position: fixed;
+    bottom: 70;
+    right: 70;
+}
+
+.botonAdd a{
+    border-radius: 10em !important;
+    color: white;
+    height: 2.85em;
+
+    
+    box-shadow: 2px 2px 2px darkgray;
+}
+
+.product-card{
+    padding: 2em;
+    padding: 2em;
+    padding: 2em;
+}
+
+.product-card-inner{
+    display: grid;
+
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+
+    padding: 2em;
+
+    border: 1px solid black;
+    border-radius: 0.5em;
+    background-color:rgb(163, 199, 171);
+}
+
+.product-img{
+    width: 60%;
+}
