@@ -144,8 +144,7 @@ def reviewProduct(request, productId):
                     producto.fecha = datetime.datetime.now()
 
                     path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
-                    tmp_file = os.path.join(settings.MEDIA_ROOT, path)
-                    producto.foto = tmp_file
+                    producto.foto = '../media/' + path
                     
                     # TODO: Revisar, se está poniendo el que llega en el formulario
                     producto.precioMedio = form.cleaned_data['precio']
