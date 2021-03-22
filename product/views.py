@@ -4,9 +4,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from product.models import Producto
-from product.forms import ProductForm, ReporteForm
+from product.forms import ProductForm, ReporteForm, CreateProductForm, CreateNewUbication
 
 # Create your views here.
+
 def showProduct(request, productId):
     if request.method == 'GET':
         product = get_object_or_404(Producto, pk=productId)
@@ -59,7 +60,13 @@ def listProduct(request):
     
     return render(request, 'products/list.html', {'products': products})
 
-
+  
+def createProduct(request):
+    form=CreateProductForm()
+    formUbicacion = CreateNewUbication
+    return render(request,'products/create.html', {'form':form , 'formUbicacion':formUbicacion})
+  
+  
 def findProduct(request):
     if request.method=='GET':
         form = ProductForm(request.GET, request.FILES)
