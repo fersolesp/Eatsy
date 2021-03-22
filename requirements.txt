@@ -3,3 +3,4 @@ psycopg2==2.8.6
 coverage==4.5.2
 django-heroku
 gunicorn
+pillow
