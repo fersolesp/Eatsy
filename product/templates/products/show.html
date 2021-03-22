@@ -1,7 +1,4 @@
-{% load static %}
-     
-{% extends 'base.html' %}
-
+{% extends 'products/base.html' %}
 {% block titulo %}Detalles de producto{% endblock %}
 
 {% block contenido %} 
@@ -37,36 +34,9 @@
             pest_3.style.display = "inherit";
         }
     </script>
-    <div class="navbar">
-        <!-- Navbar -->
-        <div>
-            <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand href="/">
-                <img src="{% static 'img/Logo_texto_derecha.png' %}" alt="Close modal" />
-            </b-navbar-brand>
-        </div>
-        <div>
-            <!-- Search -->
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-
-            <!-- Collapse -->
-
-            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <div>
-            <b-navbar-nav>
-                <b-nav-item href="/user/perfil/" v-if="user != null">Mi perfil</b-nav-item>
-                <b-nav-item href="/product/list/" v-if="user != null && user.is_staff">Productos</b-nav-item>
-                <b-nav-item href="/admin/voting/voting" v-if="user != null && user.is_staff">Cerrar sesión</b-nav-item>
-            </b-navbar-nav>
-        </div>
-    </div>   
     <div class="container-fluid page-content">
         <div class="row">
-            <div class="col-5">
+            <div class="col-lg-5">
                 <div class="row mb-3">
                     <div class="col-auto m-auto nombreProducto">{{product.titulo}}</div>
                 </div>
@@ -79,15 +49,15 @@
                     <div class="col-auto m-auto">Estrellitas</div>
                 </div>
             </div>
-            <div class="col-7">
+            <div class="col-lg-7">
                 <div class="row">
-                    <div class="col-4 d-flex botonProducto" onclick="change_to_tab_1()">
+                    <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
                         <span class="m-auto">DESCRIPCIÓN</span>
                     </div>
-                    <div class="col-4 d-flex botonProducto" onclick="change_to_tab_2()">
+                    <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
                         <span class="m-auto">VALORACIONES</span>
                     </div>
-                    <div class="col-4 d-flex botonProducto" onclick="change_to_tab_3()">
+                    <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
                         <span class="m-auto">UBICACIONES</span>
                     </div>
                 </div>
@@ -109,14 +79,13 @@
                         </div>
                     </div>
                     <div class="col" id="p-2">Pestaña 2</div>
-                    <div class="col" id="p-3">{{product.ubicaciones}}
+                    <div class="col" id="p-3">
                         <div class="container-fluid">
                             <div class="row mb-3">
-                                <div class="col"> {{ubicacionProducto.producto}}</div>
-                                <div class="col"> <a href="#" class="btn btn-warning btn-lg disabled" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                                <div class="col"> {% include 'products/map.html' %}</div>
                             </div>
-                            <div class="row mb-5">
-                                <div class="col"> {{ubicacionProducto.ubicacion}} </div>
+                            <div class="row justify-content-center">
+                                <div class="col-12"> <a href="#" class="btn btn-warning btn-lg disabled" role="button" aria-disabled="true">Añadir Ubicación</a></div>
                             </div>
                         </div>
                     </div>
