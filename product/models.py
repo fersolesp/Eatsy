@@ -79,3 +79,13 @@ class Reporte(models.Model):
 
     def __str__(self):
         return '{} ({})'.format(self.producto.titulo, self.causa)
+
+class Aportacion(models.Model):
+    titulo = models.CharField(max_length=100)
+    mensaje = models.TextField(max_length=1000)
+    fecha = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo
