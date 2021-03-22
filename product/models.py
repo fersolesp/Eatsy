@@ -81,8 +81,8 @@ class Reporte(models.Model):
         return '{} ({})'.format(self.producto.titulo, self.causa)
 
 class Aportacion(models.Model):
-    titulo = models.CharField(max_length=100)
-    mensaje = models.TextField(max_length=1000)
+    titulo = models.CharField(max_length=100,null=False,blank=False)
+    mensaje = models.TextField(max_length=1000,null=False,blank=False)
     fecha = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
