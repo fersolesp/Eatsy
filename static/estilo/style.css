@@ -81,3 +81,7 @@ hr {
 .product-img{
     width: 60%;
 }
+
+.modal-header {
+    background-color: rgb(118, 179, 146);
+}
