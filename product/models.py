@@ -51,7 +51,7 @@ class Producto(models.Model):
         return self.titulo
 
 class UbicacionProducto(models.Model):
-    producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
     precio = models.DecimalField(

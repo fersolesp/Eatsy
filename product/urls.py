@@ -7,5 +7,6 @@ urlpatterns = [
     path('list', views.listProduct, name='list'),
     path('listFind', views.findProduct, name='listFind'),
     path('create', views.createProduct, name='create'),
-    path('report/<int:productId>', views.reportProduct, name='report')
-]
+    path('report/<int:productId>', views.reportProduct, name='report'),
+    path('review/<int:productId>', views.reviewProduct, name='review')
+] 
