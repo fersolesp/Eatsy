@@ -51,7 +51,7 @@ class Producto(models.Model):
         return self.titulo
 
 class UbicacionProducto(models.Model):
-    producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
     precio = models.DecimalField(
@@ -86,6 +86,17 @@ class Valoracion(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-
+    
     def __str__(self):
         return self.producto.titulo + ': ' +str(self.puntuacion)
+
+class Aportacion(models.Model):
+    titulo = models.CharField(max_length=100,null=False,blank=False)
+    mensaje = models.TextField(max_length=1000,null=False,blank=False)
+    fecha = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.titulo
+
