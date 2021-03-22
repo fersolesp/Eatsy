@@ -27,7 +27,7 @@
         <h3>Añadir un producto</h3>
         <div class="row justify-content-center">
             <div class="card col-12" style="background-color: #a3c7ab ;">
-                <form method="POST" class="post-form" action="/products/create">{% csrf_token %}
+                <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/create">{% csrf_token %}
                     <div class="form-group" style="margin-left: 2%;">
                         <br/>
                         <div class="row">
@@ -70,7 +70,10 @@
                     <!-- Modal -->
 
                     <div style="display:block;" id="displayer">
-                        {{formUbicacion.as_p}}
+                        <div><label>Nombre del comercio:&nbsp;</label></div>
+                        {{form.nombreComercio}}
+                        {{form.lat}}
+                        {{form.lon}}
                         <label for='text'>Dirección del comercio:</label>
                         <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad"
                             class="form-control">

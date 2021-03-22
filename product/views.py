@@ -2,9 +2,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
-from product.models import Producto
+import os
+from Eatsy import settings
+from authentication.models import Perfil
+from product.models import Producto, Ubicacion, UbicacionProducto, Dieta
 from product.forms import ProductForm, ReporteForm, CreateProductForm, CreateNewUbication
+
 
 # Create your views here.
 
@@ -59,13 +65,51 @@ def listProduct(request):
         products = paginator.page(paginator.num_pages)
     
     return render(request, 'products/list.html', {'products': products})
+  
 
-  
 def createProduct(request):
-    form=CreateProductForm()
-    formUbicacion = CreateNewUbication
-    return render(request,'products/create.html', {'form':form , 'formUbicacion':formUbicacion})
-  
+    if request.method=='GET':
+        form=CreateProductForm()
+        return render(request,'products/create.html', {'form':form})
+    if request.method=='POST':
+        form=CreateProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
+            
+            nombre = form.cleaned_data["nombre"]
+            descripcion = form.cleaned_data["descripcion"]
+            precio = form.cleaned_data["precio"]
+            dieta = form.cleaned_data['dieta']
+            ubicaciones = form.cleaned_data['ubicaciones']
+            
+            producto = Producto(titulo = nombre, descripcion = descripcion, foto = "../media/"+path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, pk=2))
+            producto.save()
+
+            for d in dieta:
+                producto.dietas.add(get_object_or_404(Dieta, nombre=d))
+
+            # Por cada pequemercado crear tabla intermedia
+            if(form.cleaned_data['nombreComercio']!='' and form.cleaned_data['lat']!='' and form.cleaned_data['lon']!=''):
+                ubicacion = Ubicacion(nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
+                ubicacion.save()
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                ubicacionProducto.save()
+                
+            # Por cada supermercado crear tabla intermedia
+            for ubicacion in form.cleaned_data['ubicaciones']:
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
+                    Perfil, pk=2), precio=form.cleaned_data['precio'])
+                ubicacionProducto.save()
+
+            producto.save()
+
+            return redirect('./list')
+        else:
+            return render(request,'products/list.html', {'form':form})
+    
+
   
 def findProduct(request):
     if request.method=='GET':

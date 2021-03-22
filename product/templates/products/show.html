@@ -1,6 +1,4 @@
-{% load static %}
-     
-{% extends 'base.html' %}
+{% extends 'products/base.html' %}
 
 {% block titulo %}Detalles de producto{% endblock %}
 
@@ -37,33 +35,6 @@
             pest_3.style.display = "inherit";
         }
     </script>
-    <div class="navbar">
-        <!-- Navbar -->
-        <div>
-            <b-navbar toggleable="lg" type="dark" variant="primary">
-            <b-navbar-brand href="/">
-                <img src="{% static 'img/Logo_texto_derecha.png' %}" alt="Close modal" />
-            </b-navbar-brand>
-        </div>
-        <div>
-            <!-- Search -->
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-
-            <!-- Collapse -->
-
-            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        <div>
-            <b-navbar-nav>
-                <b-nav-item href="/user/perfil/" v-if="user != null">Mi perfil</b-nav-item>
-                <b-nav-item href="/product/list/" v-if="user != null && user.is_staff">Productos</b-nav-item>
-                <b-nav-item href="/admin/voting/voting" v-if="user != null && user.is_staff">Cerrar sesión</b-nav-item>
-            </b-navbar-nav>
-        </div>
-    </div>   
     <div class="container-fluid page-content">
         <div class="row">
             <div class="col-5">
@@ -72,7 +43,7 @@
                 </div>
                 <div class="row">
                     <div class="col-auto m-auto">
-                        <img src="{{product.foto}}" alt="" width="400px">
+                        <img src="/media/{{product.foto}}" alt="" width="400px">
                     </div>
                 </div>
                 <div class="row mt-3">
