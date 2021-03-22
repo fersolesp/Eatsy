@@ -1,97 +1,162 @@
 {% extends 'products/base.html' %}
 {% block titulo %}Detalles de producto{% endblock %}
 
-{% block contenido %} 
+{% block contenido %}
 
-    <script>
-        function change_to_tab_1() {
-            let pest_1 = document.getElementById("p-1");
-            let pest_2 = document.getElementById("p-2");
-            let pest_3 = document.getElementById("p-3");
+<script>
+    function change_to_tab_1() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+        let pest_3 = document.getElementById("p-3");
 
-            pest_1.style.display = "inherit";
-            pest_2.style.display = "none";
-            pest_3.style.display = "none";
-        }
+        pest_1.style.display = "inherit";
+        pest_2.style.display = "none";
+        pest_3.style.display = "none";
+    }
 
-        function change_to_tab_2() {
-            let pest_1 = document.getElementById("p-1");
-            let pest_2 = document.getElementById("p-2");
-            let pest_3 = document.getElementById("p-3");
+    function change_to_tab_2() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+        let pest_3 = document.getElementById("p-3");
 
-            pest_1.style.display = "none";
-            pest_2.style.display = "inherit";
-            pest_3.style.display = "none";
-        }
+        pest_1.style.display = "none";
+        pest_2.style.display = "inherit";
+        pest_3.style.display = "none";
+    }
 
-        function change_to_tab_3() {
-            let pest_1 = document.getElementById("p-1");
-            let pest_2 = document.getElementById("p-2");
-            let pest_3 = document.getElementById("p-3");
+    function change_to_tab_3() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+        let pest_3 = document.getElementById("p-3");
 
-            pest_1.style.display = "none";
-            pest_2.style.display = "none";
-            pest_3.style.display = "inherit";
-        }
-    </script>
-    <div class="container-fluid page-content">
-        <div class="row">
-            <div class="col-lg-5">
-                <div class="row mb-3">
-                    <div class="col-auto m-auto nombreProducto">{{product.titulo}}</div>
-                </div>
-                <div class="row">
-                    <div class="col-auto m-auto">
-                        <img src="{{product.foto}}" alt="" width="400px">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-auto m-auto">Estrellitas</div>
+        pest_1.style.display = "none";
+        pest_2.style.display = "none";
+        pest_3.style.display = "inherit";
+    }
+</script>
+<div class="container-fluid page-content">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="row mb-3">
+                <div class="col-auto m-auto nombreProducto">{{product.titulo}}</div>
+            </div>
+            <div class="row">
+                <div class="col-auto m-auto">
+                    <img src="{{product.foto}}" alt="" width="400px">
                 </div>
             </div>
-            <div class="col-lg-7">
-                <div class="row">
-                    <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
-                        <span class="m-auto">DESCRIPCIÓN</span>
-                    </div>
-                    <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
-                        <span class="m-auto">VALORACIONES</span>
-                    </div>
-                    <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
-                        <span class="m-auto">UBICACIONES</span>
-                    </div>
+            <div class="row mt-3">
+                <div class="col-auto m-auto">Estrellitas</div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            {% if msj %}
+                <div id="msjreporte" class="msj">{{msj}}</div>
+            {% endif %}
+            <div class="row">
+                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
+                    <span class="m-auto">DESCRIPCIÓN</span>
                 </div>
-                <div class="row">
-                    <hr>
+                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
+                    <span class="m-auto">VALORACIONES</span>
                 </div>
-                <div class="row">
-                    <div class="col" id="p-1"> 
-                        <div class="container-fluid">
-                            <div class="row mb-3">
-                                <div class="col"> {{product.descripcion}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col"> Precio del producto: {{product.precioMedio}}€</div>
-                            </div>
-                            <div class="row mt-5 mb-5">
-                                <div class="col-auto m-auto"> <a href="#" class="btn btn-warning btn-lg disabled" role="button" aria-disabled="true">Reportar Producto</a></div>
+                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
+                    <span class="m-auto">UBICACIONES</span>
+                </div>
+            </div>
+            <div class="row">
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col" id="p-1">
+                    <div class="container-fluid">
+                        <div class="row mb-3">
+                            <div class="col"> {{product.descripcion}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col"> Precio del producto: {{product.precioMedio}}€</div>
+                        </div>
+                        <div class="row mt-5 mb-5">
+                            <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg disabled"
+                                    data-toggle="modal" data-target="#modalReport" role="button"
+                                    aria-disabled="true">Reportar Producto</button></div>
+                            <div class="modal fade" id="modalReport" tabindex="-1" role="dialog"
+                                aria-labelledby="modalReportLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalReportLabel">Reportar Producto
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <form action="/product/show/{{product.id}}" method="POST">
+                                            <div class="modal-body">
+                                                {% csrf_token %}
+                                                <div style="padding-bottom: 10px;font-weight: bold;">Causas:</div>
+                                                {% for choice in form.causa%}
+
+                                                <span style="margin-left: 35px;"><span class="form-check-input">{{ choice.tag }}</span>
+                                                    <label style="margin-top:3px" class="form-check-label">
+                                                        {{ choice.choice_label }}</label>
+
+                                                </span>
+                                                {% endfor %}
+                                                <div style="padding-bottom: 10px;"></div><label
+                                                    style="padding-bottom: 5px;font-weight: bold;">Comentarios:</label>
+                                                {{form.comentarios}}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cerrar</button>
+
+                                                <input class="btn btn-primary" type="submit" value="Enviar"></input>
+
+                                        </form>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-                    <div class="col" id="p-2">Pestaña 2</div>
-                    <div class="col" id="p-3">
-                        <div class="container-fluid">
-                            <div class="row mb-3">
-                                <div class="col"> {% include 'products/map.html' %}</div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12"> <a href="#" class="btn btn-warning btn-lg disabled" role="button" aria-disabled="true">Añadir Ubicación</a></div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="col" id="p-2">Pestaña 2</div>
+            <div class="col" id="p-3">
+                <div class="container-fluid">
+                    <div class="row mb-3">
+                        <div class="col"> {% include 'products/map.html' %}</div>
                     </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12"> <a href="#" class="btn btn-warning btn-lg disabled" role="button"
+                                aria-disabled="true">Añadir Ubicación</a></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-auto m-auto botonAdd"> <a href="#" class="btn btn-warning btn-lg" role="button" aria-disabled="true">+</a> </div>
-    <script>change_to_tab_1()</script>    
+</div>
+<script type="text/javascript">
+    if(document.getElementById("msjreporte")){
+        setTimeout(()=>{
+        document.getElementById("msjreporte").style.display = "none";
+    }, 1000);
+    }
+
+</script>
+<div class="col-auto m-auto botonAdd"> <a href="#" class="btn btn-warning btn-lg" role="button"
+        aria-disabled="true">+</a> </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+<script>change_to_tab_1()</script>
 {% endblock %}

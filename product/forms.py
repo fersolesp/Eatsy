@@ -40,7 +40,10 @@ class ReporteForm(forms.ModelForm):
     class Meta:
         model = Reporte
         fields = ['causa', 'comentarios']
-
+        
+    comentarios = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'})
+    )
     causa = forms.ModelChoiceField(
         queryset = CausaReporte.objects.all(),
         widget = forms.RadioSelect
