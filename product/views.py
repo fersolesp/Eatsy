@@ -15,17 +15,27 @@ from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 
 def showProduct(request, productId):
+    product = get_object_or_404(Producto, pk=productId)
     if request.method == 'GET':
-        product = get_object_or_404(Producto, pk=productId)
-        if product.estado == 'Pendiente' and request.user.is_superuser:
+        form = ReporteForm()
+        if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product})
-        elif product.estado == 'Aceptado':
-            return render(request, 'products/show.html', {'product': product})
+        elif product.estado=='Aceptado':
+            return render(request, 'products/show.html', {'product': product, 'form':form})
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
             return redirect('/admin')
-
+    elif request.method == 'POST':
+        form = ReporteForm(request.POST)
+        if form.is_valid():
+            reporte = form.save(commit=False)
+            reporte.producto = Producto(id=productId)
+            reporte.user = User(id=1) # CORREGIR CUANDO HAYA LOGIN
+            reporte.save()
+            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form})
+        else:
+            return redirect('product:show', product.id)   
 
 def listProduct(request):
 
