@@ -82,6 +82,10 @@ hr {
     width: 60%;
 }
 
+.modal-header {
+    background-color: rgb(118, 179, 146);
+}
+
 .header{
     padding-bottom: 10px;
     background-color: #75cfb8;
@@ -159,4 +163,3 @@ hr {
   #textocorreo{
     text-align: center;
   }
-  
