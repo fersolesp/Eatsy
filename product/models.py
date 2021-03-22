@@ -79,3 +79,13 @@ class Reporte(models.Model):
 
     def __str__(self):
         return '{} ({})'.format(self.producto.titulo, self.causa)
+
+class Valoracion(models.Model):
+    puntuacion = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)], null=False)
+    mensaje = models.TextField(max_length=1000)
+    fecha = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.puntuacion
