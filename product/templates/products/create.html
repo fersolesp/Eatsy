@@ -13,7 +13,7 @@
         <h3>Añadir un producto</h3>
         <div class="row justify-content-center">
             <div class="card col-12" style="background-color: #a3c7ab ;">
-                <form method="POST" class="post-form" action="/products/create">{% csrf_token %}
+                <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/create">{% csrf_token %}
                     <div class="form-group" style="margin-left: 2%;">
                         <br/>
                         <div class="row">
