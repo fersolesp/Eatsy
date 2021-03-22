@@ -1,5 +1,4 @@
-<html>
-  <head>
+    {% block head %}
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
     type="text/javascript" charset="utf-8"></script>
@@ -11,9 +10,8 @@
             type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css"
             href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-  </head>
-  <body>
-    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Ubicaciones:</label>
+  {% endblock %}
+    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Comprado en:</label>
       <select id="select" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
         <option selected>Elige una ubicacion</option>
         {% for ubicacion in product.ubicaciones.all %}
@@ -28,11 +26,23 @@
     <div style="width: 640px; height: 480px" id="mapContainer"></div>
 
     <script type="text/javascript">
+      let mapContainer = document.getElementById("mapContainer");
+      let selector = document.getElementById("select");
+     
+      selector.style.width = window.innerWidth*0.49+"px";
+      mapContainer.style.width = window.innerWidth*0.49+"px";
+      mapContainer.style.height = window.innerHeight*0.49+"px";
+      window.onresize=()=>{
+
+        selector.style.width = window.innerWidth*0.49+"px";
+        mapContainer.style.width = window.innerWidth*0.49+"px";
+        mapContainer.style.height = window.innerHeight*0.49+"px";
+      }
       // Initialize the platform object:
       var platform = new H.service.Platform({
-        'apikey': INTRODUCIR_API_KEY
+        'apikey': "gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4"
       });
-      var ubicaciones = recogeUbicaciones()
+      var ubicaciones = recogeUbicaciones();
 
       // Get the default map types from the Platform object:
       var defaultLayers = platform.createDefaultLayers();
@@ -47,8 +57,8 @@
           center: { lng: ubicaciones[0][1], lat: ubicaciones[0][2]} //ejemplo para marcar ubicacion
         });
 
-        var svgMarkup = devuelveMarca()
-        creaMarcas(ubicaciones, svgMarkup)
+        var svgMarkup = devuelveMarca();
+        creaMarcas(ubicaciones, svgMarkup);
 
         //poder moverse por el mapa
         var mapEvents = new H.mapevents.MapEvents(map);
@@ -57,9 +67,9 @@
 
         //listener para centrar el mapa con el desplegable.
         document.getElementById("select").onchange=(ev)=>{
-            let coordenada1 = parseFloat(ev.target.value.split(";")[0].replace(",", "."))
-            let coordenada2 = parseFloat(ev.target.value.split(";")[1].replace(",", "."))
-            let coords = {lng: coordenada1, lat: coordenada2}
+            let coordenada1 = parseFloat(ev.target.value.split(";")[0].replace(",", "."));
+            let coordenada2 = parseFloat(ev.target.value.split(";")[1].replace(",", "."));
+            let coords = {lng: coordenada1, lat: coordenada2};
             map.setCenter(coords); 
         }
 
@@ -73,7 +83,7 @@
                 let nombre = document.getElementById("nombre"+it).value;
                 let longitud = parseFloat(document.getElementById("longitud"+it).value.replace(",", "."));
                 let latitud = parseFloat(document.getElementById("latitud"+it).value.replace(",", "."));
-                ubicaciones.push([nombre, longitud,latitud])
+                ubicaciones.push([nombre, longitud,latitud]);
                 it++;
             });
             return ubicaciones;
@@ -147,5 +157,3 @@
         return svg;
         }
     </script>
-  </body>
-</html>
