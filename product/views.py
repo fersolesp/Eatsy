@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta
-from product.forms import ProductForm, ReporteForm, CreateProductForm, CreateNewUbication, ReviewProductForm
+from product.forms import ProductForm, ReporteForm, CreateProductForm, ReviewProductForm
 import datetime
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
