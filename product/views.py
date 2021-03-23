@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from product.models import Producto
-from product.forms import ProductForm, ReporteForm, CreateProductForm
+from product.forms import SearchProductForm, ReporteForm, CreateProductForm
 
 # Create your views here.
 
@@ -31,35 +31,36 @@ def showProduct(request, productId):
             return redirect('product:show', product.id)   
 
 def listProduct(request):
+    product_list = Producto.objects.all()
+    if not request.user.is_superuser:
+        product_list = product_list.filter(estado='Aceptado')
 
-    if(request.user.is_superuser):
-        products_list = Producto.objects.all()
+    if request.GET & SearchProductForm.base_fields.keys():
+        searchProductForm = SearchProductForm(request.GET)
     else:
-        products_list = Producto.objects.filter(estado='Aceptado')
-    
-    # FILTRO
-    # Para filtrar productos: ?dietas=1,2
-    # Para mostrar todos los productos: ?dietas=
-    # Sin ?dietas= muestra solo los productos que cumplan las dietas del usuario
-    dietas = request.GET.get('dietas')
-    if dietas == None:
-        # Para el segundo sprint
-        dietas_user = []
-        for dieta in dietas_user:
-                products_list = products_list.filter(dietas__id=dieta)
-    elif dietas != '':
-        for dieta in dietas.split(','):
-            products_list = products_list.filter(dietas__id=dieta)
+        # Si el formulario no se ha enviado, rellenar con valores por defecto
+        # SPRINT 2 #
+        initial = { 'dietas': [] } # poner lista de ID o lista de Dieta
+        searchProductForm = SearchProductForm(initial = initial)
 
-    # ORDEN
-    #order = request.GET.get('order')
-    #if order == 1:
-    #    products_list.order_by()
-    #else if order == 2:
-    #    products_list.order_by()
+    if searchProductForm.is_valid():
+        # BUSCAR
+        titulo = searchProductForm.cleaned_data['titulo']
+        if titulo:
+            product_list = product_list.filter(titulo__icontains = titulo)
+
+        # FILTRAR
+        for dieta in searchProductForm.cleaned_data['dietas']:
+            product_list = product_list.filter(dietas__id = dieta.id)
+
+        # ORDENAR
+        product_list = product_list.order_by(searchProductForm.cleaned_data['orderBy'])
+
+    for producto in product_list:
+        print(producto.titulo)
 
     page = request.GET.get('page')
-    paginator = Paginator(products_list,10)
+    paginator = Paginator(product_list, 12)
 
     try:
         products = paginator.page(page)
@@ -68,23 +69,9 @@ def listProduct(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
     
-    return render(request, 'products/list.html', {'products': products})
+    return render(request, 'products/list.html', { 'products': products, 'searchProductForm': searchProductForm })
 
   
 def createProduct(request):
-    form=CreateProductForm()
+    form = CreateProductForm()
     return render(request,'products/create.html', {'form':form})
-  
-  
-def findProduct(request):
-    if request.method=='GET':
-        form = ProductForm(request.GET, request.FILES)
-        if form.is_valid():
-            productName = form.cleaned_data['productName']
-            if(request.user.is_superuser):
-                filteredProducts = Producto.objects.filter(titulo__icontains = productName)
-            else:
-                filteredProducts = Producto.objects.filter(titulo__icontains = productName,estado='Aceptado')
-
-            return render(request, 'products/list.html', {'products': filteredProducts})
-
