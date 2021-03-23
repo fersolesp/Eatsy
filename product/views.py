@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
-from product.models import Producto, Ubicacion, UbicacionProducto, Dieta
+from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
 from product.forms import ProductForm, ReporteForm, CreateProductForm, ReviewProductForm
 import datetime
 from django.core.files.storage import default_storage
@@ -222,3 +222,9 @@ def reviewProduct(request, productId):
                     return redirect('product:list')
 
         return render(request, 'products/review.html', {'form': form, 'product_id': productId})
+
+def removeComment (request, commentId):
+    comment = get_object_or_404(Aportacion, pk=commentId)
+    comment.delete()
+
+    return render(request, 'products/show.html')

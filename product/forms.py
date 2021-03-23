@@ -32,11 +32,6 @@ class CreateProductForm(forms.ModelForm):
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False )
     lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
 
-
-    nombreComercio = forms.CharField(label='Nombre del Comercio', required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
-    lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput )
-    lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput )
-
     class Meta:
         model = Ubicacion
         fields = ['nombre']
