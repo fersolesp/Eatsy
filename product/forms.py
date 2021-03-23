@@ -1,9 +1,7 @@
 from django import forms
 from .models import Reporte, CausaReporte, Producto, Ubicacion
 
-class ProductForm(forms.Form):
-    productName = forms.CharField(label='Product Name', max_length=100)
-
+from enum import Enum
 
 class CustomMMCF(forms.ModelMultipleChoiceField):
     def label_from_instance(self, ubicacion):
@@ -42,14 +40,45 @@ class ReporteForm(forms.ModelForm):
     class Meta:
         model = Reporte
         fields = ['causa', 'comentarios']
-        
-    comentarios = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control'})
-    )
+        widgets = {
+            'comentarios': forms.Textarea(attrs={'class': 'form-control'})
+        }
+    
     causa = forms.ModelChoiceField(
         queryset = CausaReporte.objects.all(),
         widget = forms.RadioSelect
     )
+
+class SearchProductForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = ['titulo', 'dietas']
+        labels = {
+            'titulo': 'Nombre del producto'
+        }
+        widgets = {
+            'dietas': forms.CheckboxSelectMultiple()
+        }
+
+    class OrderBy(Enum):
+        newest = ('Más nuevos primero', '-id')
+        oldest = ('Más antiguos primero', 'id')
+
+        @classmethod
+        def get_value(cls, member):
+            return cls[member].value[1]
+    
+    orderBy = forms.TypedChoiceField(
+        choices = [(orderBy.name, orderBy.value[0]) for orderBy in OrderBy],
+        coerce = OrderBy.get_value,
+        required = True
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(SearchProductForm, self).__init__(*args, **kwargs)
+        
+        self.fields['titulo'].required = False
+        self.fields['dietas'].required = False
 
 class ReviewProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False)

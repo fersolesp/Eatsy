@@ -4,16 +4,13 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
-from product.forms import ProductForm, ReporteForm, CreateProductForm, ReviewProductForm
+from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm
 import datetime
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from Eatsy import settings
 import os
 from django.contrib.auth.decorators import user_passes_test
-
-
-# Create your views here.
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
@@ -39,35 +36,36 @@ def showProduct(request, productId):
             return redirect('product:show', product.id)   
 
 def listProduct(request):
+    product_list = Producto.objects.all()
+    if not request.user.is_superuser:
+        product_list = product_list.filter(estado='Aceptado')
 
-    if(request.user.is_superuser):
-        products_list = Producto.objects.all()
+    if request.GET & SearchProductForm.base_fields.keys():
+        searchProductForm = SearchProductForm(request.GET)
     else:
-        products_list = Producto.objects.filter(estado='Aceptado')
+        # Si el formulario no se ha enviado, rellenar con valores por defecto
+        # SPRINT 2 #
+        initial = { 'dietas': [] } # poner lista de ID o lista de Dieta
+        searchProductForm = SearchProductForm(initial = initial)
 
-    # FILTRO
-    # Para filtrar productos: ?dietas=1,2
-    # Para mostrar todos los productos: ?dietas=
-    # Sin ?dietas= muestra solo los productos que cumplan las dietas del usuario
-    dietas = request.GET.get('dietas')
-    if dietas == None:
-        # Para el segundo sprint
-        dietas_user = []
-        for dieta in dietas_user:
-            products_list = products_list.filter(dietas__id=dieta)
-    elif dietas != '':
-        for dieta in dietas.split(','):
-            products_list = products_list.filter(dietas__id=dieta)
+    if searchProductForm.is_valid():
+        # BUSCAR
+        titulo = searchProductForm.cleaned_data['titulo']
+        if titulo:
+            product_list = product_list.filter(titulo__icontains = titulo)
 
-    # ORDEN
-    #order = request.GET.get('order')
-    # if order == 1:
-    #    products_list.order_by()
-    # else if order == 2:
-    #    products_list.order_by()
+        # FILTRAR
+        for dieta in searchProductForm.cleaned_data['dietas']:
+            product_list = product_list.filter(dietas__id = dieta.id)
+
+        # ORDENAR
+        product_list = product_list.order_by(searchProductForm.cleaned_data['orderBy'])
+
+    for producto in product_list:
+        print(producto.titulo)
 
     page = request.GET.get('page')
-    paginator = Paginator(products_list, 10)
+    paginator = Paginator(product_list, 12)
 
     try:
         products = paginator.page(page)
@@ -75,8 +73,8 @@ def listProduct(request):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-
-    return render(request, 'products/list.html', {'products': products})
+    
+    return render(request, 'products/list.html', { 'products': products, 'searchProductForm': searchProductForm })
   
 
 def listProductByEstado(request, estado):
@@ -88,7 +86,7 @@ def listProductByEstado(request, estado):
     products_list = Producto.objects.filter(estado=estado)
 
     page = request.GET.get('page')
-    paginator = Paginator(products_list,10)
+    paginator = Paginator(products_list,12)
 
     try:
         products = paginator.page(page)
@@ -97,7 +95,7 @@ def listProductByEstado(request, estado):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
     
-    return render(request, 'products/list.html', {'products': products})
+    return render(request, 'products/list.html', { 'products': products })
 
 
 def createProduct(request):
