@@ -45,8 +45,7 @@ def listProduct(request):
     else:
         # Si el formulario no se ha enviado, rellenar con valores por defecto
         # SPRINT 2 #
-        initial = { 'dietas': [] } # poner lista de ID o lista de Dieta
-        searchProductForm = SearchProductForm(initial = initial)
+        searchProductForm = SearchProductForm()
 
     if searchProductForm.is_valid():
         # BUSCAR
@@ -61,9 +60,6 @@ def listProduct(request):
         # ORDENAR
         product_list = product_list.order_by(searchProductForm.cleaned_data['orderBy'])
 
-    for producto in product_list:
-        print(producto.titulo)
-
     page = request.GET.get('page')
     paginator = Paginator(product_list, 12)
 
@@ -73,9 +69,10 @@ def listProduct(request):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-    
-    return render(request, 'products/list.html', { 'products': products, 'searchProductForm': searchProductForm })
-  
+
+    return render(request, 'products/list.html', {
+        'products': products, 'searchProductForm': searchProductForm
+        })
 
 def listProductByEstado(request, estado):
     if(estado.lower() == "aceptado"):
