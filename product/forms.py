@@ -52,9 +52,9 @@ class ReporteForm(forms.ModelForm):
     )
 
 class ReviewProductForm(forms.ModelForm):
-    foto= forms.ImageField(label="Imagen", required= False)
+    foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
     nombre = forms.CharField(label='Nombre', widget=forms.TextInput(attrs={'class' : 'form-control'}) )
-    descripcion = forms.CharField(label='Descripción', widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 800px'}))
+    descripcion = forms.CharField(label='Descripción', widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, widget=forms.NumberInput(attrs={'class':'form-control'}))
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
@@ -71,7 +71,7 @@ class ReviewProductForm(forms.ModelForm):
         ('Aceptar', 'Aceptar'),
         ('Denegar', 'Denegar'),
     )
-    revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum)
+    revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum, widget = forms.RadioSelect)
 
     nombreComercio = forms.CharField(label='Nombre del Comercio', required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False)

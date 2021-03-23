@@ -1,26 +1,14 @@
-<html>
-<head>
+{% extends 'products/base.html'%}
+{% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-    <title>Eatsy!</title>
-</head>
+{% endblock %}
 
-<body>
+{% block titulo %} revisar {% endblock %}
 
     {% block contenido %}
     <main class="container">
@@ -31,37 +19,41 @@
                     <div class="form-group" style="margin-left: 2%;">
                         <br/>
                         <div class="row">
-                            <div><label>Imagen:&nbsp;</label></div>
+                            <div class="col-sm-2">Imagen:&nbsp;</div>
+                            <label style="margin-left: 15px;cursor: pointer;" class="col-sm-3  btn btn-warning" for="id_foto">Seleccionar archivo</label>
                             <div>{{ form.foto}}</div>
+                            <div id="Archivo" class="col-sm-3" style="margin-top: 5px; margin-left: 0.5%;">Ninguna imagen seleccionada</div>
                         </div>
                         <br/>
                         <div class="row">
-                            <div><label>Nombre:&nbsp;</label></div>
-                            <div>{{ form.nombre}}</div>
+                            <label class="col-sm-2">Nombre:&nbsp;</label>
+                            <div class="col-sm-4">{{ form.nombre}}</div>
                         </div>
                         <br/>
                         <div class="row">
-                            <div><label>Descripción:&nbsp;</label></div>
-                            <div>{{ form.descripcion}}</div>
+                            <label class="col-sm-2">Descripción:&nbsp;</label>
+                            <div class="col-sm-9">{{ form.descripcion}}</div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <label class="col-sm-2">Precio:&nbsp;</label>
+                            <div class="col-sm-4">{{ form.precio}}</div>
                         </div>
                         <br/>
                         <div class="row">
-                            <div><label>Precio:&nbsp;</label></div>
-                            <div>{{ form.precio}}</div>
+                            <label class="col-sm-2">Etiqueta:&nbsp;</label>
+                            <div class="col-sm-9">{{ form.dieta}}</div>
                         </div>
-                        <br/>
-                        <div class="row">
-                            <div><label>Etiqueta:&nbsp;</label></div>
-                            <div>{{ form.dieta}}</div>
-                        </div>
-                        <br/>
+                        <br>
                         <div class="row"> 
-                            <div><label>Ubicaciones:&nbsp;</label></div>
-                            <div style="margin-right: 1%;">{{form.ubicaciones}}</div>
-                            
-                            <a onclick="mostrarMapa()" id="link">
-                                <img height="20px" width="20px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
-                            </a>
+                            <label class="col-sm-2">Ubicaciones:&nbsp;</label>
+                            <div class="col-sm-4">{{form.ubicaciones}}</div>
+                            <div class="col-sm-3" style="margin-left: 1%; margin-top: 3%;">
+                                <a onclick="mostrarMapa()" id="link">
+                                    <img  height="30px" width="30px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
+                                </a>
+                            </div>
                         </div>
 
                         <!-- Button trigger modal -->
@@ -82,37 +74,56 @@
                                 id="mapContainer"></div>
                         </div>
                     </div>
+                    <div class="form-group">
 
-                    <div class="row">
-                            <div><label>Revisión:&nbsp;</label></div>
-                            {{ form.revision}}
+                        <div class="row justify-content-center">
+                           <strong> Resultado de la revisión:</strong>
+                        </div>
+                        <div class="row justify-content-center">
+                        
+                            {% for choice in form.revision%}
+                                <div class="col-6 text-center" >
+                                <span class=" form-check-input">{{ choice.tag }}</span></span>
+                                <label style="margin-top:3px" class="form-check-label">
+                                    {{ choice.choice_label }}</label>
+                                </div>
+
+                            </span>
+                            {% endfor %}
+                        </div>
                     </div>
+                    
 
-                    <button type="submit" class="save btn btn-default">Guardar</button>
+            <div class="row justify-content-center" style="padding-bottom: 10px;">
+                <div class="col-auto m-auto" style="justify-content: center;">
+                    <a class="btn btn-danger" onclick="mostrarAlerta()" >Cancelar</a>
+                    
+                    <button type="submit" class="save btn btn-warning" >Guardar revisión</button>
+                </div>
+            </div>
 
                 </form>
             </div>
         </div>
     </main>
-    {% endblock %}
 
-
-</body>
 
 <script type="text/javascript">
+    document.getElementById('id_foto').onchange = function () {
+            document.getElementById("Archivo").innerText= document.getElementById('id_foto').files[0].name;
+    }
     setTimeout(() => {
-
-        var displayer = document.getElementById("displayer")
-        displayer.style.display = "none"
+        var displayer = document.getElementById("displayer");
+        displayer.style.display = "none";
     }, 1)
     function mostrarMapa() {
 
-        var displayer = document.getElementById("displayer")
+        var displayer = document.getElementById("displayer");
         console.log(displayer.style.display)
         if (displayer.style.display == "none") {
-            displayer.style.display = "block"
+            displayer.style.display = "block";
         } else {
-            displayer.style.display = "none"
+            displayer.style.display = "none";
         }
     }
     var svgMarkup = devuelveMarca()
@@ -197,6 +208,15 @@
 
     // Instantiate the default behavior, providing the mapEvents object:
     var behavior = new H.mapevents.Behavior(mapEvents);
+    function mostrarAlerta(){
+                        var retVal = confirm("¿Seguro que quieres cancelar la revisión? No se guardará ningún cambio.");
+                        if( retVal == true ) {
+                            window.location.href = "/product/list"
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
     //el svg de la marca, ya a partir de aquí no hay más código importante.
     function devuelveMarca() {
         let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37pt" height="46pt" viewBox="0 0 37 46" version="1.1">
@@ -257,3 +277,4 @@
 
 
 </script>
+    {% endblock %}
