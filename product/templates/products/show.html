@@ -1,7 +1,4 @@
-{% extends 'products/base.html' %}
-{% block titulo %}Detalles de producto{% endblock %}
-
-{% block contenido %}
+{% extends 'products/base.html' %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %}
 
 <script>
     function change_to_tab_1() {
@@ -34,21 +31,31 @@
         pest_3.style.display = "inherit";
     }
 </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container-fluid page-content">
     <div class="row">
 
 
         <div class="col-lg-5">
-            <div class="row mb-3">
-                <div class="col-auto m-auto nombreProducto">{{product.titulo}}</div>
+            <div class="row justify-content-center">
+                <div class="col-auto nombreProducto">{{product.titulo}}</div>
             </div>
-            <div class="row">
-                <div class="col-auto m-auto">
-                    <img src="/media/{{product.foto}}" alt="" width="400px">
+            <div class="row justify-content-center">
+                <div class="col-sm-8 col-12">
+                    <img style="width: 100%;" src="/media/{{product.foto}}" alt="">
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-auto m-auto">Estrellitas</div>
+            <div style="margin: 20%;" class="row mt-3">
+                <form class="rate-form" action="" method="POST" id="{{product.id}}">
+                    {% csrf_token %}
+                    <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
+                    <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
+                    <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
+                    <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
+                    <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
+                </form>
+                <br/>
+                <div id="msjrating"></div>
             </div>
         </div>
 
@@ -57,9 +64,20 @@
 
         <div class="col-lg-7">
             {% if msj %}
+            <div class="row justify-content-center">
                 <div id="msjreporte" class="msj">{{msj}}</div>
+            </div>
             {% endif %}
-            <div class="row">
+            <div class="row justify-content-center">
+                <div style="display:block;" id="menucolapsar">
+                    <nav class="col-sm-4 d-flex  navbar-light">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapseproducts" aria-controls="collapseproducts" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+            <div class="row" id="collapseproducts">
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
                     <span class="m-auto">DESCRIPCIÓN</span>
                 </div>
@@ -71,6 +89,21 @@
                     <span class="m-auto">UBICACIONES</span>
                 </div>
             </div>
+            <script>
+                let collapseproducts = document.getElementById("collapseproducts");
+                let menucolapsar = document.getElementById("menucolapsar");
+                menuShow()
+
+                function menuShow() {
+                    if (window.innerWidth < 573) {
+                        menucolapsar.style.display = "block";
+                        collapseproducts.classList.add("collapse");
+                    } else {
+                        collapseproducts.classList.remove("collapse");
+                        menucolapsar.style.display = "none"
+                    }
+                }
+            </script>
             <div class="row">
                 <hr>
             </div>
@@ -84,11 +117,8 @@
                             <div class="col"> Precio del producto: {{product.precioMedio}}€</div>
                         </div>
                         <div class="row mt-5 mb-5">
-                            <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg"
-                                    data-toggle="modal" data-target="#modalReport" role="button"
-                                    aria-disabled="true">Reportar Producto</button></div>
-                            <div class="modal fade" id="modalReport" tabindex="-1" role="dialog"
-                                aria-labelledby="modalReportLabel" aria-hidden="true">
+                            <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button></div>
+                            <div class="modal fade" id="modalReport" tabindex="-1" role="dialog" aria-labelledby="modalReportLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -106,121 +136,103 @@
                                                 {% for choice in form.causa%}
 
                                                 <span style="margin-left: 35px;"><span class="form-check-input">{{ choice.tag }}</span>
-                                                    <label style="margin-top:3px" class="form-check-label">
+                                                <label style="margin-top:3px" class="form-check-label">
                                                         {{ choice.choice_label }}</label>
 
                                                 </span>
                                                 {% endfor %}
-                                                <div style="padding-bottom: 10px;"></div><label
-                                                    style="padding-bottom: 5px;font-weight: bold;">Comentarios:</label>
-                                                {{form.comentarios}}
+                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios:</label> {{form.comentarios}}
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" style ="margin-top: 0px !important;"
-                                                    data-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
 
-                                                <input class="btn btn-primary" type="submit" style ="margin-top: 0px !important;" value="Enviar"></input>
+                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Enviar"></input>
 
+                                        </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" id="p-2">
+                    <div class="container-fluid">
+                        <div class="row mb-3">
+                            <div class="col"> Comentarios </div>
+                        </div>
+
+                        <!-- MODAL COMENTAR Y VALORAR -->
+
+                        <div class="row mt-5">
+                            <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar y valorar</button></div>
+                            <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalComentarLabel">Comentar y valorar
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+
+                                        <form action="/product/show/{{product.id}}/comment" method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                {{formComment}}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                                                <input class="btn btn-primary" type="submit" value="Enviar"></input>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
+
+
+
+
                     </div>
                 </div>
-            </div>
-
-            <div class="col" id="p-2">
-                <div class="container-fluid">
-                    <div class="row mb-3">
-                        <div class="col"> Comentarios </div>
-                    </div>
-                   
-                    <!-- MODAL COMENTAR Y VALORAR -->
-
-                    <div class="row mt-5">
-                        <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg"
-                                data-toggle="modal" data-target="#modalComentar" role="button"
-                                aria-disabled="true">Comentar y valorar</button></div>
-                        <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog"
-                            aria-labelledby="modalComentarLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalComentarLabel">Comentar y valorar
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-
-                                    <form action="/product/show/{{product.id}}" method="POST">
-                                        <div class="modal-body">
-                                            {% csrf_token %}
-                                            <div style="padding-bottom: 10px;font-weight: bold;">Valoracion:</div>
-                                            {% for choice in form.valoracion%}
-
-                                            <span style="margin-left: 35px;"><span class="form-check-input">{{ choice.tag }}</span>
-                                                <label style="margin-top:3px" class="form-check-label">
-                                                    {{ choice.choice_label }}</label>
-
-                                            </span>
-                                            {% endfor %}
-                                            <div style="padding-bottom: 10px;"></div><label
-                                                style="padding-bottom: 5px;font-weight: bold;">Comentario:</label>
-                                            {{form.comentario}}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Cerrar</button>
-
-                                            <input class="btn btn-primary" type="submit" value="Enviar"></input>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
+                <div class="col" id="p-3">
+                    <div class="container-fluid">
+                        <div class="row ">
+                            <div id="colMap" style="padding:0px !important" class="col-12"> {% include 'products/map.html' %}</div>
                         </div>
-                    </div>
-
-
-
-
-                </div>
-            </div>
-            <div class="col" id="p-3">
-                <div class="container-fluid">
-                    <div class="row mb-3">
-                        <div class="col"> {% include 'products/map.html' %}</div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12"> <a href="#" class="btn btn-warning btn-lg" role="button"
-                                aria-disabled="true">Añadir Ubicación</a></div>
+                        <div class="row mt-2 justify-content-center">
+                            <div class="col-12"> <a href="#" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<script type="text/javascript">
-    if(document.getElementById("msjreporte")){
-        setTimeout(()=>{
-        document.getElementById("msjreporte").style.display = "none";
-    }, 3000);
-    }
+    <script type="text/javascript">
+        if (document.getElementById("msjreporte")) {
+            setTimeout(() => {
+                document.getElementById("msjreporte").style.display = "none";
+            }, 3000);
+        }
+    </script>
 
-</script>
-
-<div class="col-auto m-auto botonAdd"> 
-    <a href="/product/create" role="button"aria-disabled="true">
-        <img  height="5%" width="5%" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
-    </a> 
-</div>
+    <script>
+        change_to_tab_1()
+    </script>
 
 
+    <a style="left:0px !important" class="botonAdd" href="/product/create" role="button">
+        <img height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
+        />
+    </a>
 
-<script>change_to_tab_1()</script>
-{% endblock %}
+
+    {% endblock %}

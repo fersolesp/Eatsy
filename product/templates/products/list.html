@@ -4,56 +4,63 @@
 
 {% block contenido %} 
 
-    <div class="container-fluid page-content">
-        <div class="row ml-1 mb-1">
-            <div class="col-8 nombreProducto">Búsqueda de productos</div>
+    <div class="padding-list-container container-fluid page-content">
+        
+        <div class="row justify-content-center ">
+            <div class="col-sm-8 nombreProducto">Búsqueda de productos</div>
         </div>
-        <form action="/">
-            <div class="row ml-1">
-                <div class="col-8">
-                    <input class="w-100 h-100 form-control mr-sm-2 border border-dark" type="text" name="query" placeholder="Buscar...">
-                </div>
-                <div class="col-2">
-                    <button class="w-100 btn btn-warning btn-md" type="submit">Aplicar filtros</button>
-                </div>
-            </div>
-        </form>
         <div class="row">
-            <div class="col">
+            <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
+                <form action="/product/list">
+                        <input class="w-100 h-100 form-control border border-dark" type="text" name="titulo" placeholder="Buscar...">
+                </form>        
+            </div>
+            <div  style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
+                <form action="/product/list">
+                    <button  class="w-100 btn btn-warning btn-md" type="submit">Aplicar filtros</button>
+                </form>        
+            </div>
+            {% if user.is_superuser %}
+            <div style="padding-top: 1em;padding-bottom: 1em;" class="dropdown padding-list col-lg-3 col-md-4 col-sm-6">
+                <button class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Estado del producto
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="/product/list?estado=aceptado">Aceptados</a>
+                  <a class="dropdown-item" href="/product/list?estado=pendiente">A revisar</a>
+                  <a class="dropdown-item" href="/product/list">Todos</a>
+                </div>
+              </div>
+            {% endif %}
+        </div>
+
+
+        <div class="row justify-content-center">
                 {% for product in products %}
-                    {% if forloop.counter0|divisibleby:3 %}
-                        <div class="row">
-                    {% endif %}
-                    <div class="col-4 d-flex product-card">
-                        <div class="container-fluid product-card-inner">
+                    <div class="col-lg-4 col-md-6 col-12 d-flex product-card">
+                        <div class="product-card-inner">
                             <div class="row-fluid">
-                                <div class="col d-flex">
+                                <div class="col-12 d-flex">
                                     <img class="m-auto product-img" src="/media/{{product.foto}}" alt="">
                                 </div>
                             </div>
                             <div class="row-fluid text-center nombreProducto mt-3">
-                                <div class="col">
+                                <div class="col-12">
                                     {{product.titulo}}
                                 </div>
                             </div>
                             <div class="row-fluid nombreProducto mt-3">
-                                <div class="col d-flex">
+                                <div class="col-12 d-flex">
                                     <a class="m-auto btn btn-warning btn-md" href="show/{{product.id}}">Ver detalles</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% if forloop.counter0|add:"-2"|divisibleby:3 or forloop.last %}  
-                        </div>
-                    {% endif %}
                 {% endfor %}
-            </div>
         </div>
     </div>
-    <div class="col-auto m-auto botonAdd"> 
-        <a href="/product/create" role="button"aria-disabled="true">
-            <img  height="5%" width="5%" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
+        <a class="botonAdd" href="/product/create" role="button" >
+            <img  height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
         </a> 
-    </div>
 
 {% endblock %}

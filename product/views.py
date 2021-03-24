@@ -4,34 +4,38 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
-from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm
-import datetime
+from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from Eatsy import settings
 import os
 from django.contrib.auth.decorators import user_passes_test
+from django.http import JsonResponse
+from datetime import datetime    
+# Create your views here.
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     if request.method == 'GET':
         form = ReporteForm()
+        formComment= CommentForm()
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product, 'form':form})
+            return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
             return redirect('/admin')
     elif request.method == 'POST':
         form = ReporteForm(request.POST)
+        formComment= CommentForm()
         if form.is_valid():
             reporte = form.save(commit=False)
             reporte.producto = Producto(id=productId)
             reporte.user = User(id=1) # CORREGIR CUANDO HAYA LOGIN
             reporte.save()
-            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form})
+            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
         else:
             return redirect('product:show', product.id)   
 
@@ -39,14 +43,17 @@ def listProduct(request):
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
         product_list = product_list.filter(estado='Aceptado')
+    else:
+        if request.GET.get('estado','') == "aceptado" or request.GET.get('estado','') == "pendiente":
+            estado_get = "Aceptado" if request.GET["estado"] == "aceptado" else "Pendiente"
+            product_list = product_list.filter(estado=estado_get)
 
     if request.GET & SearchProductForm.base_fields.keys():
         searchProductForm = SearchProductForm(request.GET)
     else:
         # Si el formulario no se ha enviado, rellenar con valores por defecto
         # SPRINT 2 #
-        initial = { 'dietas': [] } # poner lista de ID o lista de Dieta
-        searchProductForm = SearchProductForm(initial = initial)
+        searchProductForm = SearchProductForm()
 
     if searchProductForm.is_valid():
         # BUSCAR
@@ -61,9 +68,6 @@ def listProduct(request):
         # ORDENAR
         product_list = product_list.order_by(searchProductForm.cleaned_data['orderBy'])
 
-    for producto in product_list:
-        print(producto.titulo)
-
     page = request.GET.get('page')
     paginator = Paginator(product_list, 12)
 
@@ -73,9 +77,10 @@ def listProduct(request):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
-    
-    return render(request, 'products/list.html', { 'products': products, 'searchProductForm': searchProductForm })
-  
+
+    return render(request, 'products/list.html', {
+        'products': products, 'searchProductForm': searchProductForm
+        })
 
 def listProductByEstado(request, estado):
     if(estado.lower() == "aceptado"):
@@ -106,7 +111,6 @@ def createProduct(request):
         form=CreateProductForm(request.POST, request.FILES)
         print(form.errors)
         if form.is_valid():
-            print("=================================", form.cleaned_data['nombreComercio']) 
             if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=="":
                 form.errors.nombreComercio = "El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva"
                 return render(request,'products/create.html', {'form':form})
@@ -147,20 +151,40 @@ def createProduct(request):
 
     
 
-  
-def findProduct(request):
+          
+def addUbication(request, productId):
     if request.method == 'GET':
-        form = ProductForm(request.GET, request.FILES)
-        if form.is_valid():
-            productName = form.cleaned_data['productName']
-            if(request.user.is_superuser):
-                filteredProducts = Producto.objects.filter(
-                    titulo__icontains=productName)
-            else:
-                filteredProducts = Producto.objects.filter(
-                    titulo__icontains=productName, estado='Aceptado')
+        form = AddUbicationForm()
+        return render(request,'products/show.html', {'form':form})
 
-            return render(request, 'products/list.html', {'products': filteredProducts})
+    if request.method == 'POST':
+        form=AddUbicationForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            ubicaciones = form.cleaned_data['ubicaciones']
+            nombre = form.cleaned_data['nombreComercio']
+            latitud = form.cleaned_data['lat']
+            longitud = form.cleaned_data['lon']
+            precio = form.cleaned_data['precio']
+            producto = get_object_or_404(Producto, pk=productId)
+
+            if(nombre!='' and latitud!='' and longitud!=''):
+                ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
+                ubicacion.save()
+
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                ubicacionProducto.save()
+
+            for ubicacion in ubicaciones:
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio=precio)
+                ubicacionProducto.save()
+
+            return render (request,'products/show.html')
+
+        else:
+            return render(request,'products/show.html', {'form':form})
 
 
 def reportProduct(request, productId):
@@ -207,9 +231,9 @@ def reviewProduct(request, productId):
                     producto.titulo = form.cleaned_data['nombre']
                     producto.descripcion = form.cleaned_data['descripcion']
                     producto.fecha = datetime.datetime.now()
-
-                    path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
-                    producto.foto = '../media/' + path
+                    if(form.cleaned_data['foto'] != None):
+                        path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
+                        producto.foto = '../media/' + path
                     
                     # TODO: Revisar, se está poniendo el que llega en el formulario
                     producto.precioMedio = form.cleaned_data['precio']
@@ -246,10 +270,47 @@ def reviewProduct(request, productId):
                     producto.delete()
                     return redirect('product:list')
 
-        return render(request, 'products/review.html', {'form': form, 'product_id': productId})
+        return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
+
+
+def rateProduct(request, productId):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        rate = request.POST.get('rate')
+        # TODO: Adaptar el user cuando se haga el login
+        
+        numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, pk=2), producto=get_object_or_404(Producto, pk=id)).count()
+        if numValoraciones>=1:
+             return JsonResponse({'success':'false', 'msj': "Ya ha realizado una valoración"}, safe=False)
+        else:
+            valoracion = Valoracion(puntuacion = rate, fecha = datetime.now(), user =get_object_or_404(
+                            Perfil, pk=2), producto = get_object_or_404(Producto, pk=id))
+            valoracion.save()
+            return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
+
+def commentProduct(request, productId):
+    producto = get_object_or_404(Producto, pk=productId)
+
+    if request.method == 'GET':
+        form = CommentForm()
+    elif request.method == 'POST':
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.producto = Producto(id=productId)
+            comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
+            comentario.save()
+            return redirect('product:show', producto.id)
+
+    return render(request, 'products/addReport.html', {'form': form})
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
-    comment.delete()
+    if comment.user.user.pk == request.user.pk:
+        comment.delete()
+    else:
+        # TODO: redirigir a pantalla de error cuando esté
+        return redirect('product:list')
 
     return render(request, 'products/show.html')
