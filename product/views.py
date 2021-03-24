@@ -244,6 +244,10 @@ def reviewProduct(request, productId):
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
-    comment.delete()
+    if comment.user.user.pk == request.user.pk:
+        comment.delete()
+    else:
+        # TODO: redirigir a pantalla de error cuando esté
+        return redirect('product:list')
 
     return render(request, 'products/show.html')
