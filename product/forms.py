@@ -80,7 +80,9 @@ class SearchProductForm(forms.ModelForm):
     orderBy = forms.TypedChoiceField(
         choices = [(orderBy.name, orderBy.value[0]) for orderBy in OrderBy],
         coerce = OrderBy.get_value,
-        required = True
+        required = True,
+        initial = OrderBy.newest.name,
+        label = 'Ordenar por'
     )
 
     def __init__(self, *args, **kwargs):
@@ -88,6 +90,16 @@ class SearchProductForm(forms.ModelForm):
         
         self.fields['titulo'].required = False
         self.fields['dietas'].required = False
+        
+        # Rellenar para el segundo sprint con las dietas del usuario
+        # self.fields['dietas'].initial = [  ]
+
+class MiniSearchProductForm(SearchProductForm):
+    def __init__(self, *args, **kwargs):
+        super(MiniSearchProductForm, self).__init__(*args, **kwargs)
+        
+        self.fields['dietas'].widget = forms.MultipleHiddenInput()
+        self.fields['orderBy'].widget = forms.HiddenInput()
 
 class ReviewProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
