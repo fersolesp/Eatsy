@@ -137,6 +137,42 @@ def createProduct(request):
         else:
             return render(request,'products/list.html', {'form':form})
 
+          
+def addUbication(request, productId):
+    if request.method == 'GET':
+        form = AddUbicationForm()
+        return render(request,'products/show.html', {'form':form})
+
+    if request.method == 'POST':
+        form=AddUbicationForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            ubicaciones = form.cleaned_data['ubicaciones']
+            nombre = form.cleaned_data['nombreComercio']
+            latitud = form.cleaned_data['lat']
+            longitud = form.cleaned_data['lon']
+            precio = form.cleaned_data['precio']
+            producto = get_object_or_404(Producto, pk=productId)
+
+            if(nombre!='' and latitud!='' and longitud!=''):
+                ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
+                ubicacion.save()
+
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                ubicacionProducto.save()
+
+            for ubicacion in ubicaciones:
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio=precio)
+                ubicacionProducto.save()
+
+            return render (request,'products/show.html')
+
+        else:
+            return render(request,'products/show.html', {'form':form})
+
+
 def reportProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
 
@@ -181,9 +217,9 @@ def reviewProduct(request, productId):
                     producto.titulo = form.cleaned_data['nombre']
                     producto.descripcion = form.cleaned_data['descripcion']
                     producto.fecha = datetime.datetime.now()
-
-                    path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
-                    producto.foto = '../media/' + path
+                    if(form.cleaned_data['foto'] != None):
+                        path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
+                        producto.foto = '../media/' + path
                     
                     # TODO: Revisar, se está poniendo el que llega en el formulario
                     producto.precioMedio = form.cleaned_data['precio']
@@ -220,10 +256,14 @@ def reviewProduct(request, productId):
                     producto.delete()
                     return redirect('product:list')
 
-        return render(request, 'products/review.html', {'form': form, 'product_id': productId})
+        return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
-    comment.delete()
+    if comment.user.user.pk == request.user.pk:
+        comment.delete()
+    else:
+        # TODO: redirigir a pantalla de error cuando esté
+        return redirect('product:list')
 
     return render(request, 'products/show.html')
