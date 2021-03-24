@@ -203,9 +203,9 @@ def reviewProduct(request, productId):
                     producto.titulo = form.cleaned_data['nombre']
                     producto.descripcion = form.cleaned_data['descripcion']
                     producto.fecha = datetime.datetime.now()
-
-                    path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
-                    producto.foto = '../media/' + path
+                    if(form.cleaned_data['foto'] != None):
+                        path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
+                        producto.foto = '../media/' + path
                     
                     # TODO: Revisar, se está poniendo el que llega en el formulario
                     producto.precioMedio = form.cleaned_data['precio']
@@ -242,7 +242,7 @@ def reviewProduct(request, productId):
                     producto.delete()
                     return redirect('product:list')
 
-        return render(request, 'products/review.html', {'form': form, 'product_id': productId})
+        return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
