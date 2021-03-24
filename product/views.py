@@ -39,6 +39,10 @@ def listProduct(request):
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
         product_list = product_list.filter(estado='Aceptado')
+    else:
+        if request.GET.get('estado','') == "aceptado" or request.GET.get('estado','') == "pendiente":
+            estado_get = "Aceptado" if request.GET["estado"] == "aceptado" else "Pendiente"
+            product_list = product_list.filter(estado=estado_get)
 
     if request.GET & SearchProductForm.base_fields.keys():
         searchProductForm = SearchProductForm(request.GET)

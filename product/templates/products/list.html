@@ -9,16 +9,32 @@
         <div class="row justify-content-center ">
             <div class="col-sm-8 nombreProducto">Búsqueda de productos</div>
         </div>
-        <form action="/">
-            <div class="row ">
-                <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
-                    <input class="w-100 h-100 form-control border border-dark" type="text" name="query" placeholder="Buscar...">
-                </div>
-                <div  style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
-                    <button  class="w-100 btn btn-warning btn-md" type="submit">Aplicar filtros</button>
-                </div>
+        <div class="row">
+            <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
+                <form action="/product/list">
+                        <input class="w-100 h-100 form-control border border-dark" type="text" name="titulo" placeholder="Buscar...">
+                </form>        
             </div>
-        </form>
+            <div  style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
+                <form action="/product/list">
+                    <button  class="w-100 btn btn-warning btn-md" type="submit">Aplicar filtros</button>
+                </form>        
+            </div>
+            {% if user.is_superuser %}
+            <div style="padding-top: 1em;padding-bottom: 1em;" class="dropdown padding-list col-lg-3 col-md-4 col-sm-6">
+                <button class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Estado del producto
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="/product/list?estado=aceptado">Aceptados</a>
+                  <a class="dropdown-item" href="/product/list?estado=pendiente">A revisar</a>
+                  <a class="dropdown-item" href="/product/list">Todos</a>
+                </div>
+              </div>
+            {% endif %}
+        </div>
+
+
         <div class="row justify-content-center">
                 {% for product in products %}
                     <div class="col-lg-4 col-md-6 col-12 d-flex product-card">
