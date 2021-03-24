@@ -4,34 +4,38 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
-from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm
-import datetime
+from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from Eatsy import settings
 import os
 from django.contrib.auth.decorators import user_passes_test
+from django.http import JsonResponse
+from datetime import datetime    
+# Create your views here.
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     if request.method == 'GET':
         form = ReporteForm()
+        formComment= CommentForm()
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product, 'form':form})
+            return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
             return redirect('/admin')
     elif request.method == 'POST':
         form = ReporteForm(request.POST)
+        formComment= CommentForm()
         if form.is_valid():
             reporte = form.save(commit=False)
             reporte.producto = Producto(id=productId)
             reporte.user = User(id=1) # CORREGIR CUANDO HAYA LOGIN
             reporte.save()
-            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form})
+            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
         else:
             return redirect('product:show', product.id)   
 
@@ -261,6 +265,39 @@ def reviewProduct(request, productId):
                     return redirect('product:list')
 
         return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
+
+
+def rateProduct(request, productId):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        rate = request.POST.get('rate')
+        # TODO: Adaptar el user cuando se haga el login
+        
+        numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, pk=2), producto=get_object_or_404(Producto, pk=id)).count()
+        if numValoraciones>=1:
+             return JsonResponse({'success':'false', 'msj': "Ya ha realizado una valoración"}, safe=False)
+        else:
+            valoracion = Valoracion(puntuacion = rate, fecha = datetime.now(), user =get_object_or_404(
+                            Perfil, pk=2), producto = get_object_or_404(Producto, pk=id))
+            valoracion.save()
+            return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
+
+def commentProduct(request, productId):
+    producto = get_object_or_404(Producto, pk=productId)
+
+    if request.method == 'GET':
+        form = CommentForm()
+    elif request.method == 'POST':
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.producto = Producto(id=productId)
+            comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
+            comentario.save()
+            return redirect('product:show', producto.id)
+
+    return render(request, 'products/addReport.html', {'form': form})
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)

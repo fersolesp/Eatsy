@@ -1,5 +1,5 @@
 from django import forms
-from .models import Reporte, CausaReporte, Producto, Ubicacion
+from .models import Reporte, CausaReporte, Producto, Ubicacion, Aportacion
 
 from enum import Enum
 
@@ -56,6 +56,16 @@ class ReporteForm(forms.ModelForm):
     causa = forms.ModelChoiceField(
         queryset = CausaReporte.objects.all(),
         widget = forms.RadioSelect
+    )
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Aportacion
+        fields = ['titulo','mensaje']
+
+    titulo= forms.CharField(label='Título', widget=forms.TextInput(attrs={'class' : 'form-control'}) )
+    mensaje = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'})
     )
 
 class SearchProductForm(forms.ModelForm):
