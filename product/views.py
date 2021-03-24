@@ -136,23 +136,6 @@ def createProduct(request):
             return redirect('./list')
         else:
             return render(request,'products/list.html', {'form':form})
-    
-
-  
-def findProduct(request):
-    if request.method == 'GET':
-        form = ProductForm(request.GET, request.FILES)
-        if form.is_valid():
-            productName = form.cleaned_data['productName']
-            if(request.user.is_superuser):
-                filteredProducts = Producto.objects.filter(
-                    titulo__icontains=productName)
-            else:
-                filteredProducts = Producto.objects.filter(
-                    titulo__icontains=productName, estado='Aceptado')
-
-            return render(request, 'products/list.html', {'products': filteredProducts})
-
 
 def reportProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
