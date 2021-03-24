@@ -35,7 +35,7 @@
     <div></div>
     <div></div>
     <!-- Productos -->
-    <a class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
+    <a id="botonProductosHeader1" class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
 
     <!-- Collapse -->
     <div class="pos-f-b">
@@ -46,6 +46,7 @@
       </nav>
       <div class="collapse" id="navbarToggleExternalContent">
         <div class="bg-green ">
+          <a id="botonProductosHeader2" class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
           <h3 class="text-white collapsed"><a href="/">Mi Perfil</a></h3>
           <h3 class="text-white collapsed"><a href="/">Cerrar Sesión</a></h1>
         </div>
@@ -61,7 +62,7 @@
     {% block contenido %} {% endblock %}
   </div>
   <footer id="footer">
-    <img class="imgfooter" src="{% static 'img/footer.png' %}">
+    <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
     <div class="container text-center">
       <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
     </div>

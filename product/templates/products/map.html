@@ -28,15 +28,16 @@
     <script type="text/javascript">
       let mapContainer = document.getElementById("mapContainer");
       let selector = document.getElementById("select");
-     
-      selector.style.width = window.innerWidth*0.49+"px";
-      mapContainer.style.width = window.innerWidth*0.49+"px";
+      let colMap = getComputedStyle(document.getElementById("colMap"));
+      selector.style.width = colMap.width;
+      mapContainer.style.width = colMap.width;
       mapContainer.style.height = window.innerHeight*0.49+"px";
       window.onresize=()=>{
 
-        selector.style.width = window.innerWidth*0.49+"px";
-        mapContainer.style.width = window.innerWidth*0.49+"px";
+        selector.style.width = colMap.width;
+        mapContainer.style.width = colMap.width;
         mapContainer.style.height = window.innerHeight*0.49+"px";
+        menuShow();
       }
       // Initialize the platform object:
       var platform = new H.service.Platform({

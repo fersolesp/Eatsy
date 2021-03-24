@@ -38,9 +38,9 @@ hr {
 }
 
 .botonAdd {
-    position: fixed;
-    bottom: 70;
-    right: 70;
+    position: sticky;
+    bottom: 50px;
+    left: 25px ;
 }
 
 .botonAdd a{
@@ -188,8 +188,46 @@ a {
 }
 
 .imgfooter {
-  width: 500px;
   display:block;
   margin:auto;
+}
+.padding-list{
+  padding-left: 2em;
+}
+#botonProductosHeader1{
+  display: block;
+}
+#botonProductosHeader2{
+  display: none;
+}
+@media (max-width: 450px) {
+  #botonProductosHeader2{
+    display: block;
+  }
+  #botonProductosHeader1{
+    display: none;
+  }
+  .page-content {
+    padding: 2em;
+    padding-top: 1em;
+}
+  .product-card{
+    padding:0em;
+    padding-bottom: 1em;
+  }
+  .padding-list-container{
+  
+    padding: 2em;
+  }
+  .padding-list{
+    padding-left: 1em;
+  }
+  .product-card-inner{
+    padding:0em;
+    padding-bottom: 1em;
+
+    padding-top: 1em;
+
+  }
 }
 
