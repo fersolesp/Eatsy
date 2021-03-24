@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
-from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
+from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion, Reporte
 from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -203,6 +203,14 @@ def reportProduct(request, productId):
             return redirect('product:show', producto.id)
 
     return render(request, 'products/addReport.html', {'form': form})
+
+
+# TODO: Cuando esté el login cambiar el login_url
+@user_passes_test(lambda u: u.is_superuser, login_url='/product/list')
+def showReport(request, reportId):
+    reporte = get_object_or_404(Reporte, pk=reportId)
+    return render(request, 'products/list.html', {'report': reporte})
+
 
 # TODO: Cuando esté el login cambiar el login_url
 @user_passes_test(lambda u: u.is_superuser, login_url='/product/list')
