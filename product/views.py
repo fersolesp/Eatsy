@@ -109,14 +109,18 @@ def createProduct(request):
         return render(request,'products/create.html', {'form':form})
     if request.method=='POST':
         form=CreateProductForm(request.POST, request.FILES)
+        print(form.errors)
         if form.is_valid():
+            if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=="":
+                form.errors.nombreComercio = "El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva"
+                return render(request,'products/create.html', {'form':form})
             path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
             
             nombre = form.cleaned_data["nombre"]
             descripcion = form.cleaned_data["descripcion"]
             precio = form.cleaned_data["precio"]
             dieta = form.cleaned_data['dieta']
-            ubicaciones = form.cleaned_data['ubicaciones']
+            ubicacion = form.cleaned_data['ubicaciones']
             
             producto = Producto(titulo = nombre, descripcion = descripcion, foto = "../media/"+path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, pk=2))
             producto.save()
@@ -133,7 +137,7 @@ def createProduct(request):
                 ubicacionProducto.save()
                 
             # Por cada supermercado crear tabla intermedia
-            for ubicacion in form.cleaned_data['ubicaciones']:
+            else:
                 # TODO: Adaptar el user cuando se haga el login
                 ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
                     Perfil, pk=2), precio=form.cleaned_data['precio'])
@@ -141,9 +145,11 @@ def createProduct(request):
 
             producto.save()
 
-            return redirect('./list')
+            return redirect('product:list')
         else:
-            return render(request,'products/list.html', {'form':form})
+            return render(request,'products/create.html', {'form':form})
+
+    
 
           
 def addUbication(request, productId):
