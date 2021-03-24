@@ -29,6 +29,7 @@ def showProduct(request, productId):
             return redirect('/admin')
     elif request.method == 'POST':
         form = ReporteForm(request.POST)
+        formComment= CommentForm()
         if form.is_valid():
             reporte = form.save(commit=False)
             reporte.producto = Producto(id=productId)

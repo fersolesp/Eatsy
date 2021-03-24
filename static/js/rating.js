@@ -111,6 +111,7 @@ if (one) {
                     'rate': val_num,
                 },
                 success: function(response) {
+                    console.log("Prueba")
                     document.getElementById("msjrating").display = "block";
                     if (response["msj"] == "Ya ha realizado una valoración") {
                         document.getElementById("msjrating").classList.add("msjError");
