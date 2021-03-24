@@ -1,5 +1,6 @@
 from django import forms
 from .models import Reporte, CausaReporte, Producto, Ubicacion
+from django.core.validators import FileExtensionValidator
 
 from enum import Enum
 
@@ -9,9 +10,9 @@ class CustomMMCF(forms.ModelChoiceField):
 
 
 class CreateProductForm(forms.ModelForm):
-    foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
-    nombre = forms.CharField(label='Nombre', widget=forms.TextInput(attrs={'class' : 'form-control'}) )
-    descripcion = forms.CharField(label='Descripción', widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 100%'}))
+    foto = forms.ImageField(label="Imagen",validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])], required=False, widget=forms.FileInput(attrs={'style':'display:None', 'accept':'image/*'}))
+    nombre = forms.CharField(label='Nombre',error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
+    descripcion = forms.CharField(label='Descripción',error_messages={'required':'Este campo no puede estar vacío'}, widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 100%', 'blank':'False'}))
     precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, max_value=99.99, widget=forms.NumberInput(attrs={'class':'form-control'}))
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
@@ -21,18 +22,19 @@ class CreateProductForm(forms.ModelForm):
         ('Marisco', 'Marisco'),
         ('Frutos secos', 'Frutos secos'),
     )
+    
     dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 350px'}))
-
-    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(),required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 400px', 'placeholder': 'Selecciones una ubicacion.'}))
-
-
-    nombreComercio = forms.CharField(label='Nombre del Comercio', required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
-    lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False )
-    lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
-
+    
+    ubicaciones = CustomMMCF(queryset=Ubicacion.objects.all(), required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 400px'}))
     class Meta:
         model = Ubicacion
         fields = ['nombre']
+
+    nombreComercio = forms.CharField(label='Nombre del Comercio',strip=True, required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
+    lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False )
+    lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
+
+  
 
     
 

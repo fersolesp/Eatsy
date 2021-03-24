@@ -1,108 +1,123 @@
 {% extends 'products/base.html' %}}
 {% block titulo %}Añadir producto{% endblock %}
-    {% block head %}
-        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
-        <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-    {% endblock %}
+{% block head %}
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+{% endblock %}
 
-    {% block contenido %}
-    <main class="container">
-        <h3>Añadir un producto</h3>
-        <div class="row justify-content-center">
-            <div class="card col-12" style="background-color: #a3c7ab ;">
-                <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/create">{% csrf_token %}
-                    <div class="form-group" style="margin-left: 2%;">
-                        <label style="color:red;">*Solo estos campos son obligatorios.</label>
-                        <br/>
-                        <br/>
-                        <div class="row">
-                            <div><label>Imagen:&nbsp;</label></div>
-                            <label style="cursor: pointer;margin-left: 2.9%;" class="btn btn-warning" for="id_foto">Seleccionar archivo</label>
-                            <div>{{ form.foto}}</div>
-                            <div id="Archivo" style="margin-top: 0.5%; margin-left: 0.5%;">Ningun imagen seleccionada</div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div><label>Nombre <span style="color:red;">*</span>:</label></div>
-                            <div style="margin-left: 2.4%;">{{ form.nombre}}</div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div><label>Descripción <span style="color:red;">*</span>:&nbsp;</label></div>
-                            <div style="margin-left: 0.3%;">{{ form.descripcion}}</div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div><label>Precio <span style="color:red;">*</span>:&nbsp;</label></div>
-                            <div style="margin-left: 3.7%;">{{ form.precio}}</div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div><label>Etiqueta <span style="color:red;">*</span>:&nbsp;</label></div>
-                            <div style="margin-left: 2.5%;">{{ form.dieta}}</div>
-                        </div>
-                        <br/>
-                        <div class="row"> 
-                            <div><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
-                            <div style="margin-right: 1%;">{{form.ubicaciones}}</div>
-                            <div style="margin-left: 1%; margin-top: 0.5%;">
-                                <a onclick="mostrarMapa()" id="link">
-                                    <img  height="30px" width="30px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Button trigger modal -->
-                        
+{% block contenido %}
+<main class="container">
+    <h3>Añadir un producto</h3>
+    <div class="row justify-content-center">
+        <div class="card col-12" style="background-color: #a3c7ab ;">
+            <form onsubmit="return validateUbicaciones()" name="formCreate" enctype="multipart/form-data" method="POST"
+                class="post-form" action="/product/create">{% csrf_token %}
+                <div class="form-group" style="margin-left: 2%;">
+                    <label style="color:red;">*Solo estos campos son obligatorios.</label>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div><label>Imagen <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <label style="cursor: pointer;margin-left: 2.9%;" class="btn btn-warning"
+                            for="id_foto">Seleccionar archivo</label>
+                        <div>{{ form.foto }}</div>
+                        <div id="Archivo" style="margin-top: 0.5%; margin-left: 0.5%;">Ninguna imagen seleccionada</div>
+                        <div style="color: red;">{{ form.errors.foto.as_text}}</div>
                     </div>
-                    <!-- Modal -->
+                    <br />
+                    <div class="row">
+                        <div><label>Nombre <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div style="margin-left: 2.4%;">{{ form.nombre}}</div>
+                        <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div><label>Descripción <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div style="margin-left: 0.3%;">{{ form.descripcion}}</div>
+                        <div style="color: red;">{{ form.errors.descripcion.as_text}}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div><label>Precio <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div style="margin-left: 3.7%;">{{ form.precio}}</div>
+                        <div style="color: red;">{{ form.errors.precio.as_text}}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div><label>Etiqueta <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div style="margin-left: 2.5%;">{{form.dieta}}</div>
+                        <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div style="margin-right: 1%;">{{form.ubicaciones}}</div>
+                        <div style="margin-left: 1%; margin-top: 0.5%;">
+                            <a onclick="mostrarMapa()" id="link">
+                                <img height="30px" width="30px"
+                                    src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
+                            </a>
+                            
+                        </div>
+                       
+                    </div>
+                    <div style="color: red;">{{ form.errors.nombreComercio}}</div>
+                    <div id="enseñaerror" class="row">
 
-                    <div style="display:block;" id="displayer">
-                        <div><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna opción):&nbsp;</label></div>
-                        {{form.nombreComercio}}
-                        {{form.lat}}
-                        {{form.lon}}
-                        <label for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y clique en el mapa el lugar.):</label>
-                        <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad"
-                            class="form-control">
-                        <div class="row justify-content-center">
-                            <div style="width: 640px; height: 480px; display: inherit; margin-top: 2%"
-                                id="mapContainer"></div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+
+                </div>
+                <!-- Modal -->
+
+                <div style="display:block;" id="displayer">
+                    <div><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna
+                            opción):&nbsp;</label></div>
+                    {{form.nombreComercio}}
+                    {{form.lat}}
+                    {{form.lon}}
+                    <label for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y
+                        clique en el mapa el lugar.):</label>
+                    <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad" class="form-control">
+                    <div class="row justify-content-center">
+                        <div style="width: 640px; height: 480px; display: inherit; margin-top: 2%" id="mapContainer">
                         </div>
                     </div>
-                    <div class="row mt-5 mb-5">
-                        <div class="col-auto m-auto" style="justify-content: center;">
-                            <button type="submit" class="save btn btn-warning" >Guardar</button>
-                            <a class="btn btn-danger" onclick="mostrarAlerta()" >Cancelar</a>
-                        </div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-auto m-auto" style="justify-content: center;">
+                        <a class="btn btn-danger" onclick="mostrarAlerta()">Cancelar</a>
+                        <button type="submit" class="save btn btn-warning">Guardar</button>
                     </div>
-                    
+                </div>
 
-                </form>
-            </div>
+
+            </form>
         </div>
-    </main>
+    </div>
+</main>
 
 
 <script>
-        document.getElementById('id_foto').onchange = function () {
-            document.getElementById("Archivo").innerText= document.getElementById('id_foto').files[0].name;
-        }
+    document.getElementById('id_foto').onchange = function () {
+        document.getElementById("Archivo").innerText = document.getElementById('id_foto').files[0].name;
+    }
 </script>
 <script>
 
-    function mostrarAlerta(){
-                        var retVal = confirm("¿Seguro que quieres cancelar el producto?");
-                        if( retVal == true ) {
-                            window.location.href = "/product/list"
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
+    function mostrarAlerta() {
+        var retVal = confirm("¿Seguro que quieres cancelar el producto?");
+        if (retVal == true) {
+            window.location.href = "/product/list"
+            return true;
+        } else {
+            return false;
+        }
+    }
 </script>
 <script type="text/javascript">
     setTimeout(() => {
@@ -110,12 +125,41 @@
         var displayer = document.getElementById("displayer")
         displayer.style.display = "none"
     }, 1)
+    let id_ubicaciones = document.getElementById("id_ubicaciones");
+    id_ubicaciones.onchange = () => {
+        displayer.style.display = "none";
+        document.getElementById("id_lat").value = "";
+        document.getElementById("id_lon").value = "";
+        document.getElementById("id_nombreComercio").value = "";
+        document.getElementById("buscador").value = "";
+    }
+    function validateUbicaciones() {
+        var x = document.getElementById("id_nombreComercio").value;
+        var y = id_ubicaciones.value;
+        var z = document.getElementById("id_foto").files[0];
+        if (x == "" && y == "" && !z){
+            alert("Seleccione una foto y elija o cree una ubicación")
+            return false;
+        }
+        if (x == "" && y == "") {
+            alert("Elige una ubicación o crea una nueva");
+            return false;
+        }
+        if (!z) {
+            alert("Elige una foto");
+            return false;
+        }
+       
+    }
+    document.querySelector('#id_ubicaciones > option').innerText = "Añade una nueva ubicación";
     function mostrarMapa() {
 
-        var displayer = document.getElementById("displayer")
-        console.log(displayer.style.display)
-        if (displayer.style.display == "none") {
-            displayer.style.display = "block"
+        var displayer = document.getElementById("displayer");
+        if (id_ubicaciones.value != "") {
+            alert('Selecciona "Añade una nueva ubicación" para añadir una nueva ubicación')
+        }
+        if (displayer.style.display == "none" && id_ubicaciones.value == "") {
+            displayer.style.display = "block";
         } else {
             displayer.style.display = "none"
         }
@@ -181,9 +225,9 @@
     var marcas = [];
     var busqueda = ""
     document.getElementById("buscador").onkeyup = () => {
-        if(document.getElementById("buscador").value != ""){
+        if (document.getElementById("buscador").value != "") {
             busqueda = document.getElementById("buscador").value
-        }else{
+        } else {
             busqueda = "España"
         }
         service.geocode({
