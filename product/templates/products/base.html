@@ -12,54 +12,43 @@
   <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
   <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
   <style>
-  #page-container {
-  position: relative;
-  min-height: 93vh;
-}
 
-#content-wrap {
-  padding-bottom: 2.5rem;
-}
-
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 2.5rem;
-}
-
-a {
-  color: aliceblue;
-}
 </style>
 </head>
 <body>
 
 <!-- Navbar -->
 <div class="navbar">
-  <!-- Navbar -->
-  <div>
-    <b-navbar toggleable="lg" type="dark" variant="primary">
+
+    <!-- Logo -->
     <b-navbar-brand href="/">
       <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
     </b-navbar-brand>
-</div>
 
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <!-- Productos -->
+    <a class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
 
-      <!-- Collapse -->
- 
-  <div class="pos-f-b">
-    
-    <nav class="navbar navbar-dark">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </nav>
-    <div class="collapse" id="navbarToggleExternalContent">
-      <div class="bg-green ">
-        <h3 class="text-white"><a href="/product/list">Productos</a></h3>
-        <h3 class="text-white"><a href="/">Mi Perfil</a></h3>
-        <h3 class="text-white"><a href="/">Cerrar Sesión</a></h1>
+    <!-- Collapse -->
+    <div class="pos-f-b">
+      <nav class="navbar navbar-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+      <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-green ">
+          <h3 class="text-white collapsed"><a href="/">Mi Perfil</a></h3>
+          <h3 class="text-white collapsed"><a href="/">Cerrar Sesión</a></h1>
+        </div>
       </div>
     </div>
   </div>
@@ -72,6 +61,7 @@ a {
     {% block contenido %} {% endblock %}
   </div>
   <footer id="footer">
+    <img class="imgfooter" src="{% static 'img/footer.png' %}">
     <div class="container text-center">
       <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
     </div>
