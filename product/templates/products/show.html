@@ -45,7 +45,7 @@
                     <img src="/media/{{product.foto}}" alt="" width="400px">
                 </div>
             </div>
-            <div style="margin-left: 20%;" class="row mt-3">
+            <div style="margin: 20%;" class="row mt-3">
                 <form class="rate-form" action="" method="POST" id="{{product.id}}">
                     {% csrf_token %}
                     <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
@@ -58,6 +58,9 @@
             <br/>
             <div id="msjrating"></div>
         </div>
+
+
+
 
         <div class="col-lg-7">
             {% if msj %}
