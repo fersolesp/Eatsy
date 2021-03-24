@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
-from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
+from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion, Reporte
 from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm
 import datetime
 from django.core.files.storage import default_storage
@@ -267,3 +267,19 @@ def removeComment (request, commentId):
         return redirect('product:list')
 
     return render(request, 'products/show.html')
+
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
+def listReports(request):
+    reports_list = Reporte.objects.all()
+
+    page = request.GET.get('page')
+    paginator = Paginator(reports_list,12)
+
+    try:
+        reports = paginator.page(page)
+    except PageNotAnInteger:
+        reports = paginator.page(1)
+    except EmptyPage:
+        reports = paginator.page(paginator.num_pages)
+    
+    return render(request, 'reports/list.html', { 'reports': reports })
