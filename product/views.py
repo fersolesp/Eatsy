@@ -47,26 +47,31 @@ def listProduct(request):
         if request.GET.get('estado','') == "aceptado" or request.GET.get('estado','') == "pendiente":
             estado_get = "Aceptado" if request.GET["estado"] == "aceptado" else "Pendiente"
             product_list = product_list.filter(estado=estado_get)
-
-    if request.GET & SearchProductForm.base_fields.keys():
+    
+    if request.GET:
         searchProductForm = SearchProductForm(request.GET)
+    
+        # BUSCAR
+        if searchProductForm.data.get("titulo"):
+            titulo = searchProductForm.data['titulo']
+            product_list = product_list.filter(titulo__icontains = titulo)
+
+        # FILTRAR
+        if searchProductForm.data.get('dietas'):
+            for dieta in searchProductForm.data['dietas']:
+                product_list = product_list.filter(dietas__id = dieta)
+
+        # ORDENAR
+        if searchProductForm.data.get('orderBy'):
+            if searchProductForm.data.get('orderBy') in ["id","-id","precioMedio","-precioMedio"]:
+                product_list = product_list.order_by(searchProductForm.data['orderBy'])
+    
     else:
         # Si el formulario no se ha enviado, rellenar con valores por defecto
         # SPRINT 2 #
         searchProductForm = SearchProductForm()
-
-    if searchProductForm.is_valid():
-        # BUSCAR
-        titulo = searchProductForm.cleaned_data['titulo']
-        if titulo:
-            product_list = product_list.filter(titulo__icontains = titulo)
-
-        # FILTRAR
-        for dieta in searchProductForm.cleaned_data['dietas']:
-            product_list = product_list.filter(dietas__id = dieta.id)
-
-        # ORDENAR
-        product_list = product_list.order_by(searchProductForm.cleaned_data['orderBy'])
+    
+    
 
     page = request.GET.get('page')
     paginator = Paginator(product_list, 12)
