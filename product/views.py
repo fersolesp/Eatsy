@@ -104,6 +104,7 @@ def createProduct(request):
         return render(request,'products/create.html', {'form':form})
     if request.method=='POST':
         form=CreateProductForm(request.POST, request.FILES)
+        print(form.errors)
         if form.is_valid():
             path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
             
@@ -136,7 +137,7 @@ def createProduct(request):
 
             producto.save()
 
-            return redirect('./list')
+            return redirect('product:list')
         else:
             return render(request,'products/list.html', {'form':form})
     

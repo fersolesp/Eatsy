@@ -3,7 +3,7 @@ from .models import Reporte, CausaReporte, Producto, Ubicacion
 
 from enum import Enum
 
-class CustomMMCF(forms.ModelMultipleChoiceField):
+class CustomMMCF(forms.ModelChoiceField):
     def label_from_instance(self, ubicacion):
         return "%s" % ubicacion.nombre
 
@@ -12,7 +12,7 @@ class CreateProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
     nombre = forms.CharField(label='Nombre', widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     descripcion = forms.CharField(label='Descripción', widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 100%'}))
-    precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, widget=forms.NumberInput(attrs={'class':'form-control'}))
+    precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, max_value=99.99, widget=forms.NumberInput(attrs={'class':'form-control'}))
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
         ('Vegetariano', 'Vegetariano'),
@@ -23,7 +23,7 @@ class CreateProductForm(forms.ModelForm):
     )
     dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 350px'}))
 
-    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(),required=False, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 400px'}))
+    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(),required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 400px', 'placeholder': 'Selecciones una ubicacion.'}))
 
 
     nombreComercio = forms.CharField(label='Nombre del Comercio', required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
