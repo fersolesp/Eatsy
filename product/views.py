@@ -141,6 +141,39 @@ def createProduct(request):
             return render(request,'products/list.html', {'form':form})
     
 
+def addUbication(request, productId):
+    if request.method == 'GET':
+        form = AddUbicationForm()
+        return render(request,'products/show.html', {'form':form})
+
+    if request.method == 'POST':
+        form=AddUbicationForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            ubicaciones = form.cleaned_data['ubicaciones']
+            nombre = form.cleaned_data['nombreComercio']
+            latitud = form.cleaned_data['lat']
+            longitud = form.cleaned_data['lon']
+            precio = form.cleaned_data['precio']
+            producto = get_object_or_404(Producto, pk=productId)
+
+            if(nombre!='' and latitud!='' and longitud!=''):
+                ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
+                ubicacion.save()
+
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                ubicacionProducto.save()
+
+            for ubicacion in ubicaciones:
+                # TODO: Adaptar el user cuando se haga el login
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio=precio)
+                ubicacionProducto.save()
+
+            return render (request,'products/show.html')
+
+        else:
+            return render(request,'products/show.html', {'form':form})
   
 def findProduct(request):
     if request.method == 'GET':
