@@ -11,7 +11,8 @@ from Eatsy import settings
 import os
 from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
-from datetime import datetime    
+from datetime import datetime   
+ 
 # Create your views here.
 
 def showProduct(request, productId):
@@ -222,68 +223,69 @@ def showReport(request, reportId):
 def reviewProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
     # TODO: Revisar, ¿a dónde redirigir si intentan entrar por URL para revisar producto aceptado? No hay página de error
-    if producto.estado == 'Aceptado':
-        return redirect('product:list')
-    else:
-        if request.method == 'GET':
-            data = {
-                'foto': producto.foto,
-                'nombre': producto.titulo,
-                'descripcion': producto.descripcion,
-                'precio': producto.precioMedio,
-                'dieta': [dieta.nombre for dieta in producto.dietas.all()],
-                'ubicaciones': producto.ubicaciones.all()
-            }
-            form = ReviewProductForm(initial=data)
+    if request.method == 'GET':
+        data = {
+            'foto': producto.foto,
+            'nombre': producto.titulo,
+            'descripcion': producto.descripcion,
+            'precio': producto.precioMedio,
+            'dieta': [dieta.nombre for dieta in producto.dietas.all()],
+            'ubicaciones': producto.ubicaciones.all()
+        }
+        form = ReviewProductForm(initial=data)
 
-        elif request.method == 'POST':
-            form = ReviewProductForm(request.POST, request.FILES)
-            if form.is_valid():
-                # Si se ha aceptado
-                if form.cleaned_data['revision'] == 'Aceptar':
-                    producto.titulo = form.cleaned_data['nombre']
-                    producto.descripcion = form.cleaned_data['descripcion']
-                    producto.fecha = datetime.datetime.now()
-                    if(form.cleaned_data['foto'] != None):
-                        path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
-                        producto.foto = '../media/' + path
-                    
-                    # TODO: Revisar, se está poniendo el que llega en el formulario
-                    producto.precioMedio = form.cleaned_data['precio']
+    elif request.method == 'POST':
+        form = ReviewProductForm(request.POST, request.FILES)
+        if form.is_valid():
 
-                    # TODO: Revisar, se está metiendo en todas las ubicaciones el precio del formulario
-                    # Si hay ubicación que no es supermercado se guarda
-                    producto.ubicaciones.clear()
-                    if(form.cleaned_data['nombreComercio'] != '' and form.cleaned_data['lat'] != '' and form.cleaned_data['lon'] != ''):
-                        ubicacion = Ubicacion(
-                            nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
-                        ubicacion.save()
-                        # TODO: Adaptar el user cuando se haga el login
-                        ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
-                            Perfil, pk=1), precio=form.cleaned_data['precio'])
-                        ubicacionProducto.save()
+            # Comprobamos en el caso de que sea ubicacion de mapa que el nombre no sea vacío
+            if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=='':
+                form.errors.nombreComercio = 'El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva'
+                return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
-                    # Por cada supermercado crear tabla intermedia
-                    for ubicacion in form.cleaned_data['ubicaciones']:
-                        # TODO: Adaptar el user cuando se haga el login
-                        ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
-                            Perfil, pk=1), precio=form.cleaned_data['precio'])
-                        ubicacionProducto.save()
+            # Si se ha aceptado
+            if form.cleaned_data['revision'] == 'Aceptar':
+                producto.titulo = form.cleaned_data['nombre']
+                producto.descripcion = form.cleaned_data['descripcion']
+                producto.fecha = datetime.datetime.now()
 
-                    # Guardar las dietas
-                    producto.dietas.clear()
-                    for dieta in form.cleaned_data['dieta']:
-                        producto.dietas.add(get_object_or_404(Dieta, nombre=dieta))
-                    producto.estado = 'Aceptado'
-                    producto.save()
-                    return redirect('product:show', producto.id)
+                if(form.cleaned_data['foto'] != None):
+                    path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
+                    producto.foto = '../media/' + path
 
-                # Si se ha descartado se borra el producto
-                else:
-                    producto.delete()
-                    return redirect('product:list')
+                # Si hay ubicación que no es supermercado se guarda
+                producto.ubicaciones.clear()
+                if(form.cleaned_data['nombreComercio'] != '' and form.cleaned_data['lat'] != '' and form.cleaned_data['lon'] != ''):
+                    ubicacion = Ubicacion(
+                        nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
+                    ubicacion.save()
+                    # TODO: Adaptar el user cuando se haga el login
+                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
+                        Perfil, pk=1), precio=form.cleaned_data['precio'])
+                    ubicacionProducto.save()
 
-        return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
+                # Por cada supermercado crear tabla intermedia
+                for ubicacion in form.cleaned_data['ubicaciones']:
+                    # TODO: Adaptar el user cuando se haga el login
+                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
+                        Perfil, pk=1), precio=form.cleaned_data['precio'])
+                    ubicacionProducto.save()
+
+                # Guardar las dietas
+                producto.dietas.clear()
+                for dieta in form.cleaned_data['dieta']:
+                    producto.dietas.add(get_object_or_404(Dieta, nombre=dieta))
+
+                producto.estado = 'Aceptado'
+                producto.save()
+                return redirect('product:show', producto.id)
+
+            # Si se ha descartado se borra el producto
+            else:
+                producto.delete()
+                return redirect('product:list')
+
+    return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
 
 def rateProduct(request, productId):
