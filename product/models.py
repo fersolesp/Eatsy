@@ -12,11 +12,8 @@ class Ubicacion(models.Model):
                                    
     @property
     def esSupermercado(self):
-        if(self.latitud == None and self.longitud == None):
-            True
-        else:
-            False
-
+        return self.latitud == None and self.longitud == None
+        
     def __str__(self):
         return self.nombre
 
@@ -82,10 +79,9 @@ class Reporte(models.Model):
 
 class Valoracion(models.Model):
     puntuacion = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=False)
-    mensaje = models.TextField(max_length=1000)
     fecha = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
     
     def __str__(self):
         return self.producto.titulo + ': ' +str(self.puntuacion)
