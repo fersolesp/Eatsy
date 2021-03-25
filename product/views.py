@@ -1,16 +1,33 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from authentication.models import Perfil
-from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
-from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm
 import datetime
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from Eatsy import settings
-import os
+
+from authentication.models import Perfil
+from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Count
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
+from Eatsy import settings
+
+from product.forms import (ChangeRequestForm, CreateProductForm, ReporteForm,
+                           ReviewProductForm, SearchProductForm)
+from product.models import (Aportacion, ChangeRequest, Dieta, Producto,
+                            Ubicacion, UbicacionProducto, Valoracion)
+
+
+def get_product_or_404(request, id):
+    """
+    Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
+    devuelve error 404.
+    """
+    product = get_object_or_404(Producto, pk=id)
+    if product.estado == 'Pendiente' and not request.user.is_superuser:
+        raise Http404()
+    return product
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
@@ -29,7 +46,7 @@ def showProduct(request, productId):
         if form.is_valid():
             reporte = form.save(commit=False)
             reporte.producto = Producto(id=productId)
-            reporte.user = User(id=1) # CORREGIR CUANDO HAYA LOGIN
+            reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
             reporte.save()
             return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form})
         else:
@@ -44,7 +61,7 @@ def listProduct(request):
         searchProductForm = SearchProductForm(request.GET)
     else:
         # Si el formulario no se ha enviado, rellenar con valores por defecto
-        # SPRINT 2 #
+        # TODO: SPRINT 2
         searchProductForm = SearchProductForm()
 
     if searchProductForm.is_valid():
@@ -184,7 +201,7 @@ def reportProduct(request, productId):
         if form.is_valid():
             reporte = form.save(commit=False)
             reporte.producto = Producto(id=productId)
-            reporte.user = User(id=1)  # CORREGIR CUANDO HAYA LOGIN
+            reporte.user = User(id=1)  # TODO: CORREGIR CUANDO HAYA LOGIN
             reporte.save()
             return redirect('product:show', producto.id)
 
@@ -267,3 +284,75 @@ def removeComment (request, commentId):
         return redirect('product:list')
 
     return render(request, 'products/show.html')
+
+def requestChange(request, productId):
+    if request.user.is_superuser:
+        # TODO: Que redirija a editar producto
+        raise PermissionDenied()
+
+    product = get_product_or_404(request, productId)
+
+    if request.POST:
+        changeRequestForm = ChangeRequestForm(request.POST)
+
+        if changeRequestForm.is_valid():
+            dietas = changeRequestForm.cleaned_data['dietas'].all()
+
+            # Se creará si hay cambios con respecto a las dietas del producto
+            if set(dietas) != set(product.dietas.all()):
+                # Se creará si no hay otra petición con las mismas características
+                changeRequests = ChangeRequest.objects.annotate(count=Count('dietas')).filter(count=len(dietas))
+                for dieta in dietas:
+                    changeRequests.filter(dietas__id=dieta.id)
+
+                if len(changeRequests) == 0:
+                    changeRequest = ChangeRequest()
+                    changeRequest.product = Producto(id=product.id)
+                    changeRequest.creation_user = User(id=1)  # TODO: CORREGIR CUANDO HAYA LOGIN
+                    changeRequest.save()
+
+                    changeRequest.dietas.add(*dietas)
+                    changeRequest.save()
+                return redirect('product:show', product.id)
+            else:
+                changeRequestForm.add_error('dietas', 'Has seleccionado las mismas dietas que ya tenía el producto.')
+    else:
+        changeRequestForm = ChangeRequestForm(initial={ 'dietas': product.dietas.all() })
+
+    return render(request, 'products/requestChange.html', { 'product': product, 'changeRequestForm': changeRequestForm })
+
+def listChangeRequests(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+
+    changeRequests =  ChangeRequest.objects.all()
+
+    page = request.GET.get('page')
+    paginator = Paginator(changeRequests, 20)
+
+    try:
+        changeRequests = paginator.page(page)
+    except PageNotAnInteger:
+        changeRequests = paginator.page(1)
+    except EmptyPage:
+        changeRequests = paginator.page(paginator.num_pages)
+
+    return render(request, 'products/changeRequest/list.html', { 'changeRequests': changeRequests })
+
+def acceptChangeRequest(request, changeRequestId):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+
+    changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
+    changeRequest.apply()
+
+    return redirect('product:listChangeRequests')   
+
+def rejectChangeRequest(request, changeRequestId):
+    if not request.user.is_superuser:
+        raise PermissionDenied()
+
+    changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
+    changeRequest.delete()
+
+    return redirect('product:listChangeRequests')   

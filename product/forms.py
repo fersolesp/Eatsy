@@ -1,7 +1,9 @@
-from django import forms
-from .models import Reporte, CausaReporte, Producto, Ubicacion
-
 from enum import Enum
+
+from django import forms
+
+from .models import CausaReporte, ChangeRequest, Producto, Reporte, Ubicacion
+
 
 class CustomMMCF(forms.ModelMultipleChoiceField):
     def label_from_instance(self, ubicacion):
@@ -130,3 +132,11 @@ class ReviewProductForm(forms.ModelForm):
     class Meta:
         model = Ubicacion
         fields = ['nombre']
+
+class ChangeRequestForm(forms.ModelForm):
+    class Meta:
+        model = ChangeRequest
+        fields = ['dietas']
+        widgets = {
+            'dietas': forms.CheckboxSelectMultiple()
+        }
