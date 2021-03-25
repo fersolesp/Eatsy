@@ -9,16 +9,67 @@
         <div class="row justify-content-center ">
             <div class="col-sm-8 nombreProducto">Búsqueda de productos</div>
         </div>
-        <form action="/">
-            <div class="row ">
-                <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
-                    <input class="w-100 h-100 form-control border border-dark" type="text" name="query" placeholder="Buscar...">
-                </div>
-                <div  style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
-                    <button  class="w-100 btn btn-warning btn-md" type="submit">Aplicar filtros</button>
+        <div class="row">
+            <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
+                <form method="GET" action="" id="filtros-form">
+                    {% if  request.GET.estado %}
+                        <input type="hidden" name="estado" value="{{request.GET.estado}}">
+                    {% endif %}
+                    {{searchProductForm.titulo}}
+                </form>
+            </div>
+            <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
+                <div class="col-auto m-auto"> <button class="w-100 btn btn-warning btn-md" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Filtros</button></div>
+                <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalComentarLabel">Aplicar filtros y ordenar los productos
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                                <div class="modal-body">
+                                    <div style="padding-bottom: 10px;font-weight: bold;">Dietas/restricciones alimentarias:</div>
+                                    {% for choice in searchProductForm.dietas%}
+
+                                        <span style="margin-left: 35px;"><span class="form-check-input">{{ choice.tag }}</span>
+                                        <label class="form-check-label">
+                                                {{ choice.choice_label }}</label>
+                                        </span><br><div style="height:1em"></div>
+                                    {% endfor %}
+                                    <br>
+
+                                    <div style="padding-bottom: 10px;font-weight: bold;">Ordenar por:</div>
+                                    {{searchProductForm.orderBy}}                                      
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
+                                    <input form="filtros-form" class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Aplicar"></input>
+                                </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </form>
+            
+            
+            {% if user.is_superuser %}
+            <div style="padding-top: 1em;padding-bottom: 1em;" class="dropdown padding-list col-lg-3 col-md-4 col-sm-6">
+                <button class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Estado del producto
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="/product/list?estado=aceptado">Aceptados</a>
+                  <a class="dropdown-item" href="/product/list?estado=pendiente">A revisar</a>
+                  <a class="dropdown-item" href="/product/list">Todos</a>
+                </div>
+              </div>
+            {% endif %}
+        </div>
+
+
         <div class="row justify-content-center">
                 {% for product in products %}
                     <div class="col-lg-4 col-md-6 col-12 d-flex product-card">
