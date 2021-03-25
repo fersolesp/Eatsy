@@ -287,8 +287,7 @@ def removeComment (request, commentId):
 
 def requestChange(request, productId):
     if request.user.is_superuser:
-        # TODO: Que redirija a editar producto
-        raise PermissionDenied()
+        return redirect(f'/admin/product/producto/{productId}/change/') # TODO: creo que se puede mejorar
 
     product = get_product_or_404(request, productId)
 
@@ -321,10 +320,8 @@ def requestChange(request, productId):
 
     return render(request, 'products/requestChange.html', { 'product': product, 'changeRequestForm': changeRequestForm })
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def listChangeRequests(request):
-    if not request.user.is_superuser:
-        raise PermissionDenied()
-
     changeRequests =  ChangeRequest.objects.all()
 
     page = request.GET.get('page')
@@ -339,19 +336,15 @@ def listChangeRequests(request):
 
     return render(request, 'products/changeRequest/list.html', { 'changeRequests': changeRequests })
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def acceptChangeRequest(request, changeRequestId):
-    if not request.user.is_superuser:
-        raise PermissionDenied()
-
     changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
     changeRequest.apply()
 
     return redirect('product:listChangeRequests')   
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def rejectChangeRequest(request, changeRequestId):
-    if not request.user.is_superuser:
-        raise PermissionDenied()
-
     changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
     changeRequest.delete()
 
