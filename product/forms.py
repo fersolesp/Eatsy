@@ -130,3 +130,17 @@ class ReviewProductForm(forms.ModelForm):
     class Meta:
         model = Ubicacion
         fields = ['nombre']
+
+class AddDietForm(forms.ModelForm):
+    Dieta_Enum = (
+        ('Vegano', 'Vegano'),
+        ('Vegetariano', 'Vegetariano'),
+        ('Gluten', 'Gluten'),
+        ('Lactosa', 'Lactosa'),
+        ('Marisco', 'Marisco'),
+        ('Frutos secos', 'Frutos secos'),
+    )
+    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 350px'}))
+    class Meta:
+        model = Ubicacion
+        fields = ['nombre']

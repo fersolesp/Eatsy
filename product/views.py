@@ -4,13 +4,14 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion
-from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm
+from product.forms import SearchProductForm, ReporteForm, CreateProductForm, ReviewProductForm, AddDietForm
 import datetime
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from Eatsy import settings
 import os
 from django.contrib.auth.decorators import user_passes_test
+
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
@@ -267,3 +268,24 @@ def removeComment (request, commentId):
         return redirect('product:list')
 
     return render(request, 'products/show.html')
+
+def addDiet(request, productId):
+    if request.method == 'GET':
+        form = AddDietForm()
+        return render(request,'products/show.html', {'form':form})
+
+    if request.method == 'POST':
+        form=AddDietForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            dieta = form.cleaned_data['dieta']
+            producto = get_object_or_404(Producto, pk=productId)
+
+            for d in dieta:
+                producto.dietas.add(get_object_or_404(Dieta, nombre=d))
+
+            producto.save()
+            return render (request,'products/show.html')
+            
+        else:
+            return render(request,'products/show.html', {'form':form})
