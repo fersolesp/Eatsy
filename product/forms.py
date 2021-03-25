@@ -77,23 +77,27 @@ class SearchProductForm(forms.ModelForm):
             'titulo': 'Nombre del producto'
         }
         widgets = {
-            'dietas': forms.CheckboxSelectMultiple()
+            'dietas': forms.CheckboxSelectMultiple(attrs={"form":"filtros-form", 'class': 'form-check'}),
+            'titulo': forms.TextInput(attrs={"class":"w-100 h-100 form-control border border-dark", "placeholder":"Buscar"})
         }
 
     class OrderBy(Enum):
         newest = ('Más nuevos primero', '-id')
         oldest = ('Más antiguos primero', 'id')
+        barato = ('Más baratos primero', 'precioMedio')
+        caro = ('Más caros primero', '-precioMedio')
 
         @classmethod
         def get_value(cls, member):
             return cls[member].value[1]
     
     orderBy = forms.TypedChoiceField(
-        choices = [(orderBy.name, orderBy.value[0]) for orderBy in OrderBy],
+        choices = [(orderBy.value[1], orderBy.value[0]) for orderBy in OrderBy],
         coerce = OrderBy.get_value,
         required = True,
         initial = OrderBy.newest.name,
-        label = 'Ordenar por'
+        label = 'Ordenar por',
+        widget=forms.Select(attrs={"form":"filtros-form", 'class': 'form-control'})
     )
 
     def __init__(self, *args, **kwargs):
