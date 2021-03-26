@@ -1,13 +1,15 @@
 {% extends 'products/base.html' %}
 
 {% block titulo %}Reportes{% endblock %}
-
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+{% endblock %}
 {% block contenido %}
 
 <div class="row p-5">
     <div class="col">
         <div class="row pl-3 pr-3">
-            <div class="col tituloReporte">Notificaciones de productos reportados</div>
+            <h3><div class="col tituloReporte">Notificaciones de productos reportados</div></h3>
         </div>
         <div class="row pl-3 pr-3">
             <div class="col">
@@ -16,14 +18,64 @@
                         <th>Nombre</th>
                         <th>Causa</th>
                         <th>Reportado por</th>
-                        <th></th>
+                        <th style="text-align: center;">Revisar producto</th>
                     </tr>
                     {% for report in reports %}
                     <tr>
                         <td>{{report.producto.titulo}}</td>
                         <td>{{report.causa}}</td>
                         <td>{{report.user.first_name}} {{report.user.last_name}}</td>
-                        <td><i class="far fa-eye eye-button"></i></td>
+                        <td style="text-align: center;"><a class="enlaceOjo" data-toggle="modal"
+                                data-target="#modalRep{{forloop.counter}}" role="button" aria-disabled="true" href=""><i
+                                    class="fa fa-eye" style="font-size:44px"></a></i></td>
+
+                        <div class="modal fade" id="modalRep{{forloop.counter}}" tabindex="-1" role="dialog"
+                            aria-labelledby="modalRepLabel{{forloop.counter}}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalRepLabel{{forloop.counter}}">Reporte
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="font-weight: bold;">Producto:</div>
+                                        {{report.producto.titulo}}<br><br>
+                                        <div style="font-weight: bold;">Causa:</div>
+                                        {{report.causa}}
+                                        <br><br>
+                                        <div
+                                            style="font-weight: bold;">Comentarios:</div>
+                                        {{report.comentarios}}
+
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <a href="/product/show/{{report.producto.id}}"> <button class="btn btn-primary"
+                                                style="margin-top: 0px !important;">Ver producto</button></a>
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+
+                                        <form method="POST" action="/product/report/action/{{report.id}}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="revision" id="id_revision" value="No Procede"/>
+                                            <input type="submit" class="btn col-5 btn-outline-danger"
+                                                style="margin-top: 0px !important;"  value="Denegar reporte"></input>
+
+                                        </form>
+                                        <form method="POST" action="/product/report/action/{{report.id}}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="revision" id="id_revision" value="Resuelto"/>
+                                            <input class=" btn btn-outline-success  col-5 justify-content-end" type="submit"
+                                                style="margin-top: 0px !important;" value="Aprobar reporte"></input>
+
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
                     </tr>
                     {% endfor %}
                 </table>
