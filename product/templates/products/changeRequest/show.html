@@ -1,0 +1,5 @@
+{{ changeRequest.product.titulo }}<br>
+{% for dieta in changeRequest.product.dietas.all %}
+    - {{ dieta }}<br>
+{% endfor %}
+<br>
