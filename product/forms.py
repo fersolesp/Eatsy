@@ -8,6 +8,9 @@ class CustomMMCF(forms.ModelChoiceField):
     def label_from_instance(self, ubicacion):
         return "%s" % ubicacion.nombre
 
+class CustomMMCF2(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, ubicacion):
+        return "%s" % ubicacion.nombre
 
 class CreateProductForm(forms.ModelForm):
     foto = forms.ImageField(label="Imagen",validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])], required=False, widget=forms.FileInput(attrs={'style':'display:None', 'accept':'image/*'}))
@@ -131,7 +134,7 @@ class ReviewProductForm(forms.ModelForm):
         ('Frutos secos', 'Frutos secos'),
     )
     dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
-    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
+    ubicaciones = CustomMMCF2(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
     
     Revision_Enum = (
         ('Aceptar', 'Aceptar'),
