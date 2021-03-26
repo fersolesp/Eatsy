@@ -74,7 +74,7 @@ class Reporte(models.Model):
             ("Resuelto", "Resuelto"),
             ("No procede","No procede"))
 
-    estado = models.CharField( choices=State_Enum,
+    estado = models.CharField(max_length=10, choices=State_Enum,
                               default='Pendiente', blank=False, verbose_name="Estado")
 
     # Más antiguos primero
