@@ -255,33 +255,33 @@ def reviewProduct(request, productId):
         print('Errores: ', form.errors)
         if form.is_valid():
 
-            # Comprobamos en el caso de que sea ubicacion de mapa que el nombre no sea vacío
-            if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=='':
-                form.errors.nombreComercio = 'El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva'
-                return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
+            # # Comprobamos en el caso de que sea ubicacion de mapa que el nombre no sea vacío
+            # if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=='':
+            #     form.errors.nombreComercio = 'El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva'
+            #     return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
             # Si se ha aceptado
             if form.cleaned_data['revision'] == 'Aceptar':
                 producto.titulo = form.cleaned_data['nombre']
                 producto.descripcion = form.cleaned_data['descripcion']
-                producto.fecha = datetime.datetime.now()
+                producto.fecha = datetime.now()
 
                 if(form.cleaned_data['foto'] != None):
                     path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
                     producto.foto = path
 
                 # Si hay ubicación que no es supermercado se guarda
-                producto.ubicaciones.clear()
-                if(form.cleaned_data['nombreComercio'] != '' and form.cleaned_data['lat'] != '' and form.cleaned_data['lon'] != ''):
-                    ubicacion = Ubicacion(
-                        nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
-                    ubicacion.save()
-                    # TODO: Adaptar el user cuando se haga el login
-                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
-                        Perfil, pk=1), precio=form.cleaned_data['precio'])
-                    ubicacionProducto.save()
+                # if(form.cleaned_data['nombreComercio'] != '' and form.cleaned_data['lat'] != '' and form.cleaned_data['lon'] != ''):
+                #     ubicacion = Ubicacion(
+                #         nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
+                #     ubicacion.save()
+                #     # TODO: Adaptar el user cuando se haga el login
+                #     ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
+                #         Perfil, pk=1), precio=form.cleaned_data['precio'])
+                #     ubicacionProducto.save()
 
                 # Por cada supermercado crear tabla intermedia
+                producto.ubicaciones.clear()
                 for ubicacion in form.cleaned_data['ubicaciones']:
                     # TODO: Adaptar el user cuando se haga el login
                     ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(

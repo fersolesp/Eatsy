@@ -28,7 +28,7 @@ SECRET_KEY = 'dfq0^_-im(w^t17=8r*hcoxyzut!=(b7lg(jv6m0ql&f_^n_(@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -158,3 +158,4 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_REGION_NAME = 'us-east-2'
 DEFAULT_S3_PATH = "media"
+AWS_QUERYSTRING_AUTH = False
