@@ -30,7 +30,7 @@ class Producto(models.Model):
     titulo = models.CharField(max_length=100, null=None)
     descripcion = models.TextField(null=None)
     fecha = models.DateTimeField(auto_now=True)
-    foto = models.TextField()
+    foto = models.ImageField(upload_to='photos')
     precioMedio = models.DecimalField(
         null=None,max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
     dietas = models.ManyToManyField(Dieta)

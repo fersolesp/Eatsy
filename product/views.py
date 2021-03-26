@@ -128,7 +128,7 @@ def createProduct(request):
             dieta = form.cleaned_data['dieta']
             ubicacion = form.cleaned_data['ubicaciones']
             
-            producto = Producto(titulo = nombre, descripcion = descripcion, foto = "../media/"+path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, pk=2))
+            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, pk=2))
             producto.save()
 
             for d in dieta:
@@ -236,6 +236,7 @@ def reviewProduct(request, productId):
 
     elif request.method == 'POST':
         form = ReviewProductForm(request.POST, request.FILES)
+        print('Errores: ', form.errors)
         if form.is_valid():
 
             # Comprobamos en el caso de que sea ubicacion de mapa que el nombre no sea vacío
@@ -251,7 +252,7 @@ def reviewProduct(request, productId):
 
                 if(form.cleaned_data['foto'] != None):
                     path = default_storage.save(form.cleaned_data['foto'].name, ContentFile(form.cleaned_data['foto'].read()))
-                    producto.foto = '../media/' + path
+                    producto.foto = path
 
                 # Si hay ubicación que no es supermercado se guarda
                 producto.ubicaciones.clear()
