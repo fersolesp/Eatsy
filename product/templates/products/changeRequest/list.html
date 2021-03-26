@@ -1,0 +1,14 @@
+{% for changeRequest in changeRequests %}
+    Producto: <a href="{% url 'product:show' changeRequest.product.id %}">{{ changeRequest.product.titulo }}</a><br>
+    Actualmente:<br>
+    {% for dieta in changeRequest.product.dietas.all %}
+        - {{ dieta }}<br>
+    {% endfor %}
+    Petición de cambio:<br>
+    {% for dieta in changeRequest.dietas.all %}
+        - {{ dieta }}<br>
+    {% endfor %}
+    <a href="{% url 'product:acceptChangeRequest' changeRequest.id %}">Aceptar</a> - 
+    <a href="{% url 'product:rejectChangeRequest' changeRequest.id %}">Rechazar</a>
+    <br>
+{% endfor %}
