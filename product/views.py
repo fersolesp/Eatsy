@@ -431,28 +431,22 @@ def listReports(request):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def reviewReport(request, reporteId):
-    reporte = get_object_or_404(Reporte, pk=reporteId)
 
-    if request.method == 'GET':
-        data = {
-            'causa': reporte.causa,
-            'comentario': reporte.comentario, 
-            'revision': reporte.estado,
-        }
-        form = ReviewReporteForm(initial=data)
+    if request.method == 'POST':
 
-    elif request.method == 'POST':
-        form = ReviewReporteForm(request.POST, request.FILES)
-        if form.is_valid():
-            if form.cleaned_data['revision'] == 'No Procede':
-                reporte.estado = 'No Procede'
-                reporte.save()
+        reporte = get_object_or_404(Reporte, pk=reporteId)
+        if request.POST['revision'] == 'No Procede':
+            reporte.estado = 'No procede'
+            reporte.save()
 
-            elif form.cleaned_data['revision'] == 'Resuelto':
-                reporte.estado = 'Resuelto'
-                reporte.save()
+        elif request.POST['revision'] == 'Resuelto':
+            reporte.estado = 'Resuelto'
+            product = reporte.producto
+            product.estado = "Pendiente"
+            product.save()
+            reporte.save()
 
-            return render(request, 'products/show.html')
+        return redirect("/product/report/list")
 
     return render(request, 'products/show.html', {'form': form, 'reporte': reporte})
   

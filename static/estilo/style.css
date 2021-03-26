@@ -211,7 +211,16 @@ hr {
     width: 200px !important;
     box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
 }
-
+.btnReporte{
+    background-color: rgb(118, 179, 146) !important ;
+}
+.enlaceOjo {
+    color: rgb(118, 179, 146);
+    transition: all 1s;
+}
+.enlaceOjo:hover{
+    color: #ffc478;
+}
 .titleblock {
     font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 3rem;
@@ -336,7 +345,6 @@ a {
 
 .tituloReporte {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.1em;
     text-decoration: underline;
 }
 
