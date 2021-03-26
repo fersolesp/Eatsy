@@ -3,6 +3,9 @@ import os
 from datetime import datetime
 
 from authentication.models import Perfil
+from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion, Reporte
+from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm, ReviewReporteForm
+from django.core.files.storage import default_storage
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
@@ -423,3 +426,32 @@ def listReports(request):
         reports = paginator.page(paginator.num_pages)
     
     return render(request, 'reports/list.html', { 'reports': reports })
+
+
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
+def reviewReport(request, reporteId):
+    reporte = get_object_or_404(Reporte, pk=reporteId)
+
+    if request.method == 'GET':
+        data = {
+            'causa': reporte.causa,
+            'comentario': reporte.comentario, 
+            'revision': reporte.estado,
+        }
+        form = ReviewReporteForm(initial=data)
+
+    elif request.method == 'POST':
+        form = ReviewReporteForm(request.POST, request.FILES)
+        if form.is_valid():
+            if form.cleaned_data['revision'] == 'No Procede':
+                reporte.estado = 'No Procede'
+                reporte.save()
+
+            elif form.cleaned_data['revision'] == 'Resuelto':
+                reporte.estado = 'Resuelto'
+                reporte.save()
+
+            return render(request, 'products/show.html')
+
+    return render(request, 'products/show.html', {'form': form, 'reporte': reporte})
+  
