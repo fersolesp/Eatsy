@@ -37,26 +37,27 @@
         <div></div>
         <div></div>
         <div></div>
+
+        {% if user.is_superuser %}
+        <a id="botonProductosHeader1" class="btn btn-dark" href="/product/list" role="button">Revisar reportes</a>
+        {% endif %}
+
         <!-- Productos -->
         <a id="botonProductosHeader1" class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
 
         <!-- Collapse -->
-        <div class="pos-f-b">
-            <nav class="navbar navbar-light">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-            </nav>
-            <div class="collapse" id="navbarToggleExternalContent">
-                <div class="bg-green ">
-                    <a id="botonProductosHeader2" class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
-                    <h3 class="text-white collapsed"><a href="/">Mi Perfil</a></h3>
-                    <h3 class="text-white collapsed"><a href="/">Cerrar Sesión</a></h1>
-                </div>
-            </div>
+        <div class="dropdown show">
+          <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="botonProductosHeader1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Mi cuenta
+          </a>
+        
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">Mi Perfil</a>
+            <a class="dropdown-item" href="#">Cerrar sesión</a>
+          </div>
         </div>
     </div>
-    </div>
+
 
 
 
