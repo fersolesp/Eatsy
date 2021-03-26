@@ -447,6 +447,4 @@ def reviewReport(request, reporteId):
             reporte.save()
 
         return redirect("/product/report/list")
-
-    return render(request, 'products/show.html', {'form': form, 'reporte': reporte})
   
