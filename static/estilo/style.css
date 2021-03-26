@@ -34,7 +34,7 @@ body {
 }
 
 .botonProducto:hover {
-    background-color: rgb(118, 179, 146);
+    background-color: #75cfb8;
 }
 
 hr {
@@ -95,7 +95,7 @@ hr {
 }
 
 .modal-header {
-    background-color: rgb(118, 179, 146);
+    background-color: #bbdfc8;
 }
 
 .header {
