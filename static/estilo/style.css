@@ -333,3 +333,14 @@ a {
         padding-top: 1em;
     }
 }
+
+.tituloReporte {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.1em;
+    text-decoration: underline;
+}
+
+.eye-button {
+    font-size: 1.5em;
+    cursor: pointer;
+}
