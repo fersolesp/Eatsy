@@ -1,13 +1,35 @@
 {% extends 'products/base.html' %}
 
-{% block titulo %}Productos{% endblock %}
+{% block titulo %}Reportes{% endblock %}
 
 {% block contenido %}
-<h2>Lista de reportes</h2>
-<ol>
-{% for report in reports %}
-                    <li>{{report.producto.titulo}},{{report.causa}}</li>
-                {% endfor %}
-                </ol>
+
+<div class="row p-5">
+    <div class="col">
+        <div class="row pl-3 pr-3">
+            <div class="col tituloReporte">Notificaciones de productos reportados</div>
+        </div>
+        <div class="row pl-3 pr-3">
+            <div class="col">
+                <table class="w-100  mt-3">
+                    <tr class="border-bottom border-dark">
+                        <th>Nombre</th>
+                        <th>Causa</th>
+                        <th>Reportado por</th>
+                        <th></th>
+                    </tr>
+                    {% for report in reports %}
+                    <tr>
+                        <td>{{report.producto.titulo}}</td>
+                        <td>{{report.causa}}</td>
+                        <td>{{report.user.first_name}} {{report.user.last_name}}</td>
+                        <td><i class="far fa-eye eye-button"></i></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
