@@ -6,4 +6,4 @@ gunicorn
 pillow
 boto3
 django-storages
-dotenv
+python-dotenv
