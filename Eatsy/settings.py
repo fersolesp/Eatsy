@@ -28,7 +28,7 @@ SECRET_KEY = 'dfq0^_-im(w^t17=8r*hcoxyzut!=(b7lg(jv6m0ql&f_^n_(@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
-    'product'
+    'product',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -131,9 +132,9 @@ STATICFILES_DIRS = [ os.path.join(BASE_DIR,'static') ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/%s'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '//eatsy-sprint-1.s3.amazonaws.com/%s/media/'
 
 BASEURL = 'https://eatsy-develop.herokuapp.com'
 
@@ -145,3 +146,16 @@ APIS = {}
 
 import django_heroku
 django_heroku.settings(locals())
+
+from dotenv import load_dotenv
+load_dotenv('AWS.env')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = 'public-read'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_REGION_NAME = 'us-east-2'
+DEFAULT_S3_PATH = "media"
+AWS_QUERYSTRING_AUTH = False

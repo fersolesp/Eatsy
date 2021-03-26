@@ -24,7 +24,10 @@
                            
                         </div>
                         <div class="row justify-content-center">
-                            <img id="foto" src="/media/{{producto.foto}}" alt="" class="col-sm-10 col-md-8 col-lg-6">
+                            <img id="foto" src="{{producto.foto.url}}" alt="" class="col-sm-10 col-md-8 col-lg-6">
+                            <div>
+                                {{form.foto.errors.as_text}}
+                            </div>
                         </div>
                         <br/>
                         <div class="row">
@@ -51,11 +54,6 @@
                         <div class="row"> 
                             <label class="col-sm-2">Ubicación*:&nbsp;</label>
                             <div class="col-sm-4">{{form.ubicaciones}}</div>
-                            <div class="col-sm-3" style="margin-left: 1%; margin-top: 3%;">
-                                <a onclick="mostrarMapa()" id="link">
-                                    <img  height="30px" width="30px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
-                                </a>
-                            </div>
                         </div>
 
                         <!-- Button trigger modal -->
@@ -63,19 +61,6 @@
                     </div>
                     <!-- Modal -->
 
-                    <div style="display:block;" id="displayer">
-                        <div><label>Nombre del comercio:&nbsp;</label></div>
-                        {{form.nombreComercio}}
-                        {{form.lat}}
-                        {{form.lon}}
-                        <label for='text'>Dirección del comercio:</label>
-                        <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad"
-                            class="form-control">
-                        <div class="row justify-content-center">
-                            <div style="width: 640px; height: 480px; display: inherit; margin-top: 2%"
-                                id="mapContainer"></div>
-                        </div>
-                    </div>
                     <div class="form-group">
 
                         <div class="row justify-content-center">
@@ -116,20 +101,7 @@
 
     previewFile()
     }
-    setTimeout(() => {
-        var displayer = document.getElementById("displayer");
-        displayer.style.display = "none";
-    }, 1)
-    function mostrarMapa() {
-
-        var displayer = document.getElementById("displayer");
-        console.log(displayer.style.display)
-        if (displayer.style.display == "none") {
-            displayer.style.display = "block";
-        } else {
-            displayer.style.display = "none";
-        }
-    }
+    
     var svgMarkup = devuelveMarca()
     var platform = new H.service.Platform({
         'apikey': 'gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4'
