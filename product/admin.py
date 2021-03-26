@@ -1,15 +1,32 @@
 from django.contrib import admin
-from product.models import Dieta, Producto, UbicacionProducto, Ubicacion, CausaReporte, Reporte, Valoracion, Aportacion
+
+from product.models import (Aportacion, CausaReporte, ChangeRequest, Dieta,
+                            Producto, Reporte, Ubicacion, UbicacionProducto,
+                            Valoracion)
+
+class ProductoAdmin(admin.ModelAdmin):
+    list_display = ['titulo', 'estado']
+    list_filter = ['estado']
 
 class ReporteAdmin(admin.ModelAdmin):
-    list_display = ['producto', 'fecha', 'causa']
+    list_display = ['producto', 'causa', 'fecha']
     list_filter = ['causa']
 
+class ChangeRequestAdmin(admin.ModelAdmin):
+    list_display = ['product', 'creation_user', 'creation_date']
+
+    def apply(modelAdmin, request, queryset):
+        for changeRequest in queryset:
+            changeRequest.apply()
+        
+    actions = [apply]
+
 admin.site.register(Dieta)
-admin.site.register(Producto)
+admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Ubicacion)
 admin.site.register(UbicacionProducto)
 admin.site.register(CausaReporte)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Valoracion)
 admin.site.register(Aportacion)
+admin.site.register(ChangeRequest, ChangeRequestAdmin)
