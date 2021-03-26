@@ -70,6 +70,13 @@ class Reporte(models.Model):
     causa = CausaReporte._meta.get_field('causa')
     comentarios = models.TextField(null=False, blank=False)
 
+    State_Enum = (("Pendiente", "Pendiente de Revisión"),
+            ("Resuelto", "Resuelto"),
+            ("No procede","No procede"))
+
+    estado = models.CharField( choices=State_Enum,
+                              default='Pendiente', blank=False, verbose_name="Estado")
+
     # Más antiguos primero
     class Meta:
         ordering = ['id']

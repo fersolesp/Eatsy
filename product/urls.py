@@ -14,5 +14,6 @@ urlpatterns = [
     path('remove/<int:commentId>', views.removeComment, name='remove'),
     path('show/<int:productId>/rate', views.rateProduct, name='rate'),
     path('show/<int:productId>/comment', views.commentProduct, name='comment'),
+    path('show/<int:reporteId>', views.reviewReport, name='review'),
 ] 
 

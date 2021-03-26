@@ -145,3 +145,21 @@ class ReviewProductForm(forms.ModelForm):
     class Meta:
         model = Ubicacion
         fields = ['nombre']
+
+class ReviewReporteForm(forms.ModelForm):
+    class Meta:
+        model = Reporte
+        fields = ['causa', 'comentarios']
+        widgets = {
+            'comentarios': forms.Textarea(attrs={'class': 'form-control'})
+        }
+    
+    causa = forms.ModelChoiceField(
+        queryset = CausaReporte.objects.all(),
+        widget = forms.RadioSelect
+    )
+
+    Revision_Enum = (("Resuelto", "Resuelto"),
+                ("No procede","No procede"))
+
+    revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum, widget = forms.RadioSelect)
