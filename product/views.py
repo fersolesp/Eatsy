@@ -57,7 +57,7 @@ def showProduct(request, productId):
             reporte.save()
             return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
         else:
-            return redirect('product:show', product.id)   
+            return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})   
 
 def listProduct(request):
     product_list = Producto.objects.all()
@@ -334,8 +334,10 @@ def commentProduct(request, productId):
             comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
             comentario.save()
             return redirect('product:show', producto.id)
+        else:
+            return render(request, 'products/show.html', {'producto':producto, 'form': form})
 
-    return render(request, 'products/addReport.html', {'form': form})
+   
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
