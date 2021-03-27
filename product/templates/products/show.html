@@ -151,12 +151,15 @@
 
                                                 </span>
                                                 {% endfor %}
-                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios:</label> {{form.comentarios}}
+                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios: </label>
+                                                <div style="color: red;">{{ form.errors.comentarios.as_text}}</div>
+                                                {{form.comentarios}}
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
+                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" name="reportButton" value="Enviar"></input>
 
-                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Enviar"></input>
                                             </div>    
                                         </form>
                                         </div>
@@ -180,6 +183,7 @@
 
                         <!-- MODAL COMENTAR -->
 
+
                         <div class="row mt-5">
                             <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar</button></div>
                             <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
@@ -192,15 +196,22 @@
                                         </button>
                                         </div>
 
-                                        <form action="/product/show/{{product.id}}/comment" method="POST">
+                                        <form action="/product/show/{{product.id}}" method="POST">
                                             {% csrf_token %}
                                             <div class="modal-body">
-                                                {{formComment}}
+                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios: </label>
+                                                <div style="color: red;">{{ formComment.errors.titulo.as_text}}</div>
+                                                {{formComment.titulo}}
+
+                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Mensaje: </label>
+                                                <div style="color: red;">{{ formComment.errors.mensaje.as_text}}</div>
+                                                {{formComment.mensaje}}
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
 
-                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Enviar"></input>
+                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" name="commentButton" value="Enviar"></input>
                                             </div>  
                                         </form>
                                     </div>
@@ -237,6 +248,24 @@
     <script>
         change_to_tab_1()
     </script>
+    {% if form.errors %}
+    <script>
+        $(document).ready(function() {
+            $('#modalReport').modal({
+                show: true
+            });
+        });
+    </script>
+    {% endif %} {% if formComment.errors %}
+    <script>
+        change_to_tab_2()
+        $(document).ready(function() {
+            $('#modalComentar').modal({
+                show: true
+            });
+        });
+    </script>
+    {% endif %}
 
 
     <a style="left:0px !important" class="botonAdd" href="/product/create" role="button">

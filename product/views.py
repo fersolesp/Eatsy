@@ -48,16 +48,30 @@ def showProduct(request, productId):
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
             return redirect('/admin')
     elif request.method == 'POST':
-        form = ReporteForm(request.POST)
-        formComment= CommentForm()
-        if form.is_valid():
-            reporte = form.save(commit=False)
-            reporte.producto = Producto(id=productId)
-            reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
-            reporte.save()
-            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
-        else:
-            return redirect('product:show', product.id)   
+        if'reportButton' in request.POST:
+            form = ReporteForm(request.POST)
+            formComment= CommentForm()
+            formComment.empty_permitted=True
+            if form.is_valid():
+                reporte = form.save(commit=False)
+                reporte.producto = Producto(id=productId)
+                reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
+                reporte.save()
+                return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
+            else:
+                return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})
+        if 'commentButton' in request.POST:
+            form = ReporteForm()
+            formComment= CommentForm(request.POST)
+            form.empty_permitted=True
+            if formComment.is_valid():
+                comentario = formComment.save(commit=False)
+                comentario.producto = Producto(id=productId)
+                comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
+                comentario.save()
+                return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment})
+            else:
+                return render(request, 'products/show.html', {'product': product,'form':form,'formComment':formComment})
 
 def listProduct(request):
     product_list = Producto.objects.all()
@@ -320,22 +334,6 @@ def rateProduct(request, productId):
             valoracion.save()
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
-def commentProduct(request, productId):
-    producto = get_object_or_404(Producto, pk=productId)
-
-    if request.method == 'GET':
-        form = CommentForm()
-    elif request.method == 'POST':
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            comentario = form.save(commit=False)
-            comentario.producto = Producto(id=productId)
-            comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
-            comentario.save()
-            return redirect('product:show', producto.id)
-
-    return render(request, 'products/addReport.html', {'form': form})
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
