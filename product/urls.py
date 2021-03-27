@@ -17,6 +17,5 @@ urlpatterns = [
     path('changeRequest/<int:changeRequestId>/accept', views.acceptChangeRequest, name='acceptChangeRequest'),
     path('changeRequest/<int:changeRequestId>/reject', views.rejectChangeRequest, name='rejectChangeRequest'),
     path('show/<int:productId>/rate', views.rateProduct, name='rate'),
-    path('show/<int:productId>/comment', views.commentProduct, name='comment'),
     path('show/<int:reporteId>', views.reviewReport, name='review'),
 ] 
