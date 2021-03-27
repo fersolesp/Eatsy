@@ -415,7 +415,7 @@ def rejectChangeRequest(request, changeRequestId):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def listReports(request):
-    reports_list = Reporte.objects.all()
+    reports_list = Reporte.objects.filter(estado='Pendiente')
 
     page = request.GET.get('page')
     paginator = Paginator(reports_list,12)
