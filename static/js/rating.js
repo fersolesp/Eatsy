@@ -4,6 +4,7 @@ const two = document.getElementById('second')
 const three = document.getElementById('third')
 const four = document.getElementById('fourth')
 const five = document.getElementById('fifth')
+const valoracion_media = document.getElementById('valoracion_media')
 
 // get the form and csrf token
 const form = document.querySelector('.rate-form')
@@ -11,7 +12,6 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken')
 
 const handleStarSelect = (size) => {
     const children = form.children
-    console.log(children[0])
     for (let i = 0; i < children.length; i++) {
         if (i <= size) {
             children[i].classList.add('checked')
@@ -25,11 +25,6 @@ const handleSelect = (selection) => {
     switch (selection) {
         case 'first':
             {
-                // one.classList.add('checked')
-                // two.classList.remove('checked')
-                // three.classList.remove('checked')
-                // four.classList.remove('checked')
-                // five.classList.remove('checked')
                 handleStarSelect(1)
                 return
             }
@@ -79,11 +74,18 @@ const getNumericValue = (stringValue) => {
     return numericValue
 }
 
+handleStarSelect(valoracion_media.value)
+
 if (one) {
     const arr = [one, two, three, four, five]
 
     arr.forEach(item => item.addEventListener('mouseover', (event) => {
         handleSelect(event.target.id)
+    }))
+
+    arr.forEach(item => item.addEventListener('mouseout', (event) => {
+        handleStarSelect(valoracion_media.value)
+
     }))
 
     arr.forEach(item => item.addEventListener('click', (event) => {
