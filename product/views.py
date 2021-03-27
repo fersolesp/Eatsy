@@ -17,7 +17,7 @@ from django.db.models import Count
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from Eatsy import settings
-
+from django.db.models import Avg
 from product.forms import (AddUbicationForm, ChangeRequestForm, CommentForm,
                            CreateProductForm, ReporteForm, ReviewProductForm,
                            SearchProductForm)
@@ -36,13 +36,16 @@ def get_product_or_404(request, id):
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
+    valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
+    precio_medio=UbicacionProducto.objects.filter(producto=product).aggregate(Avg('precio'))["precio__avg"]
+    valoracion_media=int(round(valoracion,0)) if valoracion!=None else 0
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
         if product.estado=='Pendiente' and request.user.is_superuser:
-            return render(request, 'products/show.html', {'product': product})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment})
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
@@ -57,9 +60,9 @@ def showProduct(request, productId):
                 reporte.producto = Producto(id=productId)
                 reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
                 reporte.save()
-                return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
             else:
-                return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment})
         if 'commentButton' in request.POST:
             form = ReporteForm()
             formComment= CommentForm(request.POST)
@@ -69,9 +72,9 @@ def showProduct(request, productId):
                 comentario.producto = Producto(id=productId)
                 comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
                 comentario.save()
-                return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment})
             else:
-                return render(request, 'products/show.html', {'product': product,'form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment})
 
 def listProduct(request):
     product_list = Producto.objects.all()
