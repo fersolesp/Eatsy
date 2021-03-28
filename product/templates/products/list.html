@@ -99,22 +99,49 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination ">
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                    <a id="pgprevious" class="page-link" href="?page=1" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li  class="page-item"><a id="pglink1" class="page-link" style="background-color: #519483 !important;" href="?page=1">1</a></li>
+                <li class="page-item"><a id="pglink2" class="page-link" href="?page=2">2</a></li>
+                <li class="page-item"><a id="pglink3" class="page-link" href="?page=3">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                    <a class="page-link" id="pgnext" href="?page=2" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                     </a>
                 </li>
             </ul>
         </nav>
+        <script type="text/javascript">
+            let page = parseInt(getParameterByName("page"));
+            cambiaPaginacion();
+            function cambiaPaginacion(){
+                if(page){
+                let link1 = document.getElementById('pglink1');
+                link1.href = "?page="+page;
+                link1.innerText = page; 
+                let link2 = document.getElementById('pglink2');
+                link2.href = "?page="+(page+1);
+                link2.innerText = page+1; 
+                let link3 = document.getElementById('pglink3');
+                link3.href = "?page="+(page+2);
+                link3.innerText = page+2; 
+                let next = document.getElementById('pgnext');
+                next.href = "?page="+(page+1);
+                let previous = document.getElementById('pgprevious');
+                previous.href = "?page="+(page-1);
+                }
+            }
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+        </script>
 
 
     </div>

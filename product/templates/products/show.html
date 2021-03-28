@@ -271,5 +271,6 @@
     />
 </a>
 {% if user.is_superuser %}
-<a href="#" class="btn btn-success btn-lg" role="button" aria-disabled="true">Editar</a></div>
-{% endif %} {% endblock %}
+<a href="/product/review/{{product.id}}" class="btn btn-success btn-lg" role="button" aria-disabled="true">Editar</a>
+{% endif %} 
+{% endblock %}
