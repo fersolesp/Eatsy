@@ -5,7 +5,7 @@ body {
 
 .navbar {
     display: flex;
-    background-color: rgb(118, 179, 146);
+    background-color: #75cfb8;
 }
 
 .page-content {
@@ -15,7 +15,13 @@ body {
 
 .nombreProducto {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.3em;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.nombreProductoShow {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.25em;
     font-weight: bold;
 }
 
@@ -28,7 +34,7 @@ body {
 }
 
 .botonProducto:hover {
-    background-color: rgb(118, 179, 146);
+    background-color: #75cfb8;
 }
 
 hr {
@@ -56,6 +62,12 @@ hr {
     padding: 2em;
 }
 
+.scrolli {
+    width: 90%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
 .product-card-inner {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -63,7 +75,23 @@ hr {
     padding: 2em;
     border: 1px solid black;
     border-radius: 0.5em;
-    background-color: rgb(163, 199, 171);
+    background-color: #bbdfc8;
+}
+
+.titulito {
+    font-weight: bold;
+}
+
+.product-card-comment {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 0.5em;
+    background-color: #fff4df;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
 }
 
 .msj {
@@ -89,7 +117,7 @@ hr {
 }
 
 .modal-header {
-    background-color: rgb(118, 179, 146);
+    background-color: #bbdfc8;
 }
 
 .header {
@@ -211,7 +239,16 @@ hr {
     width: 200px !important;
     box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
 }
-
+.btnReporte{
+    background-color: rgb(118, 179, 146) !important ;
+}
+.enlaceOjo {
+    color: rgb(118, 179, 146);
+    transition: all 1s;
+}
+.enlaceOjo:hover{
+    color: #ffc478;
+}
 .titleblock {
     font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 3rem;
@@ -298,19 +335,26 @@ a {
     padding-left: 2em;
 }
 
-#botonProductosHeader1 {
+#menuNormal {
     display: block;
 }
 
-#botonProductosHeader2 {
+#menuMovil {
     display: none;
 }
 
+.page-link {
+    background-color: #75cfb8;
+    color: black;
+}
+.active {
+}
+
 @media (max-width: 450px) {
-    #botonProductosHeader2 {
+    #menuMovil {
         display: block;
     }
-    #botonProductosHeader1 {
+    #menuNormal {
         display: none;
     }
     .page-content {
@@ -336,7 +380,6 @@ a {
 
 .tituloReporte {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.1em;
     text-decoration: underline;
 }
 

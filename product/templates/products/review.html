@@ -25,34 +25,38 @@
                         </div>
                         <div class="row justify-content-center">
                             <img id="foto" src="{{producto.foto.url}}" alt="" class="col-sm-10 col-md-8 col-lg-6">
-                            <div>
+                            <div style="color: red;">
                                 {{form.foto.errors.as_text}}
                             </div>
                         </div>
                         <br/>
                         <div class="row">
-                            <label class="col-sm-2">Nombre*:&nbsp;</label>
+                            <label class="col-sm-2">Nombre<span style="color:red;">*</span>:&nbsp;</label>
                             <div class="col-sm-4">{{ form.nombre}}</div>
+                            <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
                         </div>
                         <br/>
                         <div class="row">
-                            <label class="col-sm-2">Descripción*:&nbsp;</label>
+                            <label class="col-sm-2">Descripción<span style="color:red;">*</span>:&nbsp;</label>
                             <div class="col-sm-9">{{ form.descripcion}}</div>
+                            <div style="color: red; margin-left: 17% ;">{{ form.errors.descripcion.as_text}}</div>
                         </div>
                         <br/>
                         <br/>
                         <div class="row">
-                            <label class="col-sm-2">Precio*:&nbsp;</label>
+                            <label class="col-sm-2">Precio<span style="color:red;">*</span>:&nbsp;</label>
                             <div class="col-sm-4">{{ form.precio}}</div>
+                            <div style="color: red;">{{ form.errors.precio.as_text}}</div>
                         </div>
                         <br/>
                         <div class="row">
-                            <label class="col-sm-2">Etiqueta*:&nbsp;</label>
+                            <label class="col-sm-2">Etiqueta<span style="color:red;">*</span>:&nbsp;</label>
                             <div class="col-sm-9">{{ form.dieta}}</div>
+                            <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
                         </div>
                         <br>
                         <div class="row"> 
-                            <label class="col-sm-2">Ubicación*:&nbsp;</label>
+                            <label class="col-sm-2">Ubicación<span style="color:red;">*</span>:&nbsp;</label>
                             <div class="col-sm-4">{{form.ubicaciones}}</div>
                         </div>
 

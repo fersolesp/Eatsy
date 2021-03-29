@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from product.models import (Aportacion, CausaReporte, ChangeRequest, Dieta,
+from product.models import (Aportacion, CausaReporte, ChangeRequest,
                             Producto, Reporte, Ubicacion, UbicacionProducto,
                             Valoracion)
 
@@ -21,7 +21,7 @@ class ChangeRequestAdmin(admin.ModelAdmin):
         
     actions = [apply]
 
-admin.site.register(Dieta)
+
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Ubicacion)
 admin.site.register(UbicacionProducto)

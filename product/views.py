@@ -17,7 +17,7 @@ from django.db.models import Count
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from Eatsy import settings
-
+from django.db.models import Avg
 from product.forms import (AddUbicationForm, ChangeRequestForm, CommentForm,
                            CreateProductForm, ReporteForm, ReviewProductForm,
                            SearchProductForm)
@@ -36,28 +36,46 @@ def get_product_or_404(request, id):
 
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
+    valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
+    precio_medio=UbicacionProducto.objects.filter(producto=product).aggregate(Avg('precio'))["precio__avg"]
+    valoracion_media=int(round(valoracion,0)) if valoracion!=None else 0
+    aportaciones = Aportacion.objects.filter(producto=product)
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
         if product.estado=='Pendiente' and request.user.is_superuser:
-            return render(request, 'products/show.html', {'product': product})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product, 'form':form,'formComment':formComment})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones})
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
             return redirect('/admin')
     elif request.method == 'POST':
-        form = ReporteForm(request.POST)
-        formComment= CommentForm()
-        if form.is_valid():
-            reporte = form.save(commit=False)
-            reporte.producto = Producto(id=productId)
-            reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
-            reporte.save()
-            return render(request, 'products/show.html', {'product': product,'msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
-        else:
-            return redirect('product:show', product.id)   
+        if'reportButton' in request.POST:
+            form = ReporteForm(request.POST)
+            formComment= CommentForm()
+            formComment.empty_permitted=True
+            if form.is_valid():
+                reporte = form.save(commit=False)
+                reporte.producto = Producto(id=productId)
+                reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
+                reporte.save()
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment,'aportaciones':aportaciones})
+            else:
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment,'aportaciones':aportaciones})
+        if 'commentButton' in request.POST:
+            form = ReporteForm()
+            formComment= CommentForm(request.POST)
+            form.empty_permitted=True
+            if formComment.is_valid():
+                comentario = formComment.save(commit=False)
+                comentario.producto = Producto(id=productId)
+                comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
+                comentario.save()
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment,'aportaciones':aportaciones})
+            else:
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones})
 
 def listProduct(request):
     product_list = Producto.objects.all()
@@ -320,22 +338,6 @@ def rateProduct(request, productId):
             valoracion.save()
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
-def commentProduct(request, productId):
-    producto = get_object_or_404(Producto, pk=productId)
-
-    if request.method == 'GET':
-        form = CommentForm()
-    elif request.method == 'POST':
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            comentario = form.save(commit=False)
-            comentario.producto = Producto(id=productId)
-            comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
-            comentario.save()
-            return redirect('product:show', producto.id)
-
-    return render(request, 'products/addReport.html', {'form': form})
 
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
@@ -414,7 +416,7 @@ def rejectChangeRequest(request, changeRequestId):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def listReports(request):
-    reports_list = Reporte.objects.all()
+    reports_list = Reporte.objects.filter(estado='Pendiente')
 
     page = request.GET.get('page')
     paginator = Paginator(reports_list,12)
@@ -431,28 +433,20 @@ def listReports(request):
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def reviewReport(request, reporteId):
-    reporte = get_object_or_404(Reporte, pk=reporteId)
 
-    if request.method == 'GET':
-        data = {
-            'causa': reporte.causa,
-            'comentario': reporte.comentario, 
-            'revision': reporte.estado,
-        }
-        form = ReviewReporteForm(initial=data)
+    if request.method == 'POST':
 
-    elif request.method == 'POST':
-        form = ReviewReporteForm(request.POST, request.FILES)
-        if form.is_valid():
-            if form.cleaned_data['revision'] == 'No Procede':
-                reporte.estado = 'No Procede'
-                reporte.save()
+        reporte = get_object_or_404(Reporte, pk=reporteId)
+        if request.POST['revision'] == 'No Procede':
+            reporte.estado = 'No procede'
+            reporte.save()
 
-            elif form.cleaned_data['revision'] == 'Resuelto':
-                reporte.estado = 'Resuelto'
-                reporte.save()
+        elif request.POST['revision'] == 'Resuelto':
+            reporte.estado = 'Resuelto'
+            product = reporte.producto
+            product.estado = "Pendiente"
+            product.save()
+            reporte.save()
 
-            return render(request, 'products/show.html')
-
-    return render(request, 'products/show.html', {'form': form, 'reporte': reporte})
+        return redirect("/product/report/list")
   
