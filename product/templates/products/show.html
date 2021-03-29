@@ -176,7 +176,10 @@
                         {% for dieta in dietas %}
                         <div class="col"> Comentarios </div>
                         {% endfor %}
-                        <div class="col"> {{valoracion.mensaje}} </div>
+                        {% for aportacion in aportaciones %}
+                        <div class="col"> {{aportacion.mensaje}} </div>
+                        {% endfor %}
+                        
                     </div>
 
                     <!-- MODAL COMENTAR -->
