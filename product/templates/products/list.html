@@ -115,24 +115,49 @@
                 </li>
             </ul>
         </nav>
+        <!-- Script paginacion -->
         <script type="text/javascript">
             let page = parseInt(getParameterByName("page"));
             cambiaPaginacion();
             function cambiaPaginacion(){
-                if(page){
                 let link1 = document.getElementById('pglink1');
-                link1.href = "?page="+page;
-                link1.innerText = page; 
                 let link2 = document.getElementById('pglink2');
-                link2.href = "?page="+(page+1);
-                link2.innerText = page+1; 
-                let link3 = document.getElementById('pglink3');
-                link3.href = "?page="+(page+2);
-                link3.innerText = page+2; 
                 let next = document.getElementById('pgnext');
-                next.href = "?page="+(page+1);
+                let link3 = document.getElementById('pglink3');
                 let previous = document.getElementById('pgprevious');
-                previous.href = "?page="+(page-1);
+                if(page){
+                    link1.href = url(page);
+                    link1.innerText = page; 
+                    link2.href = url(page+1);
+                    link2.innerText = page+1; 
+                    link3.href = url(page+2);
+                    link3.innerText = page+2; 
+                    next.href = url(page+1);
+                    previous.href = url(page-1);
+                } else {
+
+                    link1.href = url(1);
+                    link2.href = url(2);
+                    link3.href = url(3);
+                    next.href = url(2);
+                    previous.href = url(1);
+                }
+            }
+            function url(n){
+                let href = location.href;
+                //3 casos:
+                if(href.includes('?')){
+                    if(href.includes('&page=')){ //crea paginacion con filtros previos
+                        return href.replace('&page='+page,'&page='+n)
+                    } else {
+                        if(href.includes('?page=')){ //ya has hecho paginacion sin filtros
+                            return href.replace('?page='+page,'?page='+n)
+                        } else{
+                            return href+'&page='+n //ya has hecho paginacion con filtros
+                        }
+                    }
+                } else { //crea paginacion sin filtros previos
+                    return href+"?page="+n;
                 }
             }
             function getParameterByName(name) {
