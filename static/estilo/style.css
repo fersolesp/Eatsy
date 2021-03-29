@@ -217,16 +217,20 @@ hr {
     width: 200px !important;
     box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
 }
-.btnReporte{
-    background-color: rgb(118, 179, 146) !important ;
+
+.btnReporte {
+    background-color: rgb(118, 179, 146) !important;
 }
+
 .enlaceOjo {
     color: rgb(118, 179, 146);
     transition: all 1s;
 }
-.enlaceOjo:hover{
+
+.enlaceOjo:hover {
     color: #ffc478;
 }
+
 .titleblock {
     font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 3rem;
@@ -325,8 +329,8 @@ a {
     background-color: #75cfb8;
     color: black;
 }
-.active {
-}
+
+.active {}
 
 @media (max-width: 450px) {
     #menuMovil {
@@ -364,4 +368,12 @@ a {
 .eye-button {
     font-size: 1.5em;
     cursor: pointer;
+}
+
+.li-light {
+    background-color: #bbdfc8;
+}
+
+.li-dark {
+    background-color: #92cea8;
 }
