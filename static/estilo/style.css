@@ -62,6 +62,12 @@ hr {
     padding: 2em;
 }
 
+.scrolli {
+    width: 90%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
 .product-card-inner {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -70,6 +76,22 @@ hr {
     border: 1px solid black;
     border-radius: 0.5em;
     background-color: #bbdfc8;
+}
+
+.titulito {
+    font-weight: bold;
+}
+
+.product-card-comment {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 0.5em;
+    background-color: #fff4df;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
 }
 
 .msj {
