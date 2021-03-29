@@ -1,4 +1,4 @@
-from authentication.models import Perfil
+from authentication.models import Perfil, Dieta
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -17,11 +17,11 @@ class Ubicacion(models.Model):
     def __str__(self):
         return self.nombre
 
-class Dieta(models.Model):
-    nombre = models.CharField(max_length=50, null=None)
+# class Dieta(models.Model):
+#     nombre = models.CharField(max_length=50, null=None)
 
-    def __str__(self):
-        return self.nombre
+#     def __str__(self):
+#         return self.nombre
 
 class Producto(models.Model):
     State_Enum = (("Pendiente", "Pendiente de Revisión"),
