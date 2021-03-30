@@ -78,6 +78,7 @@ def showProduct(request, productId):
                 return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones})
 
 def listProduct(request):
+
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
         product_list = product_list.filter(estado='Aceptado')
@@ -95,8 +96,9 @@ def listProduct(request):
 
         # FILTRAR
         if searchProductForm.data.get('dietas'):
-            for dieta in searchProductForm.data['dietas']:
-                product_list = product_list.filter(dietas__id = dieta)
+            filtro_dietas = request.GET.getlist('dietas','')
+            for dieta_id in filtro_dietas:
+                product_list = product_list.filter(dietas__id = dieta_id)
 
         # ORDENAR
         if searchProductForm.data.get('orderBy'):
