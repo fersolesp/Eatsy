@@ -1,8 +1,10 @@
-from django import forms
-from django.core.validators import FileExtensionValidator
 from enum import Enum
 
-from .models import Aportacion, CausaReporte, ChangeRequest, Producto, Reporte, Ubicacion
+from django import forms
+from django.core.validators import FileExtensionValidator
+
+from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion
+
 
 class CustomMMCF(forms.ModelChoiceField):
     def label_from_instance(self, ubicacion):
@@ -146,11 +148,3 @@ class ReviewProductForm(forms.ModelForm):
     class Meta:
         model = Ubicacion
         fields = ['nombre']
-
-class ChangeRequestForm(forms.ModelForm):
-    class Meta:
-        model = ChangeRequest
-        fields = ['dietas']
-        widgets = {
-            'dietas': forms.CheckboxSelectMultiple()
-        }

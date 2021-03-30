@@ -95,29 +95,3 @@ class Aportacion(models.Model):
 
     def __str__(self):
         return self.titulo
-
-class ChangeRequest(models.Model):
-    product = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    dietas = models.ManyToManyField(Dieta)
-
-    creation_date = models.DateTimeField(auto_now_add=True)
-    creation_user = models.ForeignKey(User, null=False, on_delete=models.DO_NOTHING)
-
-    def save(self, *args, **kwargs):
-        # Borrar peticiones de cambio anteriores del mismo usuario y producto
-        ChangeRequest.objects.filter(product__id=self.product.id, creation_user__id=self.creation_user.id).exclude(id=self.id).delete()
-
-        super(ChangeRequest, self).save(*args, **kwargs)
-    
-    def apply(self):
-        self.product.dietas.set(self.dietas.all())
-        self.product.save()
-
-        self.delete()
-
-    def __str__(self):
-        return self.product.titulo
-
-    # Más antiguos primero
-    class Meta:
-        ordering = ['id']

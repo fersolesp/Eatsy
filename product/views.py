@@ -15,11 +15,11 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from Eatsy import settings
 
-from product.forms import (AddUbicationForm, ChangeRequestForm, CommentForm,
-                           CreateProductForm, ReporteForm, ReviewProductForm,
-                           SearchProductForm)
-from product.models import (Aportacion, ChangeRequest, Dieta, Producto,
-                            Reporte, Ubicacion, UbicacionProducto, Valoracion)
+from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
+                           ReporteForm, ReviewProductForm, SearchProductForm)
+from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
+                            UbicacionProducto, Valoracion)
+
 
 def get_product_or_404(request, id):
     """
@@ -342,71 +342,6 @@ def removeComment (request, commentId):
         return redirect('product:list')
 
     return render(request, 'products/show.html')
-
-def requestChange(request, productId):
-    if request.user.is_superuser:
-        return redirect(f'/admin/product/producto/{productId}/change/') # TODO: creo que se puede mejorar
-
-    product = get_product_or_404(request, productId)
-
-    if request.POST:
-        changeRequestForm = ChangeRequestForm(request.POST)
-
-        if changeRequestForm.is_valid():
-            dietas = changeRequestForm.cleaned_data['dietas'].all()
-
-            # Se creará si hay cambios con respecto a las dietas del producto
-            if set(dietas) != set(product.dietas.all()):
-                # Se creará si no hay otra petición con las mismas características
-                changeRequests = ChangeRequest.objects.annotate(count=Count('dietas')).filter(count=len(dietas))
-                for dieta in dietas:
-                    changeRequests.filter(dietas__id=dieta.id)
-
-                if len(changeRequests) == 0:
-                    changeRequest = ChangeRequest()
-                    changeRequest.product = Producto(id=product.id)
-                    changeRequest.creation_user = User(id=1)  # TODO: CORREGIR CUANDO HAYA LOGIN
-                    changeRequest.save()
-
-                    changeRequest.dietas.add(*dietas)
-                    changeRequest.save()
-                return redirect('product:show', product.id)
-            else:
-                changeRequestForm.add_error('dietas', 'Has seleccionado las mismas dietas que ya tenía el producto.')
-    else:
-        changeRequestForm = ChangeRequestForm(initial={ 'dietas': product.dietas.all() })
-
-    return render(request, 'products/requestChange.html', { 'product': product, 'changeRequestForm': changeRequestForm })
-
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
-def listChangeRequests(request):
-    changeRequests =  ChangeRequest.objects.all()
-
-    page = request.GET.get('page')
-    paginator = Paginator(changeRequests, 20)
-
-    try:
-        changeRequests = paginator.page(page)
-    except PageNotAnInteger:
-        changeRequests = paginator.page(1)
-    except EmptyPage:
-        changeRequests = paginator.page(paginator.num_pages)
-
-    return render(request, 'products/changeRequest/list.html', { 'changeRequests': changeRequests })
-
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
-def acceptChangeRequest(request, changeRequestId):
-    changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
-    changeRequest.apply()
-
-    return redirect('product:listChangeRequests')   
-
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
-def rejectChangeRequest(request, changeRequestId):
-    changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
-    changeRequest.delete()
-
-    return redirect('product:listChangeRequests')   
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def listReports(request):
