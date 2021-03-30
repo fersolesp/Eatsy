@@ -80,14 +80,14 @@
             </div>
             <div class="row" id="collapseproducts">
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
-                    <span class="m-auto opProducto">DESCRIPCIÓN</span>
+                    <span class="m-auto opProducto boton-show-inner">DESCRIPCIÓN</span>
                 </div>
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
-                    <span class="m-auto opProducto">COMENTARIOS</span>
+                    <span class="m-auto opProducto boton-show-inner">COMENTARIOS</span>
 
                 </div>
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
-                    <span class="m-auto opProducto">UBICACIONES</span>
+                    <span class="m-auto opProducto boton-show-inner">UBICACIONES</span>
                 </div>
             </div>
             <script>
@@ -111,17 +111,32 @@
             <div class="row">
                 <!-- DESCRIPCION -->
                 <div class="col" id="p-1">
-                    <div class="container-fluid">
-                        <div class="row">
-                            &nbsp;&nbsp;&nbsp;Dietas:&nbsp; {% for dieta in product.dietas.all %}
-                            <div> {{dieta.nombre}}&nbsp;&nbsp;&nbsp;</div>
-                            {% endfor %}
+                    <div class="container-fluid descripcion">
+                        <!-- DIETAS -->
+                        <div class="row mt-3 mb-3 product-card-descripcion">
+                            <div class="row mb-2">
+                                &nbsp;&nbsp;&nbsp;<div class="titulito">Dietas:</div>&nbsp; 
+                            </div>
+                            <div class="row">
+                                {% for dieta in product.dietas.all %}
+                                <div> &nbsp;&nbsp;&nbsp;{{dieta.nombre}}&nbsp;&nbsp;</div>
+                                {% endfor %}
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col"> Precio del producto: {{ precio_medio|floatformat:2 }}€</div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col"> {{product.descripcion}}</div>
+                        <div class="row hrmini"></div>
+                        <!-- DESCRIPCION + PRECIO -->
+                        <div class="row mt-3 mb-3 product-card-descripcion">
+                            <div class="row mb-2">
+                                <div class="titulito">&nbsp;&nbsp;&nbsp;Descripción:</div>&nbsp; 
+                            </div>
+
+                            <div class="row mb-4">
+                                <div> &nbsp;&nbsp;&nbsp;{{product.descripcion}}</div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="titulito"> &nbsp;&nbsp;&nbsp;Precio medio: {{ precio_medio|floatformat:2 }}€</div>
+                            </div>
                         </div>
                         <!-- MODAL REPORTAR -->
                         <div class="row mt-5 mb-5">
@@ -174,20 +189,21 @@
                 <div class="container-fluid">
 
                     <!-- Comentarios -->
-                    <div class="row mb-3">
-                        <div class="scrolli">
-                            <!-- {% for dieta in dietas %}
-                            <div class="col"> Comentarios </div>
-                            {% endfor %} -->
-                            {% for aportacion in aportaciones %}
-                            <div class="product-card-comment mb-2">
-                                <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
-                                <div class="row justify-content-center">{{aportacion.mensaje}}</div>
+                    {% if aportaciones %}
+                        <div class="row mb-3">
+                            <div class="scrolli">
+                                <!-- {% for dieta in dietas %}
+                                <div class="col"> Comentarios </div>
+                                {% endfor %} -->
+                                {% for aportacion in aportaciones %}
+                                <div class="product-card-comment mb-2">
+                                    <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
+                                    <div class="row justify-content-center">{{aportacion.mensaje}}</div>
+                                </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
-                    </div>
-
+                    {% endif %}
                     <!-- MODAL COMENTAR -->
 
 
