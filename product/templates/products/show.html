@@ -33,34 +33,35 @@
 </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container-fluid page-content">
+
     <div class="row">
 
 
-        <div class="col-lg-5">
-            <div class="row justify-content-center">
-                <div class="col-auto nombreProducto">{{product.titulo}}</div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-sm-8 col-12">
-                    <img style="width: 100%;" src="/media/{{product.foto}}" alt="">
+        <div class="col-lg-5 mb-5">
+            <div class="product-card-inner">
+                <div class="row justify-content-center">
+                    <div class="col-auto mb-5 nombreProductoShow">{{product.titulo}}</div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-8 col-12">
+                        <img style="width: 100%;" src="{{product.foto.url}}" alt="">
+                    </div>
+                </div>
+                <div style="margin: 20%;" class="row mt-3">
+                    <input hidden="true" id="valoracion_media" value="{{valoracion_media}}" />
+                    <form class="rate-form" action="" method="POST" id="{{product.id}}">
+                        {% csrf_token %}
+                        <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
+                        <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
+                        <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
+                        <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
+                        <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
+                    </form>
+                    <br/>
+                    <div id="msjrating"></div>
                 </div>
             </div>
-            <div style="margin: 20%;" class="row mt-3">
-                <form class="rate-form" action="" method="POST" id="{{product.id}}">
-                    {% csrf_token %}
-                    <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
-                    <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
-                    <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
-                    <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
-                    <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
-                </form>
-                <br/>
-                <div id="msjrating"></div>
-            </div>
         </div>
-
-
-
 
         <div class="col-lg-7">
             {% if msj %}
@@ -79,14 +80,14 @@
             </div>
             <div class="row" id="collapseproducts">
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
-                    <span class="m-auto">DESCRIPCIÓN</span>
+                    <span class="m-auto opProducto">DESCRIPCIÓN</span>
                 </div>
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
-                    <span class="m-auto">VALORACIONES</span>
+                    <span class="m-auto opProducto">COMENTARIOS</span>
 
                 </div>
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
-                    <span class="m-auto">UBICACIONES</span>
+                    <span class="m-auto opProducto">UBICACIONES</span>
                 </div>
             </div>
             <script>
@@ -108,14 +109,21 @@
                 <hr>
             </div>
             <div class="row">
+                <!-- DESCRIPCION -->
                 <div class="col" id="p-1">
                     <div class="container-fluid">
+                        <div class="row">
+                            &nbsp;&nbsp;&nbsp;Dietas:&nbsp; {% for dieta in product.dietas.all %}
+                            <div> {{dieta.nombre}}&nbsp;&nbsp;&nbsp;</div>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col"> Precio del producto: {{ precio_medio|floatformat:2 }}€</div>
+                        </div>
                         <div class="row mb-3">
                             <div class="col"> {{product.descripcion}}</div>
                         </div>
-                        <div class="row">
-                            <div class="col"> Precio del producto: {{product.precioMedio}}€</div>
-                        </div>
+                        <!-- MODAL REPORTAR -->
                         <div class="row mt-5 mb-5">
                             <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button></div>
                             <div class="modal fade" id="modalReport" tabindex="-1" role="dialog" aria-labelledby="modalReportLabel" aria-hidden="true">
@@ -141,98 +149,137 @@
 
                                                 </span>
                                                 {% endfor %}
-                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios:</label> {{form.comentarios}}
+                                                <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios: </label>
+                                                <div style="color: red;">{{ form.errors.comentarios.as_text}}</div>
+                                                {{form.comentarios}}
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
+                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" name="reportButton" value="Enviar"></input>
 
-                                                <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Enviar"></input>
-
+                                            </div>
                                         </form>
-                                        </div>
                                     </div>
-
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col" id="p-2">
-                    <div class="container-fluid">
-                        <div class="row mb-3">
+            <!-- COMENTAR -->
+            <div class="col" id="p-2">
+                <div class="container-fluid">
+
+                    <!-- Comentarios -->
+                    <div class="row mb-3">
+                        <div class="scrolli">
+                            <!-- {% for dieta in dietas %}
                             <div class="col"> Comentarios </div>
+                            {% endfor %} -->
+                            {% for aportacion in aportaciones %}
+                            <div class="product-card-comment mb-2">
+                                <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
+                                <div class="row justify-content-center">{{aportacion.mensaje}}</div>
+                            </div>
+                            {% endfor %}
                         </div>
+                    </div>
 
-                        <!-- MODAL COMENTAR Y VALORAR -->
+                    <!-- MODAL COMENTAR -->
 
-                        <div class="row mt-5">
-                            <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar y valorar</button></div>
-                            <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modalComentarLabel">Comentar y valorar
-                                            </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                    <div class="row mt-5">
+                        <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar</button></div>
+                        <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalComentarLabel">Comentar</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
-                                        </div>
-
-                                        <form action="/product/show/{{product.id}}/comment" method="POST">
-                                            {% csrf_token %}
-                                            <div class="modal-body">
-                                                {{formComment}}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-
-                                                <input class="btn btn-primary" type="submit" value="Enviar"></input>
-                                            </div>
-                                        </form>
                                     </div>
+
+                                    <form action="/product/show/{{product.id}}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios: </label>
+                                            <div style="color: red;">{{ formComment.errors.titulo.as_text}}</div>
+                                            {{formComment.titulo}}
+
+                                            <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Mensaje: </label>
+                                            <div style="color: red;">{{ formComment.errors.mensaje.as_text}}</div>
+                                            {{formComment.mensaje}}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
+
+                                            <input class="btn btn-primary" type="submit" style="margin-top: 0px !important;" name="commentButton" value="Enviar"></input>
+                                        </div>
+                                    </form>
                                 </div>
-
                             </div>
+
                         </div>
-
-
-
-
                     </div>
                 </div>
-                <div class="col" id="p-3">
-                    <div class="container-fluid">
-                        <div class="row ">
-                            <div id="colMap" style="padding:0px !important" class="col-12"> {% include 'products/map.html' %}</div>
-                        </div>
-                        <div class="row mt-2 justify-content-center">
-                            <div class="col-12"> <a href="#" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
-                        </div>
+            </div>
+            <!-- MAPA -->
+            <div class="col" id="p-3">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div id="colMap" style="padding:0px !important" class="col-12"> {% include 'products/map.html' %}</div>
+                    </div>
+                    <div class="row mt-2 justify-content-center">
+                        <div class="col-12"> <a href="#" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script type="text/javascript">
-        if (document.getElementById("msjreporte")) {
-            setTimeout(() => {
-                document.getElementById("msjreporte").style.display = "none";
-            }, 3000);
-        }
-    </script>
+<script type="text/javascript">
+    if (document.getElementById("msjreporte")) {
+        setTimeout(() => {
+            document.getElementById("msjreporte").style.display = "none";
+        }, 3000);
+    }
+</script>
 
-    <script>
-        change_to_tab_1()
-    </script>
+<script>
+    change_to_tab_1()
+</script>
+{% if form.errors %}
+<script>
+    $(document).ready(function() {
+        $('#modalReport').modal({
+            show: true
+        });
+    });
+</script>
+{% endif %} {% if formComment.errors %}
+<script>
+    change_to_tab_2()
+    $(document).ready(function() {
+        $('#modalComentar').modal({
+            show: true
+        });
+    });
+</script>
+{% endif %}
 
 
-    <a style="left:0px !important" class="botonAdd" href="/product/create" role="button">
-        <img height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
-        />
-    </a>
-
-
-    {% endblock %}
+<a style="left:0px !important" class="botonAdd" href="/product/create" role="button">
+    <img height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
+    />
+</a>
+{% if user.is_superuser %}
+<a href="/product/review/{{product.id}}" class="btn btn-success btn-lg" role="button" aria-disabled="true">Editar</a>
+{% endif %} 
+{% endblock %}

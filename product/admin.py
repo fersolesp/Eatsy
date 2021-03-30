@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from product.models import (Aportacion, CausaReporte, Dieta, Producto, Reporte,
-                            Ubicacion, UbicacionProducto, Valoracion)
-
+from product.models import (Aportacion, CausaReporte,
+                            Producto, Reporte, Ubicacion, UbicacionProducto,
+                            Valoracion)
 
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'estado']
@@ -12,7 +12,6 @@ class ReporteAdmin(admin.ModelAdmin):
     list_display = ['producto', 'causa', 'fecha']
     list_filter = ['causa']
 
-admin.site.register(Dieta)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Ubicacion)
 admin.site.register(UbicacionProducto)

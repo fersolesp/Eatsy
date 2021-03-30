@@ -1,101 +1,184 @@
-{% extends 'products/base.html' %}
+{% extends 'products/base.html' %} {% block titulo %}Productos{% endblock %} {% block contenido %}
 
-{% block titulo %}Productos{% endblock %}
+<div class="padding-list-container container-fluid page-content">
 
-{% block contenido %} 
-
-    <div class="padding-list-container container-fluid page-content">
-        
-        <div class="row justify-content-center ">
-            <div class="col-sm-8 nombreProducto">Búsqueda de productos</div>
+    <div class="row justify-content-center ">
+        <div class="col-sm-8 nombreProducto">Búsqueda de productos</div>
+    </div>
+    <div class="row">
+        <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
+            <form method="GET" action="" id="filtros-form">
+                {% if request.GET.estado %}
+                <input type="hidden" name="estado" value="{{request.GET.estado}}"> {% endif %} {{searchProductForm.titulo}}
+            </form>
         </div>
-        <div class="row">
-            <div style="padding-top: 1em;padding-bottom: 1em;" class="padding-list col-sm-6">
-                <form method="GET" action="" id="filtros-form">
-                    {% if  request.GET.estado %}
-                        <input type="hidden" name="estado" value="{{request.GET.estado}}">
-                    {% endif %}
-                    {{searchProductForm.titulo}}
-                </form>
-            </div>
-            <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
-                <div class="col-auto m-auto"> <button class="w-100 btn btn-warning btn-md" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Filtros</button></div>
-                <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalComentarLabel">Aplicar filtros y ordenar los productos
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
+            <div class="col-auto m-auto"> <button class="w-100 btn btn-warning btn-md" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Filtros</button></div>
+            <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalComentarLabel">Aplicar filtros y ordenar los productos
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            </div>
-                                <div class="modal-body">
-                                    <div style="padding-bottom: 10px;font-weight: bold;">Dietas/restricciones alimentarias:</div>
-                                    {% for choice in searchProductForm.dietas%}
+                        </div>
+                        <div class="modal-body">
+                            <div style="padding-bottom: 10px;font-weight: bold;">Dietas/restricciones alimentarias:</div>
+                            {% for choice in searchProductForm.dietas%}
 
-                                        <span style="margin-left: 35px;"><span class="form-check-input">{{ choice.tag }}</span>
-                                        <label class="form-check-label">
+                            <span style="margin-left: 35px;"><span class="form-check-input">{{ choice.tag }}</span>
+                            <label class="form-check-label">
                                                 {{ choice.choice_label }}</label>
-                                        </span><br><div style="height:1em"></div>
-                                    {% endfor %}
-                                    <br>
+                            </span><br>
+                            <div style="height:1em"></div>
+                            {% endfor %}
+                            <br>
 
-                                    <div style="padding-bottom: 10px;font-weight: bold;">Ordenar por:</div>
-                                    {{searchProductForm.orderBy}}                                      
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
-                                    <input form="filtros-form" class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Aplicar"></input>
-                                </div>
+                            <div style="padding-bottom: 10px;font-weight: bold;">Ordenar por:</div>
+                            {{searchProductForm.orderBy}}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
+                            <input form="filtros-form" class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Aplicar"></input>
                         </div>
                     </div>
-
                 </div>
+
             </div>
-            
-            
-            {% if user.is_superuser %}
-            <div style="padding-top: 1em;padding-bottom: 1em;" class="dropdown padding-list col-lg-3 col-md-4 col-sm-6">
-                <button class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </div>
+
+
+        {% if user.is_superuser %}
+        <div style="padding-top: 1em;padding-bottom: 1em;" class="dropdown padding-list col-lg-3 col-md-4 col-sm-6">
+            <button class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Estado del producto
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="/product/list?estado=aceptado">Aceptados</a>
-                  <a class="dropdown-item" href="/product/list?estado=pendiente">A revisar</a>
-                  <a class="dropdown-item" href="/product/list">Todos</a>
-                </div>
-              </div>
-            {% endif %}
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/product/list?estado=aceptado">Aceptados</a>
+                <a class="dropdown-item" href="/product/list?estado=pendiente">A revisar</a>
+                <a class="dropdown-item" href="/product/list">Todos</a>
+            </div>
         </div>
-
-
-        <div class="row justify-content-center">
-                {% for product in products %}
-                    <div class="col-lg-4 col-md-6 col-12 d-flex product-card">
-                        <div class="product-card-inner">
-                            <div class="row-fluid">
-                                <div class="col-12 d-flex">
-                                    <img class="m-auto product-img" src="/media/{{product.foto}}" alt="">
-                                </div>
-                            </div>
-                            <div class="row-fluid text-center nombreProducto mt-3">
-                                <div class="col-12">
-                                    {{product.titulo}}
-                                </div>
-                            </div>
-                            <div class="row-fluid nombreProducto mt-3">
-                                <div class="col-12 d-flex">
-                                    <a class="m-auto btn btn-warning btn-md" href="show/{{product.id}}">Ver detalles</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-        </div>
+        {% endif %}
     </div>
-        <a class="botonAdd" href="/product/create" role="button" >
-            <img  height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
-        </a> 
+
+    <!-- Productos -->
+    <div class="row justify-content-center">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 col-12 d-flex product-card">
+            <div class="product-card-inner">
+                <div class="row-fluid">
+                    <div class="col-12 d-flex">
+                        <img class="m-auto product-img" src="{{product.foto.url}}" alt="">
+                    </div>
+                </div>
+                <div class="row-fluid text-center nombreProducto mt-3">
+                    <div class="col-12">
+                        {{product.titulo}}
+                    </div>
+                </div>
+                <div class="row-fluid  text-center">
+                    {% for dieta in product.dietas.all %}
+                    <div style="display:inline-block;"> {{dieta.nombre}}&nbsp;</div>
+                    {% endfor %}
+                </div>
+                <div class="row-fluid nombreProducto mt-3">
+                    <div class="col-12 d-flex">
+                        <a class="m-auto btn btn-warning btn-md" href="show/{{product.id}}">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Paginacion -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination ">
+                <li class="page-item">
+                    <a id="pgprevious" class="page-link" href="?page=1" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li  class="page-item"><a id="pglink1" class="page-link" style="background-color: #519483 !important;" href="?page=1">1</a></li>
+                <li class="page-item"><a id="pglink2" class="page-link" href="?page=2">2</a></li>
+                <li class="page-item"><a id="pglink3" class="page-link" href="?page=3">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" id="pgnext" href="?page=2" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Script paginacion -->
+        <script type="text/javascript">
+            let page = parseInt(getParameterByName("page"));
+            cambiaPaginacion();
+            function cambiaPaginacion(){
+                let link1 = document.getElementById('pglink1');
+                let link2 = document.getElementById('pglink2');
+                let next = document.getElementById('pgnext');
+                let link3 = document.getElementById('pglink3');
+                let previous = document.getElementById('pgprevious');
+                if(page){
+                    link1.href = url(page);
+                    link1.innerText = page; 
+                    link2.href = url(page+1);
+                    link2.innerText = page+1; 
+                    link3.href = url(page+2);
+                    link3.innerText = page+2; 
+                    next.href = url(page+1);
+                    previous.href = url(page-1);
+                } else {
+
+                    link1.href = url(1);
+                    link2.href = url(2);
+                    link3.href = url(3);
+                    next.href = url(2);
+                    previous.href = url(1);
+                }
+            }
+            function url(n){
+                let href = location.href;
+                //3 casos:
+                if(href.includes('?')){
+                    if(href.includes('&page=')){ //crea paginacion con filtros previos
+                        return href.replace('&page='+page,'&page='+n)
+                    } else {
+                        if(href.includes('?page=')){ //ya has hecho paginacion sin filtros
+                            return href.replace('?page='+page,'?page='+n)
+                        } else{
+                            return href+'&page='+n //ya has hecho paginacion con filtros
+                        }
+                    }
+                } else { //crea paginacion sin filtros previos
+                    return href+"?page="+n;
+                }
+            }
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+        </script>
+
+
+    </div>
+
+</div>
+<a class="botonAdd" href="/product/create" role="button">
+    <img height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
+    />
+</a>
+
+
+
+
 
 {% endblock %}

@@ -1,4 +1,4 @@
-from authentication.models import Perfil
+from authentication.models import Perfil, Dieta
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -17,11 +17,11 @@ class Ubicacion(models.Model):
     def __str__(self):
         return self.nombre
 
-class Dieta(models.Model):
-    nombre = models.CharField(max_length=50, null=None)
+# class Dieta(models.Model):
+#     nombre = models.CharField(max_length=50, null=None)
 
-    def __str__(self):
-        return self.nombre
+#     def __str__(self):
+#         return self.nombre
 
 class Producto(models.Model):
     State_Enum = (("Pendiente", "Pendiente de Revisión"),
@@ -30,7 +30,7 @@ class Producto(models.Model):
     titulo = models.CharField(max_length=100, null=None)
     descripcion = models.TextField(null=None)
     fecha = models.DateTimeField(auto_now=True)
-    foto = models.TextField()
+    foto = models.ImageField(upload_to='photos')
     precioMedio = models.DecimalField(
         null=None,max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
     dietas = models.ManyToManyField(Dieta)
@@ -69,6 +69,13 @@ class Reporte(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     causa = CausaReporte._meta.get_field('causa')
     comentarios = models.TextField(null=False, blank=False)
+
+    State_Enum = (("Pendiente", "Pendiente de Revisión"),
+            ("Resuelto", "Resuelto"),
+            ("No procede","No procede"))
+
+    estado = models.CharField(max_length=10, choices=State_Enum,
+                              default='Pendiente', blank=False, verbose_name="Estado")
 
     # Más antiguos primero
     class Meta:

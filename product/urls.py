@@ -13,5 +13,5 @@ urlpatterns = [
     path('review/<int:productId>', views.reviewProduct, name='review'),
     path('remove/<int:commentId>', views.removeComment, name='remove'),
     path('show/<int:productId>/rate', views.rateProduct, name='rate'),
-    path('show/<int:productId>/comment', views.commentProduct, name='comment'),
-]
+    path('report/action/<int:reporteId>', views.reviewReport, name='review'),
+] 
