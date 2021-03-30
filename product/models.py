@@ -12,7 +12,7 @@ class Ubicacion(models.Model):
                                    
     @property
     def esSupermercado(self):
-        return self.latitud == None and self.longitud == None
+        return int(self.latitud) == 0 and int(self.longitud) == 0
         
     def __str__(self):
         return self.nombre
