@@ -172,11 +172,20 @@
             <!-- COMENTAR -->
             <div class="col" id="p-2">
                 <div class="container-fluid">
+
+                    <!-- Comentarios -->
                     <div class="row mb-3">
-                        {% for dieta in dietas %}
-                        <div class="col"> Comentarios </div>
-                        {% endfor %}
-                        <div class="col"> {{valoracion.mensaje}} </div>
+                        <div class="scrolli">
+                            <!-- {% for dieta in dietas %}
+                            <div class="col"> Comentarios </div>
+                            {% endfor %} -->
+                            {% for aportacion in aportaciones %}
+                            <div class="product-card-comment mb-2">
+                                <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
+                                <div class="row justify-content-center">{{aportacion.mensaje}}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <!-- MODAL COMENTAR -->
