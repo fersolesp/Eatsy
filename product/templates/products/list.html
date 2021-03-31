@@ -1,4 +1,5 @@
 {% extends 'products/base.html' %} {% block titulo %}Productos{% endblock %} {% block contenido %}
+{% load dietas_filter %}
 
 <div class="padding-list-container container-fluid page-content">
 
@@ -12,7 +13,7 @@
                 <input type="hidden" name="estado" value="{{request.GET.estado}}"> {% endif %} {{searchProductForm.titulo}}
             </form>
         </div>
-        <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-3 col-md-4 col-sm-6">
+        <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-2 col-md-3 col-sm-4">
             <div class="col-auto m-auto"> <button class="w-100 btn btn-warning btn-md" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Filtros</button></div>
             <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -49,19 +50,70 @@
             </div>
         </div>
 
-
-        {% if user.is_superuser %}
-        <div style="padding-top: 1em;padding-bottom: 1em;" class="dropdown padding-list col-lg-3 col-md-4 col-sm-6">
-            <button class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Estado del producto
-                </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/product/list?estado=aceptado">Aceptados</a>
-                <a class="dropdown-item" href="/product/list?estado=pendiente">A revisar</a>
-                <a class="dropdown-item" href="/product/list">Todos</a>
+        {% if request.GET.estado or request.GET.titulo or request.GET.dietas or request.GET.orderBy%}
+        <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-2 col-md-3 col-sm-4">
+            <div class="col-auto m-auto"> 
+                <button onclick="location.href='/product/list'" class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Borrar filtros
+                </button>            
             </div>
         </div>
         {% endif %}
+
+        {% if user.is_superuser %}
+        
+        <form method="GET" action="" id="estado-form">
+            {% if request.GET.titulo %}
+                <input type="hidden" name="titulo" value="{{request.GET.titulo}}"> 
+            {% endif %}
+            
+            {% if request.GET.dietas %}
+                {% for a in request.GET|get_list:'dietas' %}
+                    <input type="hidden" name="dietas" value="{{a}}"> 
+                {% endfor %}
+            {% endif %}
+
+
+            {% if request.GET.orderBy %}
+                <input type="hidden" name="orderBy" value="{{request.GET.orderBy}}"> 
+            {% endif %}
+        </form>
+        <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-2 col-md-3 col-sm-4">
+            <div class="col-auto m-auto"> <button class="w-100 btn btn-warning btn-md" data-toggle="modal" data-target="#modalEstado" role="button" aria-disabled="true">Estado del producto</button></div>
+            <div class="modal fade" id="modalEstado" tabindex="-1" role="dialog" aria-labelledby="modalEstadoLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalEstadoLabel">Filtrar productos por estado
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="padding-bottom: 10px;font-weight: bold;">Estado:</div>
+
+                                <span style="margin-left: 35px;"><span class="form-check-input">
+                                    <input form="estado-form" type="radio" id="estado" name="estado" value="aceptado"> Aceptado
+                                </span></span><br><div style="height:1em"></div>
+                                <span style="margin-left: 35px;"><span class="form-check-input">
+                                    <input form="estado-form" type="radio" id="estado" name="estado" value="pendiente"> Pendiente
+                                </span></span>
+                                <br>
+                            <div style="height:1em"></div>
+                            <br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" style="margin-top: 0px !important;" data-dismiss="modal">Cerrar</button>
+                            <input form="estado-form" class="btn btn-primary" type="submit" style="margin-top: 0px !important;" value="Aplicar"></input>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 
     <!-- Productos -->

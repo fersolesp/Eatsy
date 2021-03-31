@@ -222,7 +222,7 @@
                                     <form action="/product/show/{{product.id}}" method="POST">
                                         {% csrf_token %}
                                         <div class="modal-body">
-                                            <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Comentarios: </label>
+                                            <div style="padding-bottom: 10px;"></div><label style="padding-bottom: 5px;font-weight: bold;">Título: </label>
                                             <div style="color: red;">{{ formComment.errors.titulo.as_text}}</div>
                                             {{formComment.titulo}}
 
@@ -251,8 +251,9 @@
                         <div id="colMap" style="padding:0px !important" class="col-12"> {% include 'products/map.html' %}</div>
                     </div>
                     <div class="row mt-2 justify-content-center">
-                        <div class="col-12"> <a href="#" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
                     </div>
+                    {% include 'products/createMap.html' %}
                 </div>
             </div>
         </div>

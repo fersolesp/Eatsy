@@ -1,8 +1,10 @@
-from django import forms
-from django.core.validators import FileExtensionValidator
 from enum import Enum
 
-from .models import Aportacion, CausaReporte, ChangeRequest, Producto, Reporte, Ubicacion
+from django import forms
+from django.core.validators import FileExtensionValidator
+
+from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion
+
 
 class CustomMMCF(forms.ModelChoiceField):
     def label_from_instance(self, ubicacion):
@@ -40,7 +42,7 @@ class CreateProductForm(forms.ModelForm):
   
 
 class AddUbicationForm(forms.ModelForm):
-    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(),required=False, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 400px'}))
+    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all().order_by("nombre"),required=False, widget=forms.Select(attrs={'class' : 'form-control'}))
     nombreComercio = forms.CharField(label='Nombre del Comercio', required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False)
     lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
@@ -48,7 +50,7 @@ class AddUbicationForm(forms.ModelForm):
 
     class Meta:
         model = Ubicacion
-        fields = ['nombre']
+        fields = ['nombreComercio']
 
 class ReporteForm(forms.ModelForm):
     class Meta:
@@ -150,7 +152,6 @@ class ReviewProductForm(forms.ModelForm):
         model = Ubicacion
         fields = ['nombre']
 
-
 class ReviewReporteForm(forms.ModelForm):
     class Meta:
         model = Reporte
@@ -168,12 +169,3 @@ class ReviewReporteForm(forms.ModelForm):
                 ("No procede","No procede"))
 
     revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum, widget = forms.RadioSelect)
-    
-    
-class ChangeRequestForm(forms.ModelForm):
-    class Meta:
-        model = ChangeRequest
-        fields = ['dietas']
-        widgets = {
-            'dietas': forms.CheckboxSelectMultiple()
-        }
