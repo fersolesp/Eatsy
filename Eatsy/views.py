@@ -5,7 +5,6 @@ from django.http import (HttpResponseNotFound, HttpResponseServerError, HttpResp
 def principalScreen(request):
      return render(request, 'products/paginaprincipal.html')
 
-
 def errorNotFoundView(request,exception):
      return HttpResponseNotFound(render(request,"products/404.html"))
 
@@ -23,3 +22,7 @@ def errorGoneView(request,exception):
 
 def errorNotAllowedView(request,exception):
      return HttpResponseNotAllowed(render(request,"products/errorView.html"))
+  
+def subscribe(request):
+     return render(request,'products/subscribe.html')
+

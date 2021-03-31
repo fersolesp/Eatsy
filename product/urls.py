@@ -12,10 +12,6 @@ urlpatterns = [
     path('report/show/<int:reportId>', views.showReport, name='showReport'),
     path('review/<int:productId>', views.reviewProduct, name='review'),
     path('remove/<int:commentId>', views.removeComment, name='remove'),
-    path('<int:productId>/requestChange', views.requestChange, name='requestChange'),
-    path('changeRequest/list', views.listChangeRequests, name='listChangeRequests'),
-    path('changeRequest/<int:changeRequestId>/accept', views.acceptChangeRequest, name='acceptChangeRequest'),
-    path('changeRequest/<int:changeRequestId>/reject', views.rejectChangeRequest, name='rejectChangeRequest'),
     path('show/<int:productId>/rate', views.rateProduct, name='rate'),
     path('report/action/<int:reporteId>', views.reviewReport, name='review'),
 ] 

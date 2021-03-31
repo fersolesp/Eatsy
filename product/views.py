@@ -18,10 +18,10 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from Eatsy import settings
 from django.db.models import Avg
-from product.forms import (AddUbicationForm, ChangeRequestForm, CommentForm,
+from product.forms import (AddUbicationForm, CommentForm,
                            CreateProductForm, ReporteForm, ReviewProductForm,
                            SearchProductForm)
-from product.models import (Aportacion, ChangeRequest, Dieta, Producto,
+from product.models import (Aportacion, Dieta, Producto,
                             Reporte, Ubicacion, UbicacionProducto, Valoracion)
 
 def get_product_or_404(request, id):
@@ -39,13 +39,14 @@ def showProduct(request, productId):
     valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
     precio_medio=UbicacionProducto.objects.filter(producto=product).aggregate(Avg('precio'))["precio__avg"]
     valoracion_media=int(round(valoracion,0)) if valoracion!=None else 0
+    aportaciones = Aportacion.objects.filter(producto=product)
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones})
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
@@ -60,9 +61,9 @@ def showProduct(request, productId):
                 reporte.producto = Producto(id=productId)
                 reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
                 reporte.save()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment,'aportaciones':aportaciones})
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment,'aportaciones':aportaciones})
         if 'commentButton' in request.POST:
             form = ReporteForm()
             formComment= CommentForm(request.POST)
@@ -72,9 +73,9 @@ def showProduct(request, productId):
                 comentario.producto = Producto(id=productId)
                 comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
                 comentario.save()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment,'aportaciones':aportaciones})
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones})
 
 def listProduct(request):
     product_list = Producto.objects.all()
@@ -346,72 +347,7 @@ def removeComment (request, commentId):
         # TODO: redirigir a pantalla de error cuando esté
         return redirect('product:list')
 
-    return render(request, 'products/show.html')
-
-def requestChange(request, productId):
-    if request.user.is_superuser:
-        return redirect(f'/admin/product/producto/{productId}/change/') # TODO: creo que se puede mejorar
-
-    product = get_product_or_404(request, productId)
-
-    if request.POST:
-        changeRequestForm = ChangeRequestForm(request.POST)
-
-        if changeRequestForm.is_valid():
-            dietas = changeRequestForm.cleaned_data['dietas'].all()
-
-            # Se creará si hay cambios con respecto a las dietas del producto
-            if set(dietas) != set(product.dietas.all()):
-                # Se creará si no hay otra petición con las mismas características
-                changeRequests = ChangeRequest.objects.annotate(count=Count('dietas')).filter(count=len(dietas))
-                for dieta in dietas:
-                    changeRequests.filter(dietas__id=dieta.id)
-
-                if len(changeRequests) == 0:
-                    changeRequest = ChangeRequest()
-                    changeRequest.product = Producto(id=product.id)
-                    changeRequest.creation_user = User(id=1)  # TODO: CORREGIR CUANDO HAYA LOGIN
-                    changeRequest.save()
-
-                    changeRequest.dietas.add(*dietas)
-                    changeRequest.save()
-                return redirect('product:show', product.id)
-            else:
-                changeRequestForm.add_error('dietas', 'Has seleccionado las mismas dietas que ya tenía el producto.')
-    else:
-        changeRequestForm = ChangeRequestForm(initial={ 'dietas': product.dietas.all() })
-
-    return render(request, 'products/requestChange.html', { 'product': product, 'changeRequestForm': changeRequestForm })
-
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
-def listChangeRequests(request):
-    changeRequests =  ChangeRequest.objects.all()
-
-    page = request.GET.get('page')
-    paginator = Paginator(changeRequests, 20)
-
-    try:
-        changeRequests = paginator.page(page)
-    except PageNotAnInteger:
-        changeRequests = paginator.page(1)
-    except EmptyPage:
-        changeRequests = paginator.page(paginator.num_pages)
-
-    return render(request, 'products/changeRequest/list.html', { 'changeRequests': changeRequests })
-
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
-def acceptChangeRequest(request, changeRequestId):
-    changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
-    changeRequest.apply()
-
-    return redirect('product:listChangeRequests')   
-
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
-def rejectChangeRequest(request, changeRequestId):
-    changeRequest = get_object_or_404(ChangeRequest, pk=changeRequestId)
-    changeRequest.delete()
-
-    return redirect('product:listChangeRequests')   
+    return render(request, 'products/show.html')  
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def listReports(request):

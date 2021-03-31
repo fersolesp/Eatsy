@@ -62,6 +62,12 @@ hr {
     padding: 2em;
 }
 
+.scrolli {
+    width: 90%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
 .product-card-inner {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -70,6 +76,22 @@ hr {
     border: 1px solid black;
     border-radius: 0.5em;
     background-color: #bbdfc8;
+}
+
+.titulito {
+    font-weight: bold;
+}
+
+.product-card-comment {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 0.5em;
+    background-color: #fff4df;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
 }
 
 .msj {
@@ -217,16 +239,20 @@ hr {
     width: 200px !important;
     box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
 }
-.btnReporte{
-    background-color: rgb(118, 179, 146) !important ;
+
+.btnReporte {
+    background-color: rgb(118, 179, 146) !important;
 }
+
 .enlaceOjo {
     color: rgb(118, 179, 146);
     transition: all 1s;
 }
-.enlaceOjo:hover{
+
+.enlaceOjo:hover {
     color: #ffc478;
 }
+
 .titleblock {
     font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 3rem;
@@ -313,11 +339,11 @@ a {
     padding-left: 2em;
 }
 
-#botonProductosHeader1 {
+#menuNormal {
     display: block;
 }
 
-#botonProductosHeader2 {
+#menuMovil {
     display: none;
 }
 
@@ -326,12 +352,13 @@ a {
     color: black;
 }
 
+.active {}
 
 @media (max-width: 450px) {
-    #botonProductosHeader2 {
+    #menuMovil {
         display: block;
     }
-    #botonProductosHeader1 {
+    #menuNormal {
         display: none;
     }
     .page-content {
@@ -363,4 +390,12 @@ a {
 .eye-button {
     font-size: 1.5em;
     cursor: pointer;
+}
+
+.li-light {
+    background-color: #bbdfc8;
+}
+
+.li-dark {
+    background-color: #92cea8;
 }

@@ -18,10 +18,11 @@
         <option value="{{ubicacion.longitud}};{{ubicacion.latitud}}">{{ubicacion.nombre}}</option>
         {% endfor %}
       </select>
-    {% for ubicacion in product.ubicaciones.all %}
-        <input type="hidden" id="nombre{{forloop.counter}}" name="nombre" value="{{ubicacion.nombre}}">
-        <input type="hidden" id="latitud{{forloop.counter}}" name="latitud" value="{{ubicacion.latitud}}">
-        <input type="hidden" id="longitud{{forloop.counter}}" name="longitud" value="{{ubicacion.longitud}}">
+    {% for ubicacionproducto in product.ubicacionproducto_set.all %}
+        <input type="hidden" id="nombre{{forloop.counter}}" name="nombre" value="{{ubicacionproducto.ubicacion.nombre}}">
+        <input type="hidden" id="latitud{{forloop.counter}}" name="latitud" value="{{ubicacionproducto.ubicacion.latitud}}">
+        <input type="hidden" id="longitud{{forloop.counter}}" name="longitud" value="{{ubicacionproducto.ubicacion.longitud}}">
+        <input type="hidden" id="precio{{forloop.counter}}" name="precio" value="{{ubicacionproducto.precio}}">
     {% endfor %}
     <div style="width: 640px; height: 480px" id="mapContainer"></div>
 
@@ -39,6 +40,7 @@
         mapContainer.style.height = window.innerHeight*0.49+"px";
         menuShow();
       }
+
       // Initialize the platform object:
       var platform = new H.service.Platform({
         'apikey': "gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4"
@@ -59,12 +61,10 @@
         });
 
         var svgMarkup = devuelveMarca();
-        creaMarcas(ubicaciones, svgMarkup);
-
         //poder moverse por el mapa
         var mapEvents = new H.mapevents.MapEvents(map);
         var ui = H.ui.UI.createDefault(map, defaultLayers);
-        
+        addInfoBubble(map, ubicaciones);
 
         //listener para centrar el mapa con el desplegable.
         document.getElementById("select").onchange=(ev)=>{
@@ -84,22 +84,54 @@
                 let nombre = document.getElementById("nombre"+it).value;
                 let longitud = parseFloat(document.getElementById("longitud"+it).value.replace(",", "."));
                 let latitud = parseFloat(document.getElementById("latitud"+it).value.replace(",", "."));
-                ubicaciones.push([nombre, longitud,latitud]);
+                let precio = document.getElementById("precio"+it).value;
+                ubicaciones.push([nombre, longitud,latitud,precio]);
                 it++;
             });
             return ubicaciones;
         }
-        // dibuja todas las ubicaciones del modelo
-        function creaMarcas(ubicaciones, svg){
+
+        function addMarkerToGroup(group, coordinate, html) {
+
+          var icon = new H.map.Icon(svgMarkup)
+          var marker = new H.map.Marker(coordinate, {icon: icon});
+          // add custom data to the marker
+          marker.setData(html);
+          group.addObject(marker);
+        }
+
+        /**
+        * Add two markers showing the position of Liverpool and Manchester City football clubs.
+        * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
+        * @param  {H.Map} map      A HERE Map instance within the application
+        */
+        function addInfoBubble(map, ubicaciones) {
+          var group = new H.map.Group();
+
+          map.addObject(group);
+
+          // add 'tap' event listener, that opens info bubble, to the group
+          group.addEventListener('tap', function (evt) {
+            // event target is the marker itself, group is a parent event target
+            // for all objects that it contains
+            var bubble =  new H.ui.InfoBubble(evt.target.getGeometry(), {
+              // read custom data
+              content: evt.target.getData()
+            });
+            // show info bubble
+            ui.addBubble(bubble);
+          }, false);
           ubicaciones.forEach(el => {
             var coordenada1  = el[1]
             var coordenada2  = el[2] 
-            var icon = new H.map.Icon(svg),
-                coords = {lng: coordenada1, lat: coordenada2},
-                marker = new H.map.Marker(coords, {icon: icon});
-            map.addObject(marker);
-            map.setCenter(coords); //centra en la ultima
+            console.log(el[0])
+            addMarkerToGroup(group, {lat:coordenada2, lng:coordenada1},
+              '<div style="color:#75cfb8"><strong>'+el[0]+
+              '</strong></div><div ><strong>precio:</strong> '+el[3]+'€ </div>');
+
+            map.setCenter({lat:coordenada2, lng:coordenada1}); 
           });
+
         }
         //el svg de la marca, ya a partir de aquí no hay más código importante.
         function devuelveMarca(){
