@@ -143,6 +143,11 @@ hr {
 
 .product-img {
     width: 60%;
+    max-height: 600px;
+}
+
+.product-img-list {
+    max-height: 400px;
 }
 
 .modal-header {
