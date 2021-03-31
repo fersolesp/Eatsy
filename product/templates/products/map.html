@@ -11,15 +11,25 @@
     <link rel="stylesheet" type="text/css"
             href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
   {% endblock %}
+    <div id="msjUbicacion" class="msj"></div>
     <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Comprado en:</label>
       <select id="select" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-        <option selected>Elige una ubicacion</option>
+        <option selected>-----  Elige una ubicacion ----- </option>
         {% for ubicacion in product.ubicaciones.all %}
-        <option value="{{ubicacion.longitud}};{{ubicacion.latitud}}">{{ubicacion.nombre}}</option>
+          {% if not ubicacion.esSupermercado %}
+            <option value="{{ubicacion.longitud}};{{ubicacion.latitud}};{{ubicacion.esSupermercado}}">{{ubicacion.nombre}}</option>
+          {% endif %}
+        {% endfor %}
+        <option value="0;0;True" >----- Supermercados -----</option>
+        {% for ubicacion in product.ubicaciones.all %}
+          {% if  ubicacion.esSupermercado %}
+              <option value="{{ubicacion.longitud}};{{ubicacion.latitud}};{{ubicacion.esSupermercado}}">{{ubicacion.nombre}}</option>
+            {% endif %}
         {% endfor %}
       </select>
     {% for ubicacionproducto in product.ubicacionproducto_set.all %}
         <input type="hidden" id="nombre{{forloop.counter}}" name="nombre" value="{{ubicacionproducto.ubicacion.nombre}}">
+        <input type="hidden" id="supermercado{{forloop.counter}}" name="supermercado" value="{{ubicacionproducto.ubicacion.esSupermercado}}">
         <input type="hidden" id="latitud{{forloop.counter}}" name="latitud" value="{{ubicacionproducto.ubicacion.latitud}}">
         <input type="hidden" id="longitud{{forloop.counter}}" name="longitud" value="{{ubicacionproducto.ubicacion.longitud}}">
         <input type="hidden" id="precio{{forloop.counter}}" name="precio" value="{{ubicacionproducto.precio}}">
@@ -30,14 +40,16 @@
       let mapContainer = document.getElementById("mapContainer");
       let selector = document.getElementById("select");
       let colMap = getComputedStyle(document.getElementById("colMap"));
+
       selector.style.width = colMap.width;
       mapContainer.style.width = colMap.width;
       mapContainer.style.height = window.innerHeight*0.49+"px";
       window.onresize=()=>{
-
         selector.style.width = colMap.width;
         mapContainer.style.width = colMap.width;
         mapContainer.style.height = window.innerHeight*0.49+"px";
+        mapContainer2.style.width = colMap.width;
+        mapContainer2.style.height = window.innerHeight*0.49+"px";
         menuShow();
       }
 
@@ -48,13 +60,13 @@
       var ubicaciones = recogeUbicaciones();
 
       // Get the default map types from the Platform object:
-      var defaultLayers = platform.createDefaultLayers();
+      var defaultLayers2 = platform.createDefaultLayers();
       // Obtain the default map types from the platform object
       var maptypes = platform.createDefaultLayers();
       // Instantiate (and display) a map object:
-      var map = new H.Map(
+      var map2 = new H.Map(
         document.getElementById('mapContainer'),
-        defaultLayers.vector.normal.map,
+        defaultLayers2.vector.normal.map,
         {
           zoom: 13,
           center: { lng: ubicaciones[0][1], lat: ubicaciones[0][2]} //ejemplo para marcar ubicacion
@@ -62,20 +74,33 @@
 
         var svgMarkup = devuelveMarca();
         //poder moverse por el mapa
-        var mapEvents = new H.mapevents.MapEvents(map);
-        var ui = H.ui.UI.createDefault(map, defaultLayers);
-        addInfoBubble(map, ubicaciones);
-
+        var mapEvents2 = new H.mapevents.MapEvents(map2);
+        var ui2 = H.ui.UI.createDefault(map2, defaultLayers2);
+        addInfoBubble(map2, ubicaciones);
+        
+        let msjUbicacion = document.getElementById("msjUbicacion");
+        msjUbicacion.style.display="none"
         //listener para centrar el mapa con el desplegable.
         document.getElementById("select").onchange=(ev)=>{
-            let coordenada1 = parseFloat(ev.target.value.split(";")[0].replace(",", "."));
-            let coordenada2 = parseFloat(ev.target.value.split(";")[1].replace(",", "."));
-            let coords = {lng: coordenada1, lat: coordenada2};
-            map.setCenter(coords); 
+            let target = ev.target.value.split(";");
+            if(target[2]=="False"){
+              let coordenada1 = parseFloat(target[0].replace(",", "."));
+              let coordenada2 = parseFloat(target[1].replace(",", "."));
+              let coords = {lng: coordenada1, lat: coordenada2};
+
+              msjUbicacion.style.display = "none"
+              map2.setCenter(coords); 
+            } else {
+              msjUbicacion.style.display = "block"
+              msjUbicacion.style.backgroundColor = "#ffc107"
+              msjUbicacion.innerText = "No se muestran ubicaciones de supermercados."
+              setTimeout(()=> msjUbicacion.style.display="none",3000)
+            }
+              
         }
 
         // Instantiate the default behavior, providing the mapEvents object:
-        var behavior = new H.mapevents.Behavior(mapEvents);
+        var behavior = new H.mapevents.Behavior(mapEvents2);
         // obtiene todas las ubicaciones del modelo
         function recogeUbicaciones(){
             let ubicaciones = [];
@@ -85,19 +110,20 @@
                 let longitud = parseFloat(document.getElementById("longitud"+it).value.replace(",", "."));
                 let latitud = parseFloat(document.getElementById("latitud"+it).value.replace(",", "."));
                 let precio = document.getElementById("precio"+it).value;
-                ubicaciones.push([nombre, longitud,latitud,precio]);
+                let supermercado = document.getElementById("supermercado"+it).value;
+                ubicaciones.push([nombre, longitud,latitud,precio, supermercado]);
                 it++;
             });
             return ubicaciones;
         }
 
-        function addMarkerToGroup(group, coordinate, html) {
+        function addMarkerToGroup(group2, coordinate, html) {
 
           var icon = new H.map.Icon(svgMarkup)
           var marker = new H.map.Marker(coordinate, {icon: icon});
           // add custom data to the marker
           marker.setData(html);
-          group.addObject(marker);
+          group2.addObject(marker);
         }
 
         /**
@@ -105,13 +131,13 @@
         * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
         * @param  {H.Map} map      A HERE Map instance within the application
         */
-        function addInfoBubble(map, ubicaciones) {
-          var group = new H.map.Group();
+        function addInfoBubble(map2, ubicaciones) {
+          var group2 = new H.map.Group();
 
-          map.addObject(group);
+          map2.addObject(group2);
 
           // add 'tap' event listener, that opens info bubble, to the group
-          group.addEventListener('tap', function (evt) {
+          group2.addEventListener('tap', function (evt) {
             // event target is the marker itself, group is a parent event target
             // for all objects that it contains
             var bubble =  new H.ui.InfoBubble(evt.target.getGeometry(), {
@@ -119,18 +145,20 @@
               content: evt.target.getData()
             });
             // show info bubble
-            ui.addBubble(bubble);
+            ui2.addBubble(bubble);
           }, false);
           ubicaciones.forEach(el => {
             var coordenada1  = el[1]
-            var coordenada2  = el[2] 
-            console.log(el[0])
-            addMarkerToGroup(group, {lat:coordenada2, lng:coordenada1},
-              '<div style="color:#75cfb8"><strong>'+el[0]+
-              '</strong></div><div ><strong>precio:</strong> '+el[3]+'€ </div>');
+            var coordenada2  = el[2]
+            if(el[4]!="True"){
+                  addMarkerToGroup(group2, {lat:coordenada2, lng:coordenada1},
+                  '<div style="color:#75cfb8"><strong>'+el[0]+
+                  '</strong></div><div ><strong>precio:</strong> '+el[3]+'€ </div>');
 
-            map.setCenter({lat:coordenada2, lng:coordenada1}); 
-          });
+                map2.setCenter({lat:coordenada2, lng:coordenada1}); 
+              }
+              });
+           
 
         }
         //el svg de la marca, ya a partir de aquí no hay más código importante.

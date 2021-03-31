@@ -42,7 +42,7 @@ class CreateProductForm(forms.ModelForm):
   
 
 class AddUbicationForm(forms.ModelForm):
-    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all(),required=False, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 400px'}))
+    ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all().order_by("nombre"),required=False, widget=forms.Select(attrs={'class' : 'form-control'}))
     nombreComercio = forms.CharField(label='Nombre del Comercio', required=False, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False)
     lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
@@ -50,7 +50,7 @@ class AddUbicationForm(forms.ModelForm):
 
     class Meta:
         model = Ubicacion
-        fields = ['nombre']
+        fields = ['nombreComercio']
 
 class ReporteForm(forms.ModelForm):
     class Meta:

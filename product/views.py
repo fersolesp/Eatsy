@@ -43,40 +43,72 @@ def showProduct(request, productId):
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
+
+        formUbicacion = AddUbicationForm()
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
             return redirect('/admin')
     elif request.method == 'POST':
-        if'reportButton' in request.POST:
+        if 'reportButton' in request.POST:
             form = ReporteForm(request.POST)
             formComment= CommentForm()
+            formUbicacion = AddUbicationForm()
             formComment.empty_permitted=True
             if form.is_valid():
                 reporte = form.save(commit=False)
                 reporte.producto = Producto(id=productId)
                 reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
                 reporte.save()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment,'aportaciones':aportaciones})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment,'aportaciones':aportaciones})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+
         if 'commentButton' in request.POST:
             form = ReporteForm()
             formComment= CommentForm(request.POST)
+            formUbicacion = AddUbicationForm()
             form.empty_permitted=True
             if formComment.is_valid():
                 comentario = formComment.save(commit=False)
                 comentario.producto = Producto(id=productId)
                 comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
                 comentario.save()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment,'aportaciones':aportaciones})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment, 'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones})
-
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+        if 'addingUbication' in request.POST:
+            form = ReporteForm()
+            formComment= CommentForm()
+            formUbicacion = AddUbicationForm(request.POST)
+            product = get_object_or_404(Producto, pk=productId)
+            if formUbicacion.is_valid():
+                ubicaciones = formUbicacion.cleaned_data['ubicaciones']
+                nombre = formUbicacion.cleaned_data['nombreComercio']
+                latitud = formUbicacion.cleaned_data['lat']
+                longitud = formUbicacion.cleaned_data['lon']
+                precio = formUbicacion.cleaned_data['precio']
+                if(nombre!='' and latitud!='' and longitud!=''):
+                    ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
+                    ubicacion.save()
+                    # TODO: Adaptar el user cuando se haga el login
+                    ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                    ubicacionProducto.save()
+                else:
+                    # TODO: Adaptar el user cuando se haga el login
+                    ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicaciones, user=get_object_or_404(Perfil, pk=2), precio=precio)
+                    ubicacionProducto.save()
+                
+                formUbicacion = AddUbicationForm()
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente la ubicación. ','form':form,'formComment':formComment, 'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+            else:
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+            
 def listProduct(request):
 
     product_list = Producto.objects.all()
@@ -193,40 +225,6 @@ def createProduct(request):
 
     
 
-          
-def addUbication(request, productId):
-    if request.method == 'GET':
-        form = AddUbicationForm()
-        return render(request,'products/show.html', {'form':form})
-
-    if request.method == 'POST':
-        form=AddUbicationForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            ubicaciones = form.cleaned_data['ubicaciones']
-            nombre = form.cleaned_data['nombreComercio']
-            latitud = form.cleaned_data['lat']
-            longitud = form.cleaned_data['lon']
-            precio = form.cleaned_data['precio']
-            producto = get_object_or_404(Producto, pk=productId)
-
-            if(nombre!='' and latitud!='' and longitud!=''):
-                ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
-                ubicacion.save()
-
-                # TODO: Adaptar el user cuando se haga el login
-                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
-                ubicacionProducto.save()
-
-            for ubicacion in ubicaciones:
-                # TODO: Adaptar el user cuando se haga el login
-                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio=precio)
-                ubicacionProducto.save()
-
-            return render (request,'products/show.html')
-
-        else:
-            return render(request,'products/show.html', {'form':form})
 
 
 def reportProduct(request, productId):
