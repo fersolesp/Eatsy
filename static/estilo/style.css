@@ -25,6 +25,11 @@ body {
     font-weight: bold;
 }
 
+.descripcion {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
+}
+
 .botonProducto {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.1em;
@@ -33,13 +38,15 @@ body {
     cursor: pointer;
 }
 
-.botonProducto:hover {
-    background-color: #75cfb8;
-}
-
 hr {
     background-color: black;
     height: 1px;
+    width: 100%;
+}
+
+.hrmini {
+    background-color: black;
+    height: 0.3px;
     width: 100%;
 }
 
@@ -64,7 +71,7 @@ hr {
 
 .scrolli {
     width: 90%;
-    height: 500px;
+    max-height: 500px;
     overflow-y: scroll;
 }
 
@@ -73,7 +80,7 @@ hr {
     grid-template-rows: auto 1fr auto;
     align-items: center;
     padding: 2em;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 0.5em;
     background-color: #bbdfc8;
 }
@@ -90,6 +97,28 @@ hr {
     border: 1px solid black;
     border-radius: 0.5em;
     background-color: #fff4df;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
+}
+
+.product-card-descripcion {
+    display: grid;
+    padding: 1em;
+    grid-template-rows: auto 1fr auto;
+    border: 1px solid black;
+    border-radius: 0.5em;
+    background-color: #fff4df;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
+}
+
+.boton-show-inner {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+    padding: 0.7em;
+    border-radius: 0.5em;
+    background-color:   #75cfb8;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
 }
