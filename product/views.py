@@ -65,9 +65,9 @@ def showProduct(request, productId):
                 reporte.producto = Producto(id=productId)
                 reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
                 reporte.save()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el reporte. ', 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio', 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
 
         if 'commentButton' in request.POST:
             form = ReporteForm()
@@ -79,9 +79,9 @@ def showProduct(request, productId):
                 comentario.producto = Producto(id=productId)
                 comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
                 comentario.save()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente el comentario. ','form':form,'formComment':formComment, 'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
         if 'addingUbication' in request.POST:
             form = ReporteForm()
             formComment= CommentForm()
@@ -104,13 +104,11 @@ def showProduct(request, productId):
                     ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicaciones, user=get_object_or_404(Perfil, pk=2), precio=precio)
                     ubicacionProducto.save()
                 
-                formUbicacion = AddUbicationForm()
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','msj': '¡Gracias! Se ha recibido correctamente la ubicación. ','form':form,'formComment':formComment, 'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,precio_medio:'precio_medio','form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
             
 def listProduct(request):
-
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
         product_list = product_list.filter(estado='Aceptado')
@@ -155,27 +153,6 @@ def listProduct(request):
     return render(request, 'products/list.html', {
         'products': products, 'searchProductForm': searchProductForm
         })
-
-def listProductByEstado(request, estado):
-    if(estado.lower() == "aceptado"):
-        estado = "Aceptado"
-    else:
-        estado = "Pendiente"
-
-    products_list = Producto.objects.filter(estado=estado)
-
-    page = request.GET.get('page')
-    paginator = Paginator(products_list,12)
-
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
-    
-    return render(request, 'products/list.html', { 'products': products })
-
 
 def createProduct(request):
     if request.method=='GET':
@@ -222,34 +199,6 @@ def createProduct(request):
             return redirect('product:list')
         else:
             return render(request,'products/create.html', {'form':form})
-
-    
-
-
-
-def reportProduct(request, productId):
-    producto = get_object_or_404(Producto, pk=productId)
-
-    if request.method == 'GET':
-        form = ReporteForm()
-    elif request.method == 'POST':
-        form = ReporteForm(request.POST)
-
-        if form.is_valid():
-            reporte = form.save(commit=False)
-            reporte.producto = Producto(id=productId)
-            reporte.user = User(id=1)  # TODO: CORREGIR CUANDO HAYA LOGIN
-            reporte.save()
-            return redirect('product:show', producto.id)
-
-    return render(request, 'products/addReport.html', {'form': form})
-
-
-# TODO: Cuando esté el login cambiar el login_url
-@user_passes_test(lambda u: u.is_superuser, login_url='/product/list')
-def showReport(request, reportId):
-    reporte = get_object_or_404(Reporte, pk=reportId)
-    return render(request, 'products/list.html', {'report': reporte})
 
 
 # TODO: Cuando esté el login cambiar el login_url
