@@ -24,3 +24,10 @@ urlpatterns = [
     path('product/', include('product.urls')),
     path('', views.principalScreen)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler400 = "Eatsy.views.errorBadRequestView"
+handler403 = "Eatsy.views.errorForbiddenView"
+handler405 = "Eatsy.views.errorNotAllowedView"
+handler410 = "Eatsy.views.errorGoneView"
+handler404 = "Eatsy.views.errorNotFoundView"
+handler500 = "Eatsy.views.errorServerErrorView"

@@ -1,0 +1,43 @@
+{% load static %}
+
+<head>
+    {% block head %}{% endblock %}
+    <title>Eatsy - {% block titulo %} Página no encontrada {% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>{% block title %}Eatsy!{% endblock %}</title>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/rating.js' %}" defer></script>
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+
+
+</head>
+
+<body class="justify-content-center  ">
+        <div class="row justify-content-center ">
+            <img  src="{% static 'img/logo.png' %}">
+        </div>
+        <div class="row justify-content-center">
+            <h1 > Ups, se ha producido un error. </h1>
+        </div>
+        <div class="row justify-content-center">
+            <h3>
+                Clique en el boton para volver al menú principal</h3>
+        </div>
+                   
+
+        <div class="row justify-content-center">
+                <a  href="/product/list" class="btn btn-warning btn-lg">Menú Principal</a>
+        </div>
+
+    <footer id="footer">
+        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+        <div class="container text-center">
+            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
