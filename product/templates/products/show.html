@@ -69,6 +69,12 @@
                 <div id="msjreporte" class="msj">{{msj}}</div>
             </div>
             {% endif %}
+            
+            {% if product.estado == 'Pendiente' %}
+                <div class="row justify-content-center">
+                    <div style="background-color: #ffc107;" id="msjRevision" class="msj">Este producto está pendiente de revisión. </div>
+                </div>
+            {% endif %}
             <div class="row justify-content-center">
                 <div style="display:block;" id="menucolapsar">
                     <nav class="col-sm-4 d-flex  navbar-light">
@@ -140,7 +146,13 @@
                         </div>
                         <!-- MODAL REPORTAR -->
                         <div class="row mt-5 mb-5">
-                            <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button></div>
+                            <div class="col-auto m-auto"> 
+                                
+                            {% if product.estado != 'Pendiente' %}
+                                <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button>
+                            {% endif %}
+                            </div>
+                            
                             <div class="modal fade" id="modalReport" tabindex="-1" role="dialog" aria-labelledby="modalReportLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -208,7 +220,8 @@
 
 
                     <div class="row mt-5">
-                        <div class="col-auto m-auto"> <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar</button></div>
+                        <div class="col-auto m-auto"> 
+                            {% if product.estado != 'Pendiente' %}<button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar</button>{% endif %}</div>
                         <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -251,7 +264,9 @@
                         <div id="colMap" style="padding:0px !important" class="col-12"> {% include 'products/map.html' %}</div>
                     </div>
                     <div class="row mt-2 justify-content-center">
-                        <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        {% if product.estado != 'Pendiente' %}
+                            <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        {% endif %}    
                     </div>
                     {% include 'products/createMap.html' %}
                 </div>
