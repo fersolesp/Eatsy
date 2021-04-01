@@ -1,12 +1,14 @@
 dist: xenial
 services:
 - postgresql
-addons:
-  postgresql: '9.4'
 before_script:
-- psql -U postgres -c "create user eatsyuser password 'complexpassword'"
-- psql -U postgres -c "create database test_eatsy owner eatsyuser"
-- psql -U postgres -c "ALTER USER eatsyuser CREATEDB"
+- psql -c "create user eatsyuser password 'complexpassword';" -U postgres
+- psql -c "create database eatsy owner eatsyuser;" -U postgres
+- psql -c "ALTER ROLE eatsyuser Superuser;" -U postgres
+- psql -c "ALTER USER eatsyuser CREATEDB;" -U postgres
+- psql -c "ALTER DATABASE eatsy OWNER TO eatsyuser;" -U postgres
+- psql -c "ALTER SCHEMA public OWNER TO CURRENT_USER;" -U postgres
+- python manage.py makemigrations
 language: python
 python:
 - '3.8'
