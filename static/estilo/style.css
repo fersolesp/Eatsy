@@ -142,11 +142,13 @@ hr {
 }
 
 .product-img {
-    max-height: 500px;
+    max-height: 500px !important;
+    width: 100%;
 }
 
 .product-img-list {
-    max-height: 330px;
+    max-height: 280px;
+    width: 100%;
 }
 
 .modal-header {

@@ -43,11 +43,11 @@
                     <div class="col-auto mb-5 nombreProductoShow">{{product.titulo}}</div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-sm-8 col-12 product-img">
-                        <img style="width: 100%; max-height: 600px" src="{{product.foto.url}}" alt="">
+                    <div class="col-sm-8 col-12 ">
+                        <img class="product-img" style="width: 100%; max-height: 600px" src="{{product.foto.url}}" alt="">
                     </div>
                 </div>
-                <div style="margin: 20%;" class="row mt-3">
+                <div style="margin: 20%;" class="row justify-content-center mt-3">
                     <input hidden="true" id="valoracion_media" value="{{valoracion_media}}" />
                     <form class="rate-form" action="" method="POST" id="{{product.id}}">
                         {% csrf_token %}
@@ -58,7 +58,7 @@
                         <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
                     </form>
                     <br/>
-                    <div id="msjrating"></div>
+                    <div class="mt-2" id="msjrating"></div>
                 </div>
             </div>
         </div>
