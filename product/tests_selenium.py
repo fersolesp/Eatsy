@@ -10,7 +10,8 @@ class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome('E:/ProgramFiles/chromedriver.exe', options=options)
+        self.driver.set_window_size(1920, 1080)
         super().setUp()
         call_command("flush", interactive=False)
         call_command("loaddata", "datosEjemplo.json")
@@ -21,7 +22,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         call_command("flush", interactive=False)
 
 
-    def test_voting_in_process(self):
-        self.driver.get(f'{self.live_server_url}/product/list')
-        self.driver.maximize_window()
-        assert 1==1
+    def test_base_page(self):
+        self.driver.get(f'{self.live_server_url}/')
+        assert self.driver.find_element_by_link_text(u"Iniciar sesión").text == u"Iniciar sesión"
