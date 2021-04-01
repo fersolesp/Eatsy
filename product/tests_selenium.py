@@ -10,7 +10,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        self.driver = webdriver.Chrome('E:/ProgramFiles/chromedriver.exe', options=options)
+        self.driver = webdriver.Chrome(options=options)
         super().setUp()
         call_command("flush", interactive=False)
         call_command("loaddata", "datosEjemplo.json")
