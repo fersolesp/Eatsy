@@ -185,9 +185,6 @@
                 let next = document.getElementById('pgnext');
                 let link3 = document.getElementById('pglink3');
                 let previous = document.getElementById('pgprevious');
-                console.log(page);
-                console.log(numPaginas);
-                console.log(page == numPaginas-1);
                 if(page == numPaginas-1){
                     link1.href = url(page);
                     link1.innerText = page; 
@@ -248,7 +245,7 @@
                     link2.href = url(2);
                     link3.href = url(3);
                     next.href = url(2);
-                    previous.href = url(2);
+                    previous.href = url(1);
                     previous.style.backgroundColor="gray";
                 }
             }
