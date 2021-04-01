@@ -137,7 +137,7 @@
         var x = document.getElementById("id_nombreComercio").value;
         var y = id_ubicaciones.value;
         var z = document.getElementById("id_foto").files[0];
-        if (x == "" && y == "" && !z){
+        if (x.trim() == "" && y == "" && !z){
             alert("Seleccione una foto y elija o cree una ubicación")
             return false;
         }

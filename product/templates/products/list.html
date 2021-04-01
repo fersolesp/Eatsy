@@ -94,10 +94,10 @@
                             <div style="padding-bottom: 10px;font-weight: bold;">Estado:</div>
 
                                 <span style="margin-left: 35px;"><span class="form-check-input">
-                                    <input form="estado-form" type="radio" id="estado" name="estado" value="aceptado"> Aceptado
+                                    <input form="estado-form" type="radio" id="estadoA" name="estado" value="aceptado"> Aceptado
                                 </span></span><br><div style="height:1em"></div>
                                 <span style="margin-left: 35px;"><span class="form-check-input">
-                                    <input form="estado-form" type="radio" id="estado" name="estado" value="pendiente"> Pendiente
+                                    <input form="estado-form" type="radio" id="estadoP" name="estado" value="pendiente"> Pendiente
                                 </span></span>
                                 <br>
                             <div style="height:1em"></div>
@@ -217,6 +217,15 @@
                 var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
                 results = regex.exec(location.search);
                 return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+        </script>
+        <!-- Script checkbox estado -->
+        <script type="text/javascript">
+            let href = location.href;
+            if(href.includes("aceptado")){ 
+                document.getElementById("estadoA").checked = true;
+            }else if (href.includes("pendiente")){
+                document.getElementById("estadoP").checked = true;
             }
         </script>
 

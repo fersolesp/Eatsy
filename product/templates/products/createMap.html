@@ -80,7 +80,7 @@
     function validateUbicaciones() {
         var x = document.getElementById("id_nombreComercio").value;
         var y = id_ubicaciones.value;
-        if (x == "" && y == "" ){
+        if (x.trim() == "" && y == "" ){
             alert("Elija o cree una ubicación")
             return false;
         }
