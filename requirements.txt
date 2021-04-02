@@ -7,3 +7,5 @@ pillow
 boto3
 django-storages
 python-dotenv
+djangorestframework
+selenium

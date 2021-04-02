@@ -9,6 +9,10 @@ before_script:
 - psql -c "ALTER DATABASE eatsy OWNER TO eatsyuser;" -U postgres
 - psql -c "ALTER SCHEMA public OWNER TO CURRENT_USER;" -U postgres
 - python manage.py makemigrations
+- CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
+- CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
+- curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
+- unzip chromedriver_linux64.zip -d ~/bin
 language: python
 python:
 - '3.8'
