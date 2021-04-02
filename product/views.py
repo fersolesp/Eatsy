@@ -149,6 +149,7 @@ def listProduct(request):
         products = paginator.page(1)
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
+        messages.error(request, 'Superior a la paginación existente, Se muestra la última página ('+str(paginator.num_pages)+')')
 
     return render(request, 'products/list.html', {
         'products': products, 'searchProductForm': searchProductForm
