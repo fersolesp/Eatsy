@@ -40,10 +40,16 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").click()
         assert self.driver.title == "Eatsy - Productos"
 
+    def test_unirse(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.find_element(By.LINK_TEXT, "Unirse").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
+
     def test_add(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".botonAdd > img").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".botonAdd").click()
         assert self.driver.title == "Eatsy - Añadir producto"
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
@@ -124,11 +130,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.find_element(By.ID, "menuNormal").click()
     
-    def test_unirse(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.LINK_TEXT, "Unirse").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
+
   
     def test_admin(self):
         self.driver.get(f'{self.live_server_url}/admin/')
