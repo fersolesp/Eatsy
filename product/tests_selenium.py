@@ -52,24 +52,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
 
-    def test_add(self):
-        self.driver.get(f'{self.live_server_url}/product/create')
-        assert self.driver.find_element_by_text(u"Añadir un producto").text == u"Añadir un producto"
-        assert self.driver.title == "Añadir un producto"
-        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
-        self.driver.switch_to.alert.accept()
-        self.driver.find_element(By.ID, "menuNormal").click()
-  
-
-    def test_filtros(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.XPATH, "//button[contains(.,\'Filtros\')]").click()
-        assert self.driver.find_element(By.ID, "modalComentarLabel").text == "Aplicar filtros y ordenar los productos"
-        self.driver.find_element(By.CSS_SELECTOR, "#modalComentar .btn-secondary").click()
-  
-      
     def test_nav(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
@@ -79,11 +61,19 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_show(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-lg-4:nth-child(2) .row-fluid:nth-child(4) .m-auto").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .mb-2").click()
+        self.driver.find_element(By.XPATH, "(//a[contains(text(),\'Ver detalles\')])[2]").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .row > .titulito").text == "Dietas:"
-        self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2 > .titulito").text == "   Descripción:"
+
+    def test_add(self):
+        self.driver.get(f'{self.live_server_url}/product/create')
+        assert self.driver.title == "Añadir un producto"
+        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+        self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
+        self.driver.switch_to.alert.accept()
+        self.driver.find_element(By.ID, "menuNormal").click()
+
+
 
 
 
