@@ -10,7 +10,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        self.driver = webdriver.Chrome('C:/Program Files/chromedriver.exe', options=options)
+        self.driver = webdriver.Chrome(options=options)
         self.driver.set_window_size(1920, 1080)
         super().setUp()
         call_command("flush", interactive=False)
@@ -43,7 +43,6 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_filtros(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1094, 948)
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         assert self.driver.title == "Eatsy - Productos"
         self.driver.find_element(By.ID, "id_orderBy").click()
@@ -53,7 +52,6 @@ class SeleniumTests(StaticLiveServerTestCase):
       
     def test_nav(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 948)
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         self.driver.find_element(By.LINK_TEXT, "Mi cuenta").click()
         assert self.driver.find_element(By.LINK_TEXT, "Mi Perfil").text == "Mi Perfil"
@@ -64,7 +62,6 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_show(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 948)
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         self.driver.find_element(By.LINK_TEXT, "Ver detalles").click()
         self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .row > .titulito").click()
@@ -112,14 +109,12 @@ class SeleniumTests(StaticLiveServerTestCase):
     
     def test_unirse(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 948)
         self.driver.find_element(By.LINK_TEXT, "Unirse").click()
         self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
         self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
   
     def test_admin(self):
         self.driver.get(f'{self.live_server_url}/admin/')
-        self.driver.set_window_size(1080, 948)
         self.driver.find_element(By.CSS_SELECTOR, ".login").click()
         self.driver.find_element(By.ID, "id_username").send_keys("admin")
         self.driver.find_element(By.CSS_SELECTOR, ".login").click()
