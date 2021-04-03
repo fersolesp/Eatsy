@@ -1,3 +1,4 @@
+
 """
 ASGI config for Eatsy project.
 
