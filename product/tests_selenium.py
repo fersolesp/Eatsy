@@ -37,7 +37,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_acceder(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        assert self.driver.title == "Eatsy - Productos"
+        assert self.driver.find_element_by_link_text(u"Búsqueda de productos").text == u"Búsqueda de productos"
 
     def test_unirse(self):
         self.driver.get(f'{self.live_server_url}/')
@@ -59,16 +59,8 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_filtros(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-auto > .w-100").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".modal-header").click()
-        assert self.driver.title == "Eatsy - Productos"
-        self.driver.find_element(By.ID, "id_orderBy").click()
-        dropdown = self.driver.find_element(By.ID, "id_orderBy")
-        dropdown.find_element(By.XPATH, "//option[. = 'Más baratos primero']").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".btn-primary").click()
-        elements = self.driver.find_elements(By.ID, "dropdownMenuButton")
-        assert len(elements) > 0
-        self.driver.find_element(By.ID, "dropdownMenuButton").click()
+        self.driver.find_element(By.LINK_TEXT, "Filtros").click()
+        assert self.driver.find_element_by_link_text(u"Aplicar filtros y ordenar los productos").text == u"Aplicar filtros y ordenar los productos"
   
       
     def test_nav(self):
@@ -130,7 +122,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "menuNormal").click()
     
 
-  
     def test_admin(self):
         self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.CSS_SELECTOR, ".login").click()
@@ -142,20 +133,5 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
-        self.driver.find_element(By.CSS_SELECTOR, ".padding-list:nth-child(4) .w-100").click()
-        self.driver.find_element(By.CSS_SELECTOR, "#modalEstado .modal-header").click()
-        assert self.driver.title == "Eatsy - Productos"
-        self.driver.find_element(By.CSS_SELECTOR, "#modalEstado .btn-secondary").click()
         self.driver.find_element(By.LINK_TEXT, "Revisar reportes").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".tituloReporte").click()
-        assert self.driver.title == "Eatsy - Reportes"
-        self.driver.find_element(By.ID, "menuNormal").click()
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-lg-4:nth-child(2) .row-fluid:nth-child(4) .m-auto").click()
-        elements = self.driver.find_elements(By.LINK_TEXT, "Editar")
-        self.driver.find_element(By.LINK_TEXT, "Editar").click()
-        self.driver.find_element(By.CSS_SELECTOR, "h3").click()
-        assert self.driver.title == "Eatsy - Revisar"
-        self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
-        self.driver.switch_to.alert.accept()
-        self.driver.find_element(By.ID, "menuNormal").click()
+        assert self.driver.find_element_by_link_text(u"Notificaciones de productos reportados").text == u"Notificaciones de productos reportados"
