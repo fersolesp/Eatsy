@@ -37,25 +37,33 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_acceder(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").click()
         assert self.driver.title == "Eatsy - Productos"
 
     def test_add(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.XPATH, "//img[contains(@src,\'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+\')]").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".botonAdd > img").click()
         assert self.driver.title == "Eatsy - Añadir producto"
-        self.driver.find_element(By.XPATH, "//div[@id=\'content-wrap\']/main/div/div/form/div[3]/div/button").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
         self.driver.switch_to.alert.accept()
         self.driver.find_element(By.ID, "menuNormal").click()
+  
 
     def test_filtros(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".col-auto > .w-100").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".modal-header").click()
         assert self.driver.title == "Eatsy - Productos"
         self.driver.find_element(By.ID, "id_orderBy").click()
         dropdown = self.driver.find_element(By.ID, "id_orderBy")
         dropdown.find_element(By.XPATH, "//option[. = 'Más baratos primero']").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".btn-primary").click()
+        elements = self.driver.find_elements(By.ID, "dropdownMenuButton")
+        assert len(elements) > 0
+        self.driver.find_element(By.ID, "dropdownMenuButton").click()
   
       
     def test_nav(self):
@@ -65,6 +73,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert self.driver.find_element(By.LINK_TEXT, "Mi Perfil").text == "Mi Perfil"
         assert self.driver.find_element(By.LINK_TEXT, "Cerrar sesión").text == "Cerrar sesión"
         self.driver.find_element(By.LINK_TEXT, "Lista de productos").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").click()
         assert self.driver.title == "Eatsy - Productos"
         self.driver.find_element(By.ID, "menuNormal").click()
 
@@ -132,6 +141,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
+        assert len(elements) > 0
         self.driver.find_element(By.CSS_SELECTOR, ".padding-list:nth-child(4) .w-100").click()
         self.driver.find_element(By.CSS_SELECTOR, "#modalEstado .modal-header").click()
         assert self.driver.title == "Eatsy - Productos"
