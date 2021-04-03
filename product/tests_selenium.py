@@ -54,6 +54,7 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_add(self):
         self.driver.get(f'{self.live_server_url}/product/create')
+        assert self.driver.find_element_by_text(u"Añadir un producto").text == u"Añadir un producto"
         assert self.driver.title == "Añadir un producto"
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
@@ -72,13 +73,9 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_nav(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.LINK_TEXT, "Mi cuenta").click()
-        assert self.driver.find_element(By.LINK_TEXT, "Mi Perfil").text == "Mi Perfil"
-        assert self.driver.find_element(By.LINK_TEXT, "Cerrar sesión").text == "Cerrar sesión"
-        self.driver.find_element(By.LINK_TEXT, "Lista de productos").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").click()
-        assert self.driver.title == "Eatsy - Productos"
-        self.driver.find_element(By.ID, "menuNormal").click()
+        assert self.driver.find_element_by_link_text(u"Mi cuenta").text == u"Mi cuenta"
+        assert self.driver.find_element_by_link_text(u"Lista de productos").text == u"Lista de productos"
+        assert self.driver.find_element_by_text(u"Búsqueda de productos").text == u"Búsqueda de productos"
 
     def test_show(self):
         self.driver.get(f'{self.live_server_url}/')
