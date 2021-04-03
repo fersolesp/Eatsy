@@ -73,17 +73,17 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_nav(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        assert self.driver.find_element_by_link_text(u"Mi cuenta").text == u"Mi cuenta"
-        assert self.driver.find_element_by_link_text(u"Lista de productos").text == u"Lista de productos"
-        assert self.driver.find_element_by_text(u"Búsqueda de productos").text == u"Búsqueda de productos"
+        elements = self.driver.find_elements(By.LINK_TEXT, "Mi cuenta")
+        elements = self.driver.find_elements(By.LINK_TEXT, "Lista de productos")
 
     def test_show(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        assert self.driver.find_element_by_link_text(u"Ver detalles").text == u"Ver detalles"
+        self.driver.find_element(By.CSS_SELECTOR, ".col-lg-4:nth-child(2) .row-fluid:nth-child(4) .m-auto").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .mb-2").click()
         assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .row > .titulito").text == "Dietas:"
-        assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2 > .titulito").text == "Descripción:"
-        assert self.driver.find_element(By.CSS_SELECTOR, ".mt-3 > .titulito").text == "Precio medio:"
+        self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2").click()
+        assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2 > .titulito").text == "   Descripción:"
 
 
 
