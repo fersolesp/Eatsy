@@ -1,16 +1,24 @@
 import json
-from django.utils import timezone
+import pytest
+import time
 from django.contrib.auth.models import User
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.management import call_command
+from django.utils import timezone
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome('',options=options)
         self.driver.set_window_size(1920, 1080)
         super().setUp()
         call_command("flush", interactive=False)
