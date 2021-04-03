@@ -9,12 +9,15 @@ class Ubicacion(models.Model):
                                   MinValueValidator(-90), MaxValueValidator(90)],null=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, validators=[
                                    MinValueValidator(-180), MaxValueValidator(180)],null=True)
-                                   
+                       
     @property
     def esSupermercado(self):
         return int(self.latitud) == 0 and int(self.longitud) == 0
         
     def __str__(self):
+        """
+        Devuelve el nombre de la ubicación
+        """
         return self.nombre
 
 # class Dieta(models.Model):
@@ -40,8 +43,10 @@ class Producto(models.Model):
     ubicaciones = models.ManyToManyField(
         Ubicacion, through="UbicacionProducto")
 
-    # Por defecto se ordena por id descendiente (más nuevos primero)
     class Meta:
+        """
+        Por defecto se ordena por id descendiente (más nuevos primero)
+        """
         ordering = ['-id']
 
     def __str__(self):
@@ -88,7 +93,7 @@ class Valoracion(models.Model):
     puntuacion = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=False)
     fecha = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
-    producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.producto.titulo + ': ' +str(self.puntuacion)
