@@ -10,7 +10,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome('C:/Program Files/chromedriver.exe', options=options)
         self.driver.set_window_size(1920, 1080)
         super().setUp()
         call_command("flush", interactive=False)
@@ -28,19 +28,17 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     def test_acceder(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 948)
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         assert self.driver.title == "Eatsy - Productos"
 
     def test_add(self):
         self.driver.get(f'{self.live_server_url}/')
-        self.driver.set_window_size(1080, 948)
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".botonAdd > img").click()
+        self.driver.find_element(By.XPATH, "//img[contains(@src,\'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+\')]").click()
         assert self.driver.title == "Eatsy - Añadir producto"
+        self.driver.find_element(By.XPATH, "//div[@id=\'content-wrap\']/main/div/div/form/div[3]/div/button").click()
         self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
         self.driver.switch_to.alert.accept()
-        assert self.driver.title == "Eatsy - Productos"
         self.driver.find_element(By.ID, "menuNormal").click()
 
     def test_filtros(self):
