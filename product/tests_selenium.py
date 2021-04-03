@@ -37,7 +37,6 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_acceder(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").click()
         assert self.driver.title == "Eatsy - Productos"
 
     def test_unirse(self):
