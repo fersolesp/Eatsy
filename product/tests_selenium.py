@@ -141,7 +141,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
-        assert len(elements) > 0
         self.driver.find_element(By.CSS_SELECTOR, ".padding-list:nth-child(4) .w-100").click()
         self.driver.find_element(By.CSS_SELECTOR, "#modalEstado .modal-header").click()
         assert self.driver.title == "Eatsy - Productos"
@@ -153,7 +152,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         self.driver.find_element(By.CSS_SELECTOR, ".col-lg-4:nth-child(2) .row-fluid:nth-child(4) .m-auto").click()
         elements = self.driver.find_elements(By.LINK_TEXT, "Editar")
-        assert len(elements) > 0
         self.driver.find_element(By.LINK_TEXT, "Editar").click()
         self.driver.find_element(By.CSS_SELECTOR, "h3").click()
         assert self.driver.title == "Eatsy - Revisar"
