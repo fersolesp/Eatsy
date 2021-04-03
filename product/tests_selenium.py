@@ -59,8 +59,9 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_filtros(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.LINK_TEXT, "Filtros").click()
-        assert self.driver.find_element_by_link_text(u"Aplicar filtros y ordenar los productos").text == u"Aplicar filtros y ordenar los productos"
+        self.driver.find_element(By.XPATH, "//div[@id=\'content-wrap\']/div/div[2]/div[2]/div/button").click()
+        assert self.driver.find_element(By.ID, "modalComentarLabel").text == "Aplicar filtros y ordenar los productos"
+        self.driver.find_element(By.CSS_SELECTOR, "#modalComentar .btn-secondary").click()
   
       
     def test_nav(self):
@@ -122,7 +123,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "menuNormal").click()
     
 
-    def test_admin(self):
+    def test_admin_revisar(self):
         self.driver.get(f'{self.live_server_url}/admin/')
         self.driver.find_element(By.CSS_SELECTOR, ".login").click()
         self.driver.find_element(By.ID, "id_username").send_keys("admin")
@@ -133,5 +134,3 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
         elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
-        self.driver.find_element(By.LINK_TEXT, "Revisar reportes").click()
-        assert self.driver.find_element_by_link_text(u"Notificaciones de productos reportados").text == u"Notificaciones de productos reportados"
