@@ -34,22 +34,27 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/')
         assert self.driver.find_element_by_link_text(u"Iniciar sesión").text == u"Iniciar sesión"
 
-    def test_acceder(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        assert self.driver.find_element_by_link_text(u"Búsqueda de productos").text == u"Búsqueda de productos"
-
     def test_unirse(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Unirse").click()
         self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
         self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
 
-    def test_add(self):
-        self.driver.get(f'{self.live_server_url}/')
+    def test_admin_revisar(self):
+        self.driver.get(f'{self.live_server_url}/admin/')
+        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+        self.driver.find_element(By.ID, "id_username").send_keys("admin")
+        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+        self.driver.find_element(By.ID, "id_password").send_keys("admin")
+        self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
+        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".botonAdd").click()
-        assert self.driver.title == "Eatsy - Añadir producto"
+        elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
+
+    def test_add(self):
+        self.driver.get(f'{self.live_server_url}/product/create')
+        assert self.driver.title == "Añadir un producto"
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
         self.driver.switch_to.alert.accept()
@@ -59,7 +64,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_filtros(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.XPATH, "//div[@id=\'content-wrap\']/div/div[2]/div[2]/div/button").click()
+        self.driver.find_element(By.XPATH, "//button[contains(.,\'Filtros\')]").click()
         assert self.driver.find_element(By.ID, "modalComentarLabel").text == "Aplicar filtros y ordenar los productos"
         self.driver.find_element(By.CSS_SELECTOR, "#modalComentar .btn-secondary").click()
   
@@ -123,14 +128,4 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "menuNormal").click()
     
 
-    def test_admin_revisar(self):
-        self.driver.get(f'{self.live_server_url}/admin/')
-        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("admin")
-        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("admin")
-        self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
-        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
+
