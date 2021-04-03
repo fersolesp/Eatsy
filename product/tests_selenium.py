@@ -59,15 +59,13 @@ class SeleniumTests(StaticLiveServerTestCase):
         elements = self.driver.find_elements(By.LINK_TEXT, "Lista de productos")
 
     def test_show(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_element(By.LINK_TEXT, "Ver detalles").click()
+        self.driver.get(f'{self.live_server_url}/show/1')
         assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .row > .titulito").text == "Dietas:"
         assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2 > .titulito").text == "   Descripción:"
 
     def test_add(self):
         self.driver.get(f'{self.live_server_url}/product/create/')
-        assert self.driver.text == "Añadir un producto"
+        assert self.driver.find_element(By.CSS_SELECTOR, "h3").text == "Añadir un producto"
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
         self.driver.switch_to.alert.accept()
