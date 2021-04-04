@@ -14,8 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from Eatsy import views
+from django.conf.urls.static import static
+from Eatsy import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('product/', include('product.urls')),
+    path('', views.principalScreen),
+    path('subscribe/', views.subscribe),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler400 = "Eatsy.views.errorBadRequestView"
+handler403 = "Eatsy.views.errorForbiddenView"
+handler405 = "Eatsy.views.errorNotAllowedView"
+handler410 = "Eatsy.views.errorGoneView"
+handler404 = "Eatsy.views.errorNotFoundView"
+handler500 = "Eatsy.views.errorServerErrorView"

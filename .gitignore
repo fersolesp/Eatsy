@@ -3,8 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# static
+staticfiles/*
+
 # C extensions
 *.so
+
+
+# Migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 
 # Distribution / packaging
 .Python
@@ -102,6 +111,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+*.env
 .env
 .venv
 env/

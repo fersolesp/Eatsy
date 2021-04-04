@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html> {% load static %}
+<html lang="en">
+
+<head>
+    {% block head %}{% endblock %}
+    <title>Eatsy - {% block titulo %} {% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>{% block title %}Eatsy!{% endblock %}</title>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/rating.js' %}" defer></script>
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+
+        <!-- MENU PARA ORDENADOR -->
+        <b-navbar-brand href="/">
+            <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+        </b-navbar-brand>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+
+            {% if user.is_superuser %}
+            <a id="menuNormal" class="btn btn-dark" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
+
+            <a id="menuNormal"  class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
+            <div id="menuNormal"  class="dropdown show">
+                <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Mi cuenta
+            </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">Mi Perfil</a>
+                    <a class="dropdown-item" href="#">Cerrar sesión</a>
+                </div>
+            </div>
+
+            <!-- MENU PARA EL MOVIL -->
+            <div id="menuMovil" class="collapse navbar-collapse navbar-ex1-collapse ">
+            <div class="row justify-content-center">
+                <b-navbar-brand href="/">
+                    <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+                </b-navbar-brand>
+            </div>
+                <ul  class="nav navbar-nav mt-2">
+                    <a href="#" class="dropdown-toggle btn btn-dark" data-toggle="dropdown">
+                      Menú <b class="caret"></b>
+                    </a>
+                    <div style="background-color: #343a40" class="dropdown-menu ">
+                        {% if user.is_superuser %}
+                        <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
+                        
+                        <a  class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
+                            <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Mi cuenta
+                        </a>
+
+                            <div style="background-color: #343a40;border: none;"  class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
+                                <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
+                                <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                </ul>   
+            </div>         
+    </div>
+
+
+
+
+    <div id="page-container">
+        <div id="content-wrap">
+            {% block contenido %} {% endblock %}
+        </div>
+        <footer id="footer">
+            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+            <div class="container text-center">
+                <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

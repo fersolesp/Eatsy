@@ -1,0 +1,191 @@
+
+    <form onsubmit="return validateUbicaciones()" class="mt-4" action="/product/show/{{product.id}}" method="POST">
+        {% csrf_token %}
+    <div style="display:block;" id="displayer">
+            <div><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
+            <div style="margin-right: 1%;">{{formUbicacion.ubicaciones}}</div>
+            <div style="margin-left: 1%; margin-top: 0.5%;">
+                <a onclick="mostrarMapa()" id="link">
+                    <img height="30px" width="30px"
+                        src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
+                </a> <span style="color:gray; margin-top: 20px;">Pulsa en este botón teniendo seleccionado "Añade una nueva ubicación".</span>
+                
+            </div>
+    <div style="display:block;" id="displayer2"><div><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna
+            opción):&nbsp;</label></div>
+    {{formUbicacion.nombreComercio}}
+    {{formUbicacion.lat}}
+    {{formUbicacion.lon}}
+
+        <label for="supermercado">¿La nueva ubicación es un supermercado?</label><span style="color:red;">*</span>:<br>
+        <span class="col-sm-3"><input type="radio" id="Si" name="supermercado"  value="si">
+        <label for="si">Si</label></span>
+        <span class="col-sm-3"><input type="radio" id="No" name="supermercado"  value="no">
+        <label for="no">No</label></span><br>
+
+        <div style="display:block;" id="displayer3">
+        <label for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y
+            clique en el mapa el lugar.):</label>
+    <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad" class="form-control">
+    <div class="row justify-content-center">
+        <div style="width: 640px; height: 480px; display: inherit; margin-top: 2%" id="mapContainer2">
+        </div>
+    </div></div>
+
+</div>
+<label>Precio <span style="color:red;">*</span>:
+{{formUbicacion.precio}}
+<input type="submit" name="addingUbication" value="Guardar ubicación" class="btn mt-2 btn-warning"></input>
+</div>
+</form>
+<script type="text/javascript">
+    let No = document.getElementById("No");
+    let Si = document.getElementById("Si");
+    Si.onchange=()=>{supermercadochange()}
+    No.onchange=()=>{supermercadochange()}
+    function supermercadochange(){
+
+        var displayer3 = document.getElementById("displayer3");
+        if(No.checked){
+            document.getElementById("id_lat").value = "";
+            document.getElementById("id_lon").value = "";
+            displayer3.style.display="block";
+        }else{
+            document.getElementById("id_lat").value = "0.00";
+            document.getElementById("id_lon").value = "0.00";
+            displayer3.style.display="none";
+        }
+    }
+    let mapContainer2 = document.getElementById("mapContainer2");
+    mapContainer2.style.width = colMap.width;
+      mapContainer2.style.height = window.innerHeight*0.49+"px";
+    setTimeout(()=>{
+        let displayer2 = document.getElementById("displayer2");
+        displayer2.style.display = "none";
+        var displayer = document.getElementById("displayer");
+        displayer.style.display = "none";
+        var displayer3 = document.getElementById("displayer3");
+        displayer3.style.display = "none";
+    }, 1)
+    let addUbicacion = document.getElementById("addUbicacion");
+    addUbicacion.onclick = () => displayer.style.display = "block"
+    let id_ubicaciones = document.getElementById("id_ubicaciones");
+    id_ubicaciones.onchange = () => {
+        displayer2.style.display = "none";
+        document.getElementById("id_lat").value = "";
+        document.getElementById("id_lon").value = "";
+        document.getElementById("id_nombreComercio").value = "";
+        document.getElementById("buscador").value = "";
+    }
+    function validateUbicaciones() {
+        var x = document.getElementById("id_nombreComercio").value;
+        var y = id_ubicaciones.value;
+        if (x.trim() == "" && y == "" ){
+            alert("Elija o cree una ubicación")
+            return false;
+        }
+        if(!Si.checked && !No.checked && y==""){
+            alert("Diga si es un Supermercado o no")
+            return false;
+        }
+        if(x!= "" && document.getElementById("id_lat").value == "" && document.getElementById("id_lon").value == ""){
+            alert("Selecciona una ubicación en el mapa, pulsando en él.")
+            return false;
+        }
+       
+    }
+
+    document.querySelector('#id_ubicaciones > option').innerText = "Añade una nueva ubicación";
+
+    var defaultLayers = platform.createDefaultLayers();
+    var maptypes = platform.createDefaultLayers();
+
+    var map = new H.Map(
+
+        document.getElementById('mapContainer2'),
+        defaultLayers.vector.normal.map,
+        {
+            zoom: 13,
+            center: { lng: -3.7032700, lat: 40.4166400 } //ejemplo para marcar ubicacion
+        });
+
+
+    map.getViewPort().resize();
+    var service = platform.getSearchService();
+
+
+    // Add event listener:
+
+
+    var lastmarker = "es";
+    map.addEventListener('tap', function (evt) {
+        if (lastmarker != "es") {
+            map.removeObject(lastmarker)
+        }
+        const position = map.screenToGeo(
+            evt.currentPointer.viewportX,
+            evt.currentPointer.viewportY
+        )
+        service.reverseGeocode({
+            at: position["lat"] + "," + position["lng"]
+        }, (result) => {
+            result.items.forEach((item) => {
+                // Assumption: ui is instantiated
+                // Create an InfoBubble at the returned location with
+                // the address as its contents:
+
+                document.getElementById("buscador").value = item.address.label
+            });
+        }, alert);
+        document.getElementById("id_lat").value = position["lat"]
+        document.getElementById("id_lon").value = position["lng"]
+        var icon = new H.map.Icon(svgMarkup)
+        var marker = new H.map.Marker(position, { icon: icon })
+        map.addObject(marker)
+        lastmarker = marker
+    });
+
+
+    var marcaBuscador = null;
+    var marcas = [];
+    var busqueda = ""
+    document.getElementById("buscador").onkeyup = () => {
+        if (document.getElementById("buscador").value != "") {
+            busqueda = document.getElementById("buscador").value
+        } else {
+            busqueda = "España"
+        }
+        service.geocode({
+            q: busqueda
+        }, (result) => {
+            // Add a marker for each location found
+            result.items.forEach((item) => {
+                const marker = new H.map.Marker(item.position);
+                map.setCenter(item.position);
+                document.getElementById("id_lat").value = item.position["lat"]
+                document.getElementById("id_lon").value = item.position["lng"]
+            });
+        }, alert);
+    }
+
+
+    //poder moverse por el mapa
+    var mapEvents = new H.mapevents.MapEvents(map);
+    var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+
+    // Instantiate the default behavior, providing the mapEvents object:
+    var behavior = new H.mapevents.Behavior(mapEvents);
+        function mostrarMapa() {
+
+    var displayer2 = document.getElementById("displayer2");
+    if (id_ubicaciones.value != "") {
+        alert('Selecciona "Añade una nueva ubicación" para añadir una nueva ubicación')
+    }
+    if (displayer2.style.display == "none" && id_ubicaciones.value == "") {
+        displayer2.style.display = "block";
+    } else {
+        displayer2.style.display = "none"
+    }
+    }
+</script>

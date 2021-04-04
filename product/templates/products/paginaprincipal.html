@@ -1,0 +1,305 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="Landing page de una futura web destinada a personas con restricciones alimentarias."></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="header row justify-content-center">
+            <img class="imgheader" src="{% static 'img/logoheader.png' %}"></img>
+            <div class="topnav-right" style="margin-left: 50%; margin-top: 1%;">
+                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/subscribe">Unirse</a>&nbsp;
+                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bloques">
+        <div id="bloque1" class="bloquemarron">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="titleblock col-12">
+                        ¿Qué es Eatsy?
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-6">
+                        <img class="comida" src="{% static 'img/comida.png' %}"></img>
+                    </div>
+                    <div id="bodyblock1" class="bodyblock col-md-5">
+                        Eatsy es un punto de encuentro para personas con necesidades alimenticias especiales dónde puedan compartir productos, dónde adquirirlos y su experiencia para hacer su vida más deliciosa.
+                    </div>
+                </div>
+            </div>
+
+            </Fade>
+        </div>
+        <div id="bloque2" class="bloqueverde">
+
+            <Flip right>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="titleblock col-12">
+                            ¿De dónde nace la idea?
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+
+                        <div id="bodyblock1" class="bodyblock col-md-5">
+                            Nace como un proyecto estudiantil para la Universidad de Sevilla y tras un estudio exhaustivo del mercado creemos que dichas personas no tienen recursos suficientes para encontrar buenos productos.
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <img class="comida" src="{% static 'img/comiendo.png' %}" "></img>
+              </div> 
+            </div>
+          </div>    
+        </Flip>
+        </div>
+        <div id="bloque3 " class="bloquemarron "> 
+        <Fade bottom> 
+          <div class="container ">
+            <div class="row justify-content-center ">
+              <div class="titleblock col-12 ">
+                ¿Qué funcionalidad tendrá?
+              </div> 
+            </div>
+            <div class="row justify-content-center ">
+            <div class="col-lg-3 col-5 ">
+                <img class="comida " src="{% static 'img/tenedor.png' %} " ></img>
+              </div> 
+              <div id="bodyblock1 " class="bodyblock col-md-5 ">
+                Los usuarios podrán filtrar productos que cumplan ciertas restricciones alimenticias (como el glúten) o sigan
+                algunas dietas (como el vegetarianismo), de esos elementos se podrá saber la opinión de los usuarios sobre el mismo
+                y donde encontrarlo, así como una descripción más detallada. <br></br>Además, podrán añadir ellos mismos productos que serán aprobados
+                por un administrador, añadir ubicaciones a los alimentos y añadir restricciones adicionales si las cumple.
+                <br></br>Todo esto tendrá una prueba gratuita sin tener que meter la tarjeta y tras ella su uso sólo costará 1.99€/mes
+              </div> 
+            </div>
+          </div>
+      </Fade>
+        </div>
+  
+        <div id="bloque4 " class="bloqueverde ">
+      <Fade right >
+        <div class="container ">
+            <div class="row justify-content-center ">
+              <div class="titleblock col-12 ">
+                ¿Cuándo estará lista?
+              </div> 
+            </div>
+            <div class="row justify-content-center ">
+            
+              <div id="bodyblock1 " class="bodyblock col-md-5 ">
+               Podemos distinguir 3 fases:<br></br>
+               <ul>
+                 <li>
+                   <strong>Primera fase:</strong> tendremos todo lo importante relacionado con los productos. 05/04/2021.
+                 </li>
+               </ul>
+               <ul>
+                 <li>
+                   <strong>Segunda fase:</strong> la aplicación estará terminada en cuanto a funcionalidad. 27/04/2021.
+                 </li>
+               </ul>
+               <ul>
+                 <li>
+                   <strong>Tercera fase:</strong> se arreglarán fallos y se harán posibles mejoras como el de implementar recetas con productos relacionados. 11/05/2021.
+                 </li>
+               </ul>
+               </div> 
+              <div class="col-lg-3 col-6 ">
+                <img class="comida " src="{% static 'img/familia.png' %} " ></img>
+              </div> 
+            </div>
+          </div>    
+      </Fade>
+        </div>        
+  
+      <div id="bloque6 " class="bloquemarron ">  
+        <Fade bottom>
+          <div class="container ">
+            <div class="row justify-content-center ">
+              <div class="titleblock col-12 ">
+                Quiénes somos
+              </div> 
+              <div  class="col-12 titleblock text-center ">
+                Jefe de proyecto y coordinadoras
+              </div>
+            </div>
+            <div class="row justify-content-center ">
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFers.jpg' %} " />            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Fernando Luis Sola Espinosa</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaReyes.jpg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Reyes Blasco Cuadrado</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaMaria.jpeg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">María Marín Serrano</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+  
+            </div>
+          </div>
+      </Fade>
+        </div>
+      <div id="bloque7 " class="bloqueverde "> 
+      <Fade left> 
+          <div class="container ">
+            <div class="row justify-content-center ">
+              
+              <div  class="col-12 titleblock text-center ">
+                FrontEnd
+              </div>
+            </div>
+            <div class="row justify-content-center ">
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-success ">
+                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaFran.jpg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Francisco José Perejón Barrios</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-success ">
+                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaVane.png' %} " />            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Vanessa Pradas Fernández</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-success ">
+                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaFer.jpg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Fernando Romero Rioja</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+  
+            </div>
+          </div>
+      </Fade>
+        </div>
+    
+      <div id="bloque8 " class="bloquemarron "> 
+      <Fade right> 
+          <div class="container ">
+            <div class="row justify-content-center ">
+              <div  class="col-12 titleblock text-center ">
+                BackEnd
+              </div>
+            </div>
+            <div class="row justify-content-center ">
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaPablo.jpg' %} " />            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Pablo Cardenal Gamito</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaJose.jpg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Jose María Cornac Fisas</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJavi.jpg' %} " />            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Javier García Cerrada</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJuanfer.jpg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Juan Fernández Fernández</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaEstefania.jpeg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Estefanía Ganfornina Triguero</h4>
+                    
+                  </div>
+              
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3 ">
+              <div class="card text-center border-wrong ">
+                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaSergio.jpeg' %} "/>            
+                  <div class="card-body ">
+                    <h4 class="card-title ">Sergio Sánchez León</h4>
+                  </div>
+              
+              </div>
+            </div>
+  
+            </div>
+          </div>
+      </Fade>
+        </div>
+  
+        
+      
+      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+  </body>
+</html>

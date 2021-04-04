@@ -1,0 +1,35 @@
+dist: xenial
+services:
+- postgresql
+before_script:
+- psql -c "create user eatsyuser password 'complexpassword';" -U postgres
+- psql -c "create database eatsy owner eatsyuser;" -U postgres
+- psql -c "ALTER ROLE eatsyuser Superuser;" -U postgres
+- psql -c "ALTER USER eatsyuser CREATEDB;" -U postgres
+- psql -c "ALTER DATABASE eatsy OWNER TO eatsyuser;" -U postgres
+- psql -c "ALTER SCHEMA public OWNER TO CURRENT_USER;" -U postgres
+- python manage.py makemigrations
+- CHROME_MAIN_VERSION=`google-chrome-stable --version | sed -E 's/(^Google Chrome |\.[0-9]+ )//g'`
+- CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAIN_VERSION"`
+- curl "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
+- unzip chromedriver_linux64.zip -d ~/bin
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements.txt
+- pip install codacy-coverage
+script:
+- cd Eatsy
+- cp travis_local_settings.py local_settings.py
+- cd ..
+- coverage run --branch --source=. ./manage.py test --keepdb
+- coverage xml
+- python-codacy-coverage -r coverage.xml
+deploy:
+- provider: heroku
+  app: eatsy-develop
+  strategy: git
+  api_key: $HEROKU_AUTH_TOKEN
+  on:
+    branch: develop
