@@ -1,6 +1,6 @@
 body {
-    background-image: url("fondo.png");
-    background-size: cover;
+  background-image: url("fondo.png");
+  background-size: cover;
 }
 
 .navbar {
@@ -118,7 +118,7 @@ hr {
     align-items: center;
     padding: 0.7em;
     border-radius: 0.5em;
-    background-color:   #75cfb8;
+    background-color: #75cfb8;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1em;
 }

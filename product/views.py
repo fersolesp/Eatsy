@@ -1,35 +1,24 @@
-import datetime
-import os
 from datetime import datetime
-
 from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion, Reporte
-from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm, ReviewReporteForm
-from django.core.files.storage import default_storage
+from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Count
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from Eatsy import settings
 from django.db.models import Avg
-from product.forms import (AddUbicationForm, CommentForm,
-                           CreateProductForm, ReporteForm, ReviewProductForm,
-                           SearchProductForm)
-from product.models import (Aportacion, Dieta, Producto,
-                            Reporte, Ubicacion, UbicacionProducto, Valoracion)
 
-def get_product_or_404(request, id):
+def get_product_or_404(request, productId):
     """
     Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
     devuelve error 404.
     """
-    product = get_object_or_404(Producto, pk=id)
+
+    product = get_object_or_404(Producto, pk=productId)
     if product.estado == 'Pendiente' and not request.user.is_superuser:
         raise Http404()
     return product
@@ -103,7 +92,7 @@ def showProduct(request, productId):
                     # TODO: Adaptar el user cuando se haga el login
                     ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicaciones, user=get_object_or_404(Perfil, pk=2), precio=precio)
                     ubicacionProducto.save()
-                
+
                 return redirect('product:show', product.id)
             else:
                 return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
@@ -275,16 +264,16 @@ def reviewProduct(request, productId):
 
 def rateProduct(request, productId):
     if request.method == 'POST':
-        id = request.POST.get('id')
+        idProd = request.POST.get('id')
         rate = request.POST.get('rate')
         # TODO: Adaptar el user cuando se haga el login
         
-        numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, pk=2), producto=get_object_or_404(Producto, pk=id)).count()
+        numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, pk=2), producto=get_object_or_404(Producto, pk=idProd)).count()
         if numValoraciones>=1:
              return JsonResponse({'success':'false', 'msj': "Ya ha realizado una valoración"}, safe=False)
         else:
             valoracion = Valoracion(puntuacion = rate, fecha = datetime.now(), user =get_object_or_404(
-                            Perfil, pk=2), producto = get_object_or_404(Producto, pk=id))
+                            Perfil, pk=2), producto = get_object_or_404(Producto, pk=idProd))
             valoracion.save()
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
