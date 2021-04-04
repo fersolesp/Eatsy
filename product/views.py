@@ -13,8 +13,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Avg
 
 def get_product_or_404(request, productId):
+
     """
-    
+
     Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
     devuelve error 404.
     """

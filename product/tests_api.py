@@ -82,7 +82,7 @@ class EatsyApiTests(APITestCase):
             "causa":1,
             "comentarios":"comentario de ejemplo",
         })
-        
+
         response = self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/24")
@@ -132,11 +132,6 @@ class EatsyApiTests(APITestCase):
             "descripcion":"Galletas maría sin gluten",
             "precio":2.45,
             "dieta":"Gluten",
-            "dieta":"Vegano",
-            "dieta":"Vegetariano",
-            "dieta":"Marisco",
-            "dieta":"Lactosa",
-            "dieta":"Frutos secos",
             "ubicaciones":3,
             "revision":"Aceptar",
         })
