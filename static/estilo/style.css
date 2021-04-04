@@ -393,6 +393,9 @@ a {
     #menuMovil {
         display: block;
     }
+    .product-img-list {
+        max-width: 90% !important;
+    }
     #menuNormal {
         display: none;
     }
