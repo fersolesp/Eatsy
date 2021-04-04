@@ -62,35 +62,35 @@ const getNumericValue = (stringValue) => {
     return numericValue;
 };
 
-handleStarSelect(valoracion_media.value)
+handleStarSelect(valoracion_media.value);
 
 if (one) {
     const arr = [one, two, three, four, five];
 
     arr.forEach(item => item.addEventListener("mouseover", (event) => {
-        handleSelect(event.target.id)
-    }))
+        handleSelect(event.target.id);
+    }));
 
     arr.forEach(item => item.addEventListener("mouseout", (event) => {
-        handleStarSelect(valoracion_media.value)
+        handleStarSelect(valoracion_media.value);
 
     }))
 
     arr.forEach(item => item.addEventListener("click", (event) => {
         // value of the rating not numeric
-        const val = event.target.id
+        const val = event.target.id;
 
         let isSubmit = false
         form.addEventListener("submit", e => {
-            e.preventDefault()
+            e.preventDefault();
             if (isSubmit) {
-                return
+                return;
             }
-            isSubmit = true
-                // picture id
-            const id = e.target.id
-                // value of the rating translated into numeric
-            const val_num = getNumericValue(val)
+            isSubmit = true;
+            // picture id
+            const id = e.target.id;
+            // value of the rating translated into numeric
+            const val_num = getNumericValue(val);
 
             $.ajax({
                 type: "POST",
@@ -110,14 +110,14 @@ if (one) {
                     document.getElementById("msjrating").innerHTML = response["msj"];
                     setTimeout(() => {
                         document.getElementById("msjrating").style.display = "none";
-                        if (response["msj"] == "Ya ha realizado una valoración") {
+                        if (response["msj"] === "Ya ha realizado una valoración") {
                             document.getElementById("msjrating").classList.remove("msjError");
                         } else {
                             document.getElementById("msjrating").classList.remove("msj");
                         }
                     }, 3000);
                 }
-            })
+            });
         })
     }))
 }

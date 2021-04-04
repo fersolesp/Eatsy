@@ -56,6 +56,13 @@ hr {
   left: 25px;
 }
 
+a {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: aliceblue;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
 .botonAdd a {
   border-radius: 10em;
   color: white;
@@ -170,13 +177,13 @@ hr {
 .border-success {
   padding-top: 25px;
   background-color: #bbdfc8;
-  border: 0px;
+  border: 0;
 }
 
 .border-wrong {
   padding-top: 25px;
   background-color: #f0e5d8;
-  border: 0px;
+  border: 0;
 }
 
 .card-img-top {
@@ -247,32 +254,6 @@ hr {
   border: 0;
 }
 
-.imgheader {
-  position: relative;
-  width: 200px;
-}
-
-.comida {
-  width: 100%;
-}
-
-.border-success {
-  padding-top: 25px;
-  background-color: #bbdfc8;
-  border: 0px;
-}
-
-.border-wrong {
-  padding-top: 25px;
-  background-color: #f0e5d8;
-  border: 0px;
-}
-
-.card-img-top {
-  width: 200px;
-  box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
-}
-
 .btnReporte {
   background-color: rgb(118, 179, 146);
 }
@@ -284,60 +265,6 @@ hr {
 
 .enlaceOjo:hover {
   color: #ffc478;
-}
-
-.titleblock {
-  font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 3rem;
-  text-align: center;
-}
-
-.bodyblock {
-  text-align: justify;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 1.3rem;
-  color: gray;
-}
-
-#bodyblock1 {
-  padding-top: 4.5%;
-}
-
-.bloqueverde {
-  position: relative;
-  width: 100%;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background-color: #bbdfc8;
-}
-
-.bloquemarron {
-  position: relative;
-  width: 100%;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background-color: #f0e5d8;
-}
-
-.btn-primary {
-  width: 200px;
-  margin-top: 20px;
-  transition: all 0.5s;
-  background-color: #ffc478;
-  border-color: #ffc478;
-}
-
-#thanks {
-  width: 400px;
-}
-
-.btn-primary:hover {
-  background-color: #75cfb8;
-  border-color: #75cfb8;
-}
-
-#textocorreo {
-  text-align: center;
 }
 
 #page-container {
@@ -354,13 +281,6 @@ hr {
   bottom: 0;
   width: 100%;
   height: 2.5rem;
-}
-
-a {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: aliceblue;
-  font-size: 0.7em;
-  font-weight: bold;
 }
 
 .imgfooter {
@@ -391,25 +311,31 @@ a {
   #menuMovil {
     display: block;
   }
+
   #menuNormal {
     display: none;
   }
+
   .page-content {
     padding: 2em;
     padding-top: 1em;
   }
+
   .product-card {
-    padding: 0em;
+    padding: 0;
     padding-bottom: 1em;
   }
+
   .padding-list-container {
     padding: 2em;
   }
+
   .padding-list {
     padding-left: 1em;
   }
+
   .product-card-inner {
-    padding: 0em;
+    padding: 0;
     padding-bottom: 1em;
     padding-top: 1em;
   }
