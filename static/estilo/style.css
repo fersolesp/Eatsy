@@ -308,37 +308,35 @@ a {
 .active {}
 
 @media (max-width: 450px) {
-  #menuMovil {
-    display: block;
-  }
+    #menuMovil {
+        display: block;
+    }
+    .product-img-list {
+        max-width: 90% !important;
+    }
+    #menuNormal {
+        display: none;
+    }
+    .page-content {
+        padding: 2em;
+        padding-top: 1em;
+    }
+    .product-card {
+        padding: 0em;
+        padding-bottom: 1em;
+    }
+    .padding-list-container {
+        padding: 2em;
+    }
+    .padding-list {
+        padding-left: 1em;
+    }
+    .product-card-inner {
+        padding: 0em;
+        padding-bottom: 1em;
+        padding-top: 1em;
+    }
 
-  #menuNormal {
-    display: none;
-  }
-
-  .page-content {
-    padding: 2em;
-    padding-top: 1em;
-  }
-
-  .product-card {
-    padding: 0;
-    padding-bottom: 1em;
-  }
-
-  .padding-list-container {
-    padding: 2em;
-  }
-
-  .padding-list {
-    padding-left: 1em;
-  }
-
-  .product-card-inner {
-    padding: 0;
-    padding-bottom: 1em;
-    padding-top: 1em;
-  }
 }
 
 .tituloReporte {
