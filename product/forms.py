@@ -29,7 +29,7 @@ class CreateProductForm(forms.ModelForm):
     )
 
     dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 350px'}))
-    
+
     ubicaciones = CustomMMCF(queryset=Ubicacion.objects.all(), required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 400px'}))
     class Meta:
         model = Ubicacion

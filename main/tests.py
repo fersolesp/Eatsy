@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from product.models import CausaReporte, Ubicacion, Producto, UbicacionProducto
 from authentication.models import Perfil, Dieta
-import random
 
 def create_ubicacion(nombre):
     ubicacion = Ubicacion(nombre=nombre, latitud=37.3826, longitud=-5.99629)

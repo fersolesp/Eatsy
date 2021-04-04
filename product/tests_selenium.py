@@ -1,17 +1,7 @@
-import json
-import pytest
-import time
-from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.management import call_command
-from django.utils import timezone
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
 
 
 class SeleniumTests(StaticLiveServerTestCase):
@@ -50,13 +40,13 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
         self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        elements = self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
+        self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
 
     def test_nav(self):
         self.driver.get(f'{self.live_server_url}/')
         self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        elements = self.driver.find_elements(By.LINK_TEXT, "Mi cuenta")
-        elements = self.driver.find_elements(By.LINK_TEXT, "Lista de productos")
+        self.driver.find_elements(By.LINK_TEXT, "Mi cuenta")
+        self.driver.find_elements(By.LINK_TEXT, "Lista de productos")
 
 #    def test_show(self):
 #        self.driver.get(f'{self.live_server_url}/show/1')

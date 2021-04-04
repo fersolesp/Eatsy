@@ -4,387 +4,305 @@ body {
 }
 
 .navbar {
-    display: flex;
-    background-color: #75cfb8;
+  display: flex;
+  background-color: #75cfb8;
 }
 
 .page-content {
-    padding: 5em;
-    padding-top: 2em;
+  padding: 5em;
+  padding-top: 2em;
 }
 
 .nombreProducto {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.1em;
-    font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 .nombreProductoShow {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.25em;
-    font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.25em;
+  font-weight: bold;
 }
 
 .descripcion {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1em;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1em;
 }
 
 .botonProducto {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1.1em;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 hr {
-    background-color: black;
-    height: 1px;
-    width: 100%;
+  background-color: black;
+  height: 1px;
+  width: 100%;
 }
 
 .hrmini {
-    background-color: black;
-    height: 0.3px;
-    width: 100%;
+  background-color: black;
+  height: 0.3px;
+  width: 100%;
 }
 
 .botonAdd {
-    position: sticky;
-    bottom: 50px;
-    left: 25px;
-}
-
-.botonAdd a {
-    border-radius: 10em !important;
-    color: white;
-    height: 2.85em;
-    box-shadow: 2px 2px 2px darkgray;
-}
-
-.product-card {
-    padding: 2em;
-    padding: 2em;
-    padding: 2em;
-}
-
-.scrolli {
-    width: 90%;
-    max-height: 500px;
-    overflow-y: scroll;
-}
-
-.product-card-inner {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    align-items: center;
-    padding: 2em;
-    border: 2px solid black;
-    border-radius: 0.5em;
-    background-color: #bbdfc8;
-}
-
-.titulito {
-    font-weight: bold;
-}
-
-.product-card-comment {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    align-items: center;
-    padding: 1em;
-    border: 1px solid black;
-    border-radius: 0.5em;
-    background-color: #fff4df;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1em;
-}
-
-.product-card-descripcion {
-    display: grid;
-    padding: 1em;
-    grid-template-rows: auto 1fr auto;
-    border: 1px solid black;
-    border-radius: 0.5em;
-    background-color: #fff4df;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1em;
-}
-
-.boton-show-inner {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    align-items: center;
-    padding: 0.7em;
-    border-radius: 0.5em;
-    background-color: #75cfb8;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1em;
-}
-
-.msj {
-    background-color: rgb(118, 179, 146);
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-}
-
-.msjError {
-    background-color: rgb(167, 70, 53);
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-}
-
-.product-img {
-    max-height: 500px !important;
-    width: 100%;
-}
-
-.product-img-list {
-    max-height: 330px;
-    width: 100%;
-}
-
-.modal-header {
-    background-color: #bbdfc8;
-}
-
-.header {
-    padding-bottom: 10px;
-    background-color: #75cfb8;
-}
-
-.imgheader {
-    position: relative;
-    width: 200px !important;
-}
-
-.comida {
-    width: 100%;
-}
-
-.border-success {
-    padding-top: 25px;
-    background-color: #bbdfc8 !important;
-    border: 0px !important;
-}
-
-.border-wrong {
-    padding-top: 25px;
-    background-color: #f0e5d8 !important;
-    border: 0px !important;
-}
-
-.card-img-top {
-    width: 200px !important;
-    box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
-}
-
-.titleblock {
-    font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 3rem;
-    text-align: center;
-}
-
-.bodyblock {
-    text-align: justify;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.3rem;
-    color: gray;
-}
-
-#bodyblock1 {
-    padding-top: 4.5%;
-}
-
-.bloqueverde {
-    position: relative;
-    width: 100% !important;
-    padding-top: 100px;
-    padding-bottom: 100px;
-    background-color: #bbdfc8;
-}
-
-.bloquemarron {
-    position: relative;
-    width: 100% !important;
-    padding-top: 100px;
-    padding-bottom: 100px;
-    background-color: #f0e5d8;
-}
-
-.btn-primary {
-    width: 200px !important;
-    margin-top: 20px !important;
-    transition: all 0.5s !important;
-    background-color: #ffc478 !important;
-    border-color: #ffc478 !important;
-}
-
-#thanks {
-    width: 400px;
-}
-
-.btn-primary:hover {
-    background-color: #75cfb8 !important;
-    border-color: #75cfb8 !important;
-}
-
-#textocorreo {
-    text-align: center;
-}
-
-.checked {
-    color: rgb(76, 172, 84) !important;
-}
-
-.my-btn {
-    background-color: inherit !important;
-    border: 0 !important;
-}
-
-.imgheader {
-    position: relative;
-    width: 200px !important;
-}
-
-.comida {
-    width: 100%;
-}
-
-.border-success {
-    padding-top: 25px;
-    background-color: #bbdfc8 !important;
-    border: 0px !important;
-}
-
-.border-wrong {
-    padding-top: 25px;
-    background-color: #f0e5d8 !important;
-    border: 0px !important;
-}
-
-.card-img-top {
-    width: 200px !important;
-    box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
-}
-
-.btnReporte {
-    background-color: rgb(118, 179, 146) !important;
-}
-
-.enlaceOjo {
-    color: rgb(118, 179, 146);
-    transition: all 1s;
-}
-
-.enlaceOjo:hover {
-    color: #ffc478;
-}
-
-.titleblock {
-    font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 3rem;
-    text-align: center;
-}
-
-.bodyblock {
-    text-align: justify;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.3rem;
-    color: gray;
-}
-
-#bodyblock1 {
-    padding-top: 4.5%;
-}
-
-.bloqueverde {
-    position: relative;
-    width: 100% !important;
-    padding-top: 100px;
-    padding-bottom: 100px;
-    background-color: #bbdfc8;
-}
-
-.bloquemarron {
-    position: relative;
-    width: 100% !important;
-    padding-top: 100px;
-    padding-bottom: 100px;
-    background-color: #f0e5d8;
-}
-
-.btn-primary {
-    width: 200px !important;
-    margin-top: 20px !important;
-    transition: all 0.5s !important;
-    background-color: #ffc478 !important;
-    border-color: #ffc478 !important;
-}
-
-#thanks {
-    width: 400px;
-}
-
-.btn-primary:hover {
-    background-color: #75cfb8 !important;
-    border-color: #75cfb8 !important;
-}
-
-#textocorreo {
-    text-align: center;
-}
-
-#page-container {
-    position: relative;
-    min-height: 93vh;
-}
-
-#content-wrap {
-    padding-bottom: 2.5rem;
-}
-
-#footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 2.5rem;
+  position: sticky;
+  bottom: 50px;
+  left: 25px;
 }
 
 a {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: aliceblue;
-    font-size: 0.7em;
-    font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: aliceblue;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+
+.botonAdd a {
+  border-radius: 10em;
+  color: white;
+  height: 2.85em;
+  box-shadow: 2px 2px 2px darkgray;
+}
+
+.product-card {
+  padding: 2em;
+}
+
+.scrolli {
+  width: 90%;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+.product-card-inner {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  padding: 2em;
+  border: 2px solid black;
+  border-radius: 0.5em;
+  background-color: #bbdfc8;
+}
+
+.titulito {
+  font-weight: bold;
+}
+
+.product-card-comment {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  padding: 1em;
+  border: 1px solid black;
+  border-radius: 0.5em;
+  background-color: #fff4df;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1em;
+}
+
+.product-card-descripcion {
+  display: grid;
+  padding: 1em;
+  grid-template-rows: auto 1fr auto;
+  border: 1px solid black;
+  border-radius: 0.5em;
+  background-color: #fff4df;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1em;
+}
+
+.boton-show-inner {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  padding: 0.7em;
+  border-radius: 0.5em;
+  background-color: #75cfb8;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1em;
+}
+
+.msj {
+  background-color: rgb(118, 179, 146);
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+}
+
+.msjError {
+  background-color: rgb(167, 70, 53);
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+}
+
+.product-img {
+  max-height: 500px;
+  width: 100%;
+}
+
+.product-img-list {
+  max-height: 330px;
+  width: 100%;
+}
+
+.modal-header {
+  background-color: #bbdfc8;
+}
+
+.header {
+  padding-bottom: 10px;
+  background-color: #75cfb8;
+}
+
+.imgheader {
+  position: relative;
+  width: 200px;
+}
+
+.comida {
+  width: 100%;
+}
+
+.border-success {
+  padding-top: 25px;
+  background-color: #bbdfc8;
+  border: 0;
+}
+
+.border-wrong {
+  padding-top: 25px;
+  background-color: #f0e5d8;
+  border: 0;
+}
+
+.card-img-top {
+  width: 200px;
+  box-shadow: 3px 3px 5px 3px rgb(102, 102, 102);
+}
+
+.titleblock {
+  font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 3rem;
+  text-align: center;
+}
+
+.bodyblock {
+  text-align: justify;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.3rem;
+  color: gray;
+}
+
+#bodyblock1 {
+  padding-top: 4.5%;
+}
+
+.bloqueverde {
+  position: relative;
+  width: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  background-color: #bbdfc8;
+}
+
+.bloquemarron {
+  position: relative;
+  width: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  background-color: #f0e5d8;
+}
+
+.btn-primary {
+  width: 200px;
+  margin-top: 20px;
+  transition: all 0.5s;
+  background-color: #ffc478;
+  border-color: #ffc478;
+}
+
+#thanks {
+  width: 400px;
+}
+
+.btn-primary:hover {
+  background-color: #75cfb8;
+  border-color: #75cfb8;
+}
+
+#textocorreo {
+  text-align: center;
+}
+
+.checked {
+  color: rgb(76, 172, 84);
+}
+
+.my-btn {
+  background-color: inherit;
+  border: 0;
+}
+
+.btnReporte {
+  background-color: rgb(118, 179, 146);
+}
+
+.enlaceOjo {
+  color: rgb(118, 179, 146);
+  transition: all 1s;
+}
+
+.enlaceOjo:hover {
+  color: #ffc478;
+}
+
+#page-container {
+  position: relative;
+  min-height: 93vh;
+}
+
+#content-wrap {
+  padding-bottom: 2.5rem;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
 }
 
 .imgfooter {
-    display: block;
-    margin: auto;
+  display: block;
+  margin: auto;
 }
 
 .padding-list {
-    padding-left: 2em;
+  padding-left: 2em;
 }
 
 #menuNormal {
-    display: block;
+  display: block;
 }
 
 #menuMovil {
-    display: none;
+  display: none;
 }
 
 .page-link {
-    background-color: #75cfb8;
-    color: black;
+  background-color: #75cfb8;
+  color: black;
 }
 
 .active {}
@@ -418,22 +336,23 @@ a {
         padding-bottom: 1em;
         padding-top: 1em;
     }
+
 }
 
 .tituloReporte {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    text-decoration: underline;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-decoration: underline;
 }
 
 .eye-button {
-    font-size: 1.5em;
-    cursor: pointer;
+  font-size: 1.5em;
+  cursor: pointer;
 }
 
 .li-light {
-    background-color: #bbdfc8;
+  background-color: #bbdfc8;
 }
 
 .li-dark {
-    background-color: #92cea8;
+  background-color: #92cea8;
 }

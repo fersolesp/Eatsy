@@ -1,10 +1,8 @@
-from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from django.core.management import call_command
-from urllib.parse import urlencode 
-import json 
+from urllib.parse import urlencode
+import json
 from django.core.files.uploadedfile import SimpleUploadedFile
 # Create your tests here.
 
@@ -43,7 +41,7 @@ class EatsyApiTests(APITestCase):
     def test_product_list(self):
         response = self.client.get('/product/list', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
-    
+
     def test_product_show(self):
         response = self.client.get('/product/show/24', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
@@ -84,7 +82,7 @@ class EatsyApiTests(APITestCase):
             "causa":1,
             "comentarios":"comentario de ejemplo",
         })
-        
+
         response = self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/24")
@@ -134,11 +132,6 @@ class EatsyApiTests(APITestCase):
             "descripcion":"Galletas maría sin gluten",
             "precio":2.45,
             "dieta":"Gluten",
-            "dieta":"Vegano",
-            "dieta":"Vegetariano",
-            "dieta":"Marisco",
-            "dieta":"Lactosa",
-            "dieta":"Frutos secos",
             "ubicaciones":3,
             "revision":"Aceptar",
         })
@@ -186,7 +179,7 @@ class EatsyApiTests(APITestCase):
         response = self.client.post('/product/show/24/rate', data, content_type= 'application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)["success"], "false")
-        self.assertEqual(json.loads(response.content)["msj"], "Ya ha realizado una valoración")   
+        self.assertEqual(json.loads(response.content)["msj"], "Ya ha realizado una valoración")
 
     def test_report_accept(self):
         self.client.login(username="admin", password="admin")

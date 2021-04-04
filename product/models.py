@@ -13,8 +13,9 @@ class Ubicacion(models.Model):
     @property
     def esSupermercado(self):
         return int(self.latitud) == 0 and int(self.longitud) == 0
-        
+
     def __str__(self):
+
         "Devuelve el nombre de la ubicación"
         return self.nombre
 
@@ -42,6 +43,7 @@ class Producto(models.Model):
         Ubicacion, through="UbicacionProducto")
 
     class Meta:
+
         "Por defecto se ordena por id descendiente (más nuevos primero)"
         ordering = ['-id']
 
@@ -56,6 +58,8 @@ class UbicacionProducto(models.Model):
         null=None, max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
 
     def __str__(self):
+        
+        "Devuelve el nombre de la ubicación"
         return self.ubicacion.nombre
 
 class CausaReporte(models.Model):
@@ -79,6 +83,7 @@ class Reporte(models.Model):
                               default='Pendiente', blank=False, verbose_name="Estado")
 
     class Meta:
+
         "Más antiguos primero"
         ordering = ['id']
 

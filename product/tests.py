@@ -39,7 +39,7 @@ def create_report():
     return reporte
 
 def create_valoracion():
-    producto = create_product() 
+    producto = create_product()
     user = Perfil.objects.get(user =User.objects.get(username="Usuario1"))
     puntuacion = 4
     valoracion = Valoracion(producto=producto, puntuacion=puntuacion, user=user)
@@ -47,7 +47,7 @@ def create_valoracion():
     return valoracion
 
 def create_aportacion():
-    producto = create_product() 
+    producto = create_product()
     user = Perfil.objects.get(user =User.objects.get(username="Usuario1"))
     titulo = "Producto insustituible"
     mensaje = "Un producto insustituible para vegetarianos, e interesante para todos."
@@ -96,7 +96,7 @@ class ProductoTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
-    
+
     def test_create_product(self):
         create_product()
         prod = Producto.objects.get(titulo="Tofu")
@@ -133,7 +133,7 @@ class ReporteTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
-    
+
     def test_create_report(self):
         create_report()
         prod = Producto.objects.get(titulo="Tofu")

@@ -25,24 +25,24 @@ const handleSelect = (selection) => {
     switch (selection) {
         case "first":
             handleStarSelect(1);
-            return
+            return;
         case "second":
             handleStarSelect(2);
-            return
+            return;
         case "third":
             handleStarSelect(3);
-            return
+            return;
         case "fourth":
             handleStarSelect(4);
-            return
+            return;
         case "fifth":
             handleStarSelect(5);
-            return
+            return;
         default:
             handleStarSelect(0);
     }
 
-}
+};
 
 const getNumericValue = (stringValue) => {
     let numericValue;
@@ -60,50 +60,49 @@ const getNumericValue = (stringValue) => {
         numericValue = 0;
     }
     return numericValue;
-}
+};
 
-handleStarSelect(valoracion_media.value)
+handleStarSelect(valoracion_media.value);
 
 if (one) {
-    const arr = [one, two, three, four, five]
+    const arr = [one, two, three, four, five];
 
-    arr.forEach(item => item.addEventListener('mouseover', (event) => {
-        handleSelect(event.target.id)
+    arr.forEach(item => item.addEventListener("mouseover", (event) => {
+        handleSelect(event.target.id);
+    }));
+
+    arr.forEach(item => item.addEventListener("mouseout", (event) => {
+        handleStarSelect(valoracion_media.value);
+
     }))
 
-    arr.forEach(item => item.addEventListener('mouseout', (event) => {
-        handleStarSelect(valoracion_media.value)
-
-    }))
-
-    arr.forEach(item => item.addEventListener('click', (event) => {
+    arr.forEach(item => item.addEventListener("click", (event) => {
         // value of the rating not numeric
-        const val = event.target.id
+        const val = event.target.id;
 
         let isSubmit = false
-        form.addEventListener('submit', e => {
-            e.preventDefault()
+        form.addEventListener("submit", e => {
+            e.preventDefault();
             if (isSubmit) {
-                return
+                return;
             }
-            isSubmit = true
-                // picture id
-            const id = e.target.id
-                // value of the rating translated into numeric
-            const val_num = getNumericValue(val)
+            isSubmit = true;
+            // picture id
+            const id = e.target.id;
+            // value of the rating translated into numeric
+            const val_num = getNumericValue(val);
 
             $.ajax({
-                type: 'POST',
-                url: '/product/show/' + id + '/rate',
+                type: "POST",
+                url: "/product/show/" + id + "/rate",
                 data: {
-                    'csrfmiddlewaretoken': csrf[0].value,
-                    'id': id,
-                    'rate': val_num,
+                    "csrfmiddlewaretoken": csrf[0].value,
+                    "id": id,
+                    "rate": val_num,
                 },
                 success: function(response) {
-                    console.log("Prueba")
                     document.getElementById("msjrating").display = "block";
-                    if (response["msj"] == "Ya ha realizado una valoración") {
+                    if (response["msj"] === "Ya ha realizado una valoración") {
                         document.getElementById("msjrating").classList.add("msjError");
                     } else {
                         document.getElementById("msjrating").classList.add("msj");
@@ -111,17 +110,14 @@ if (one) {
                     document.getElementById("msjrating").innerHTML = response["msj"];
                     setTimeout(() => {
                         document.getElementById("msjrating").style.display = "none";
-                        if (response["msj"] == "Ya ha realizado una valoración") {
+                        if (response["msj"] === "Ya ha realizado una valoración") {
                             document.getElementById("msjrating").classList.remove("msjError");
                         } else {
                             document.getElementById("msjrating").classList.remove("msj");
                         }
                     }, 3000);
-                },
-                error: function(error) {
-                    console.log(error)
                 }
-            })
+            });
         })
     }))
 }
