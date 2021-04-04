@@ -39,7 +39,7 @@ def create_report():
     return reporte
 
 def create_valoracion():
-    producto = create_product() 
+    producto = create_product()
     user = Perfil.objects.get(user =User.objects.get(username="Usuario1"))
     puntuacion = 4
     valoracion = Valoracion(producto=producto, puntuacion=puntuacion, user=user)
@@ -96,7 +96,7 @@ class ProductoTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
-    
+
     def test_create_product(self):
         create_product()
         prod = Producto.objects.get(titulo="Tofu")
