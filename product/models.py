@@ -9,15 +9,13 @@ class Ubicacion(models.Model):
                                   MinValueValidator(-90), MaxValueValidator(90)],null=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, validators=[
                                    MinValueValidator(-180), MaxValueValidator(180)],null=True)
-                       
+
     @property
     def esSupermercado(self):
         return int(self.latitud) == 0 and int(self.longitud) == 0
         
     def __str__(self):
-        """
-        Devuelve el nombre de la ubicación
-        """
+        "Devuelve el nombre de la ubicación"
         return self.nombre
 
 # class Dieta(models.Model):
@@ -44,9 +42,7 @@ class Producto(models.Model):
         Ubicacion, through="UbicacionProducto")
 
     class Meta:
-        """
-        Por defecto se ordena por id descendiente (más nuevos primero)
-        """
+        "Por defecto se ordena por id descendiente (más nuevos primero)"
         ordering = ['-id']
 
     def __str__(self):
@@ -82,8 +78,8 @@ class Reporte(models.Model):
     estado = models.CharField(max_length=10, choices=State_Enum,
                               default='Pendiente', blank=False, verbose_name="Estado")
 
-    # Más antiguos primero
     class Meta:
+        "Más antiguos primero"
         ordering = ['id']
 
     def __str__(self):

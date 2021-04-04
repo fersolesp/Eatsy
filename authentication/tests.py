@@ -18,7 +18,7 @@ class PerfilTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
-    
+
     def test_create_perfil(self):
         dietas = ["Vegano","Lactosa"]
         perfil = create_perfil("prueba",dietas)

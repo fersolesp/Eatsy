@@ -22,7 +22,7 @@ def errorGoneView(request,exception):
 
 def errorNotAllowedView(request,exception):
      return HttpResponseNotAllowed(render(request,"products/errorView.html"))
-  
+
 def subscribe(request):
      return render(request,'products/subscribe.html')
 

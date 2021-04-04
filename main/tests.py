@@ -2,11 +2,10 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from product.models import CausaReporte, Ubicacion, Producto, UbicacionProducto
 from authentication.models import Perfil, Dieta
-from django.test import TestCase
 import random
 
 def create_ubicacion(nombre):
-    ubicacion = Ubicacion(nombre=nombre, latitud=random.uniform(-90, 90), longitud=random.uniform(-180, 180))
+    ubicacion = Ubicacion(nombre=nombre, latitud=37.3826, longitud=-5.99629)
     ubicacion.save()
     return ubicacion
 
@@ -61,7 +60,7 @@ class BaseTestCase(TestCase):
         prod4 = Producto(titulo="Pizza Prosciutto & Funghi",descripcion="Pizza de Jamón y Champiñones sin gluten.",
         foto="../pizza.png",precioMedio=4.15,user=perfil_1,estado="Pendiente")
         prod4.save()
-        prod4.dietas.add(Dieta.objects.get(nombre="Gluten"))      
+        prod4.dietas.add(Dieta.objects.get(nombre="Gluten"))
         #UbicacionProducto
         ubicacionProducto1 = UbicacionProducto(producto=prod1, ubicacion=ub1, user=perfil_1, precio = 2.41)
         ubicacionProducto1.save()

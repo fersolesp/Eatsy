@@ -2,7 +2,6 @@ from product.models import Ubicacion, UbicacionProducto, Producto, CausaReporte,
 from authentication.models import Perfil, Dieta
 from django.contrib.auth.models import User
 from main.tests import BaseTestCase
-from django.test.client import RequestFactory 
 
 def create_ubicacion():
     ubicacion = Ubicacion(nombre="Red Verde", latitud=37.41063, longitud=-5.99099)
@@ -31,7 +30,7 @@ def create_product():
     return producto
 
 def create_report():
-    producto = create_product() 
+    producto = create_product()
     user = User.objects.get(username="Usuario1")
     causa = CausaReporte.objects.get(causa="Producto repetido")
     estado = "Pendiente"
@@ -63,7 +62,7 @@ class UbicacionTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
-    
+
     def test_create_ubicacion(self):
         create_ubicacion()
         ub_sup=create_ubicacion_sup()
