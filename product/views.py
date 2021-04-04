@@ -14,6 +14,7 @@ from django.db.models import Avg
 
 def get_product_or_404(request, productId):
     """
+    
     Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
     devuelve error 404.
     """
@@ -96,7 +97,7 @@ def showProduct(request, productId):
                 return redirect('product:show', product.id)
             else:
                 return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
-            
+
 def listProduct(request):
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
@@ -286,7 +287,7 @@ def removeComment (request, commentId):
         # TODO: redirigir a pantalla de error cuando esté
         return redirect('product:list')
 
-    return render(request, 'products/show.html')  
+    return render(request, 'products/show.html')
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def listReports(request):
