@@ -24,11 +24,11 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.get(f'{self.live_server_url}/')
         assert self.driver.find_element_by_link_text(u"Iniciar sesión").text == u"Iniciar sesión"
 
-    def test_unirse(self):
-        self.driver.get(f'{self.live_server_url}/')
-        self.driver.find_element(By.LINK_TEXT, "Unirse").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
+#    def test_unirse(self):
+#        self.driver.get(f'{self.live_server_url}/')
+#        self.driver.find_element(By.LINK_TEXT, "Unirse").click()
+#        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+#        self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
 
     def test_admin_revisar(self):
         self.driver.get(f'{self.live_server_url}/admin/')
