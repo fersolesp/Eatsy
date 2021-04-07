@@ -1,0 +1,61 @@
+project:
+  name: 'Eatsy'
+  owner: 'morning'
+  teamId: '6'
+  identities:
+    github:
+      url: 'https://github.com/fersolesp/Eatsy'
+    heroku:
+      url: 'https://eatsy-develop.herokuapp.com/'
+    travis:
+      url: 'https://travis-ci.org/github/fersolesp/Eatsy'
+  members:
+    member1:
+      name: 'Fernando Luis'
+      surname: 'Sola Espinosa' 
+      githubUsername: 'fersolesp'
+    member2:
+      name: 'José María'
+      surname: 'Cornac Fisas' 
+      githubUsername: 'joscorfis'
+      herokuEmail: 'joscorfis@alum.us.es'
+    member3:
+      name: 'María'
+      surname: 'Marín Serrano' 
+      githubUsername: 'Seelenfur'
+    member4:
+      name: 'Pablo'
+      surname: 'Cardenal Gamito' 
+      githubUsername: 'Pabcargam'
+    member5:
+      name: 'Estefanía'
+      surname: 'Ganfornina Triguero' 
+      githubUsername: 'estefaniagan'
+    member6:
+      name: 'Reyes'
+      surname: 'Blasco Cuadrado' 
+      githubUsername: 'reyblacua'
+    member7:
+      name: 'Javier'
+      surname: 'García Cerrada' 
+      githubUsername: 'JavierGarCe'
+    member8:
+      name: 'Juan'
+      surname: 'Fernández Fernández' 
+      githubUsername: 'juaferfer11'
+    member9:
+      name: 'Sergio'
+      surname: 'Sánchez León' 
+      githubUsername: 'sersanleo'
+    member10:
+      name: 'Francisco José'
+      surname: 'Perejón Barrios' 
+      githubUsername: 'franpb14'
+    member11:
+      name: 'Vanessa'
+      surname: 'Pradas Fernández' 
+      githubUsername: 'vanprafer'
+    member12:
+      name: 'Fernando'
+      surname: 'Romero Rioja' 
+      githubUsername: 'ferromrio'
