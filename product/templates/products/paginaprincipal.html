@@ -12,18 +12,20 @@
     <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+  </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="header row justify-content-center">
-            <img class="imgheader" src="{% static 'img/logoheader.png' %}"></img>
-            <div class="topnav-right" style="margin-left: 50%; margin-top: 1%;">
-                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/subscribe">Unirse</a>&nbsp;
-                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Iniciar sesión</a>
-            </div>
+  <div class="navbar">
+    <b-navbar-brand href="/">
+        <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+    </b-navbar-brand>
+        <div class="topnav-right" style="margin-left: 50%; margin-top: 1%;">
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/subscribe">Unirse</a>&nbsp;
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Iniciar sesión</a>
         </div>
-    </div>
+  </div>
 
     <div class="bloques">
         <div id="bloque1" class="bloquemarron">
