@@ -14,6 +14,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="{% static 'js/rating.js' %}" defer></script>
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
 
     <style>
 
@@ -40,11 +42,11 @@
             <div></div>
 
             {% if user.is_superuser %}
-            <a id="menuNormal" class="btn btn-dark" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
+            <a id="menuNormal" class="btn btn-dark botonNav" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
 
-            <a id="menuNormal"  class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
-            <div id="menuNormal"  class="dropdown show">
-                <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a id="menuNormal"  class="btn btn-dark botonNav" href="/product/list" role="button">Lista de productos</a>
+            <div id="menuNormal"  class="dropdown show botonNav">
+                <a class="btn dropdown-toggle botonNav" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Mi cuenta
             </a>
 
@@ -62,7 +64,7 @@
                 </b-navbar-brand>
             </div>
                 <ul  class="nav navbar-nav mt-2">
-                    <a href="#" class="dropdown-toggle btn btn-dark" data-toggle="dropdown">
+                    <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
                       Menú <b class="caret"></b>
                     </a>
                     <div style="background-color: #343a40" class="dropdown-menu ">
