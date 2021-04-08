@@ -20,8 +20,8 @@ def signUp(request):
                 form.add_error('username', 'El nombre de usuario indicado ya está en uso')
                 return render(request, 'signUp.html', {'form': form})
             user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
-            user.name = form.cleaned_data['nombre']
-            user.lastname = form.cleaned_data['apellidos']
+            user.first_name = form.cleaned_data['nombre']
+            user.last_name = form.cleaned_data['apellidos']
             user.save()
             perfil = Perfil(user=user)
             perfil.save()
