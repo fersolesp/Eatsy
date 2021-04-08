@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import (HttpResponseNotFound, HttpResponseServerError, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseGone, HttpResponseNotAllowed)
+
 from product.forms import LoginForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, render
 # Create your views here.
 
 def principalScreen(request):
