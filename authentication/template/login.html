@@ -36,7 +36,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" id="username" type="text" name="username" value="{{ form.username}}" required>
+                                <div>{{form.username}} </div>
                                 <div style="color: red;">{{ form.errors.username.as_text}}</div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" id="pass" type="password" name="password" value="{{ form.password}}" required>
+                                <div> {{form.password}} </div>
                                 <div style="color: red;">{{ form.errors.password.as_text}}</div>
                             </div>
                         </div>
