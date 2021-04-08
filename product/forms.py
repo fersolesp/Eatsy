@@ -3,7 +3,7 @@ from enum import Enum
 from django import forms
 from django.core.validators import FileExtensionValidator
 
-from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion
+from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion, User
 
 
 class CustomMMCF(forms.ModelChoiceField):
@@ -169,3 +169,7 @@ class ReviewReporteForm(forms.ModelForm):
                 ("No procede","No procede"))
 
     revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum, widget = forms.RadioSelect)
+
+class LoginForm(forms.ModelForm):
+    username =  forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
