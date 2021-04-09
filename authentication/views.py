@@ -61,7 +61,7 @@ def showProfile(request):
     usuario = request.user
     perfil = Perfil.objects.filter(user=usuario)
     if usuario.is_authenticated:
-return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
+        return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
     else:
         return redirect('/authentication/login')
 
