@@ -56,3 +56,13 @@ def signUp(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+def showProfile(request):
+    usuario = request.user
+    perfil = Perfil.objects.filter(user=usuario)
+    if usuario.is_authenticated:
+        return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
+    else:
+        return redirect('/authentication/login')
+
+
