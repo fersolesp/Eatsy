@@ -22,6 +22,7 @@ from Eatsy import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('product/', include('product.urls')),
+    path('authentication/', include('authentication.urls')),
     path('', views.principalScreen),
     path('subscribe/', views.subscribe),
     path('login/', views.loginPage),

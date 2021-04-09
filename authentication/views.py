@@ -24,4 +24,28 @@ def loginPage(request):
                 return redirect('login')
     else:
         form = LoginForm()
-        return render(request, 'login.html', {'form':form} )
+        return render(request, 'login.html', {'form':form})
+
+def signUp(request):
+    form = SignUpForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            # Comprobar que no haya usuario con el mismo correo
+            if User.objects.filter(email=form.cleaned_data['email']).count() > 0:
+                form.add_error('email', 'El email indicado ya está en uso')
+                return render(request, 'signUp.html', {'form': form})
+            # Comprobar que no haya usuario con mismo username
+            if User.objects.filter(username=form.cleaned_data['username']).count() > 0:
+                form.add_error('username', 'El nombre de usuario indicado ya está en uso')
+                return render(request, 'signUp.html', {'form': form})
+            user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
+            user.first_name = form.cleaned_data['nombre']
+            user.last_name = form.cleaned_data['apellidos']
+            user.save()
+            perfil = Perfil(user=user)
+            perfil.save()
+            for dieta in form.cleaned_data['dieta']:
+                perfil.dietas.add(get_object_or_404(Dieta, nombre=dieta))
+            return redirect('/product/list')
+    return render(request, 'signUp.html', {'form': form})
