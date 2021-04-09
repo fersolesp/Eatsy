@@ -15,12 +15,6 @@ body {
   border: 2px #291f00;
 }
 
-.botonNav :hover {
-  background-color: #242424;
-  color: white;
-  border-radius: 10px;
-  border: 1px;
-}
 
 .page-content {
   padding: 5em;
@@ -106,6 +100,7 @@ a {
 .titulito {
   font-weight: bold;
 }
+
 
 .product-card-comment {
   display: grid;
