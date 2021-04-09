@@ -38,9 +38,22 @@
         <div class="row">
             <div class="col-3"></div>
             <div class="col-6">
-                <form onsubmit="return verificar_pass()" name="formCheckIn" enctype="multipart/form-data" method="POST" action="/">{% csrf_token %}
+                <form onsubmit="return verificar_pass()" name="formCheckIn" enctype="multipart/form-data" method="POST" action="/authentication/signup">{% csrf_token %}
                     <div class="product-card-inner">
                         <label class="mt-2 text-center w-100" style="color:red;">*Solo estos campos son obligatorios.</label>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>Nombre de usuario<span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{form.username}}</div>
+                                <div style="color: red;">{{ form.errors.username.as_text}}</div>
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col">
                                 <label>Nombre <span style="color:red;">*</span>:&nbsp;</label>
@@ -48,7 +61,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" type="text" name="nombre" value="{{ form.nombre}}" required>
+                                <div>{{ form.nombre}}</div>
                                 <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
                             </div>
                         </div>
@@ -60,7 +73,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" type="text" name="apellidos" value="{{ form.apellidos}}" required>
+                                <div>{{ form.apellidos}}</div>
                                 <div style="color: red;">{{ form.errors.apellidos.as_text}}</div>    
                             </div>
                         </div>
@@ -72,7 +85,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" type="email" name="email" value="{{ form.email}}" required>
+                                <div>{{ form.email}}</div>
                                 <div style="color: red;">{{ form.errors.email.as_text}}</div>
                             </div>
                         </div>
@@ -96,7 +109,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" id="pass" type="password" name="password" value="{{ form.password}}" required>
+                                <div>{{ form.password}}</div>
                                 <div style="color: red;">{{ form.errors.password.as_text}}</div>
                             </div>
                         </div>
@@ -108,7 +121,7 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <input class="form-control" id="v_pass" type="password" name="v_password" value="{{ form.v_password}}" required>
+                                <div>{{ form.v_password}}</div>
                                 <div style="color: red;">{{ form.errors.v_password.as_text}}</div>
                             </div>
                         </div>

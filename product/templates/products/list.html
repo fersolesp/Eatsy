@@ -129,7 +129,7 @@
             <div style="width:100%;" class="product-card-inner">
                 <div class="row-fluid">
                     <div class="d-flex">
-                        <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list" src="{{product.foto.url}}" alt="">
+                        <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde" src="{{product.foto.url}}" alt="">
                     </div>
                 </div>
                 <div class="row-fluid text-center nombreProducto mt-3">
@@ -137,7 +137,7 @@
                         {{product.titulo}}
                     </div>
                 </div>
-                <div class="row-fluid  text-center">
+                <div class="row-fluid  text-center descripcion">
                     {% for dieta in product.dietas.all %}
                     <div style="display:inline-block;"> {{dieta.nombre}}&nbsp;</div>
                     {% endfor %}
