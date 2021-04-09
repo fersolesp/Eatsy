@@ -98,12 +98,12 @@ class SearchProductForm(forms.ModelForm):
             return cls[member].value[1]
     
     orderBy = forms.TypedChoiceField(
-        choices = [(orderBy.value[1], orderBy.value[0]) for orderBy in OrderBy],
+        choices = [(orderBy.name, orderBy.value[0]) for orderBy in OrderBy],
         coerce = OrderBy.get_value,
-        required = True,
+        required = False,
         initial = OrderBy.newest.name,
         label = 'Ordenar por',
-        widget=forms.Select(attrs={"form":"filtros-form", 'class': 'form-control'})
+        widget = forms.Select(attrs={"form":"filtros-form", 'class': 'form-control'})
     )
 
     def __init__(self, *args, **kwargs):
@@ -111,9 +111,6 @@ class SearchProductForm(forms.ModelForm):
         
         self.fields['titulo'].required = False
         self.fields['dietas'].required = False
-        
-        # Rellenar para el segundo sprint con las dietas del usuario
-        # self.fields['dietas'].initial = [  ]
 
 class MiniSearchProductForm(SearchProductForm):
     def __init__(self, *args, **kwargs):

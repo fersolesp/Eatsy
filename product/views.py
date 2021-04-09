@@ -1,16 +1,21 @@
 from datetime import datetime
+
 from authentication.models import Perfil
-from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion, Reporte
-from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Avg
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Avg
+
+from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
+                           ReporteForm, ReviewProductForm, SearchProductForm)
+from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
+                            UbicacionProducto, Valoracion)
+
 
 def get_product_or_404(request, productId):
 
@@ -108,28 +113,25 @@ def listProduct(request):
             estado_get = "Aceptado" if request.GET["estado"] == "aceptado" else "Pendiente"
             product_list = product_list.filter(estado=estado_get)
     
-    if request.GET:
+    if request.GET & SearchProductForm.base_fields.keys():
         searchProductForm = SearchProductForm(request.GET)
+    else:
+        searchProductForm = SearchProductForm({ 'dietas': [ 1 ] })
+
+    if searchProductForm.is_valid():
         # BUSCAR
-        if searchProductForm.data.get("titulo"):
-            titulo = searchProductForm.data['titulo']
+        titulo = searchProductForm.cleaned_data['titulo']
+        if titulo:
             product_list = product_list.filter(titulo__icontains = titulo)
 
         # FILTRAR
-        if searchProductForm.data.get('dietas'):
-            filtro_dietas = request.GET.getlist('dietas','')
-            for dieta_id in filtro_dietas:
-                product_list = product_list.filter(dietas__id = dieta_id)
+        for dieta in searchProductForm.cleaned_data['dietas']:
+            product_list = product_list.filter(dietas__id = dieta.id)
 
         # ORDENAR
-        if searchProductForm.data.get('orderBy'):
-            if searchProductForm.data.get('orderBy') in ["id","-id","precioMedio","-precioMedio"]:
-                product_list = product_list.order_by(searchProductForm.data['orderBy'])
-    
-    else:
-        # Si el formulario no se ha enviado, rellenar con valores por defecto
-        # SPRINT 2 #
-        searchProductForm = SearchProductForm()
+        orderBy = searchProductForm.cleaned_data['orderBy']
+        if orderBy:
+            product_list = product_list.order_by(orderBy)
     
     page = request.GET.get('page')
     paginator = Paginator(product_list, 12)
