@@ -9,3 +9,4 @@ django-storages
 python-dotenv
 djangorestframework
 selenium
+stripe>=2.48.0,<3.0
