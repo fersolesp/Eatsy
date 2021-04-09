@@ -116,7 +116,8 @@ def listProduct(request):
     if request.GET & SearchProductForm.base_fields.keys():
         searchProductForm = SearchProductForm(request.GET)
     else:
-        searchProductForm = SearchProductForm({ 'dietas': [ 1 ] })
+        myDietas = Perfil.objects.get(user=request.user)
+        searchProductForm = SearchProductForm({ 'dietas': [ myDietas ] })
 
     if searchProductForm.is_valid():
         # BUSCAR
