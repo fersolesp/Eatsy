@@ -3,6 +3,13 @@ from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+    username =  forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+
 class SignUpForm(forms.ModelForm):
     username = forms.CharField(label='Nombre de usuario', max_length=150, validators=[ASCIIUsernameValidator], error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) ) 
     nombre = forms.CharField(label='Nombre', max_length=150, error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
@@ -32,3 +39,4 @@ class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'nombre', 'apellidos']
+

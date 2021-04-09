@@ -25,6 +25,7 @@ urlpatterns = [
     path('authentication/', include('authentication.urls')),
     path('', views.principalScreen),
     path('subscribe/', views.subscribe),
+    path('login/', views.loginPage),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler400 = "Eatsy.views.errorBadRequestView"
