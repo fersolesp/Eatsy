@@ -7,6 +7,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from authentication.models import Perfil, Dieta
+import json, stripe
+from django.http import JsonResponse
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+stripe.api_key = os.getenv('STRIPE_API_KEY')
 
 def loginPage(request):
     form = LoginForm()
@@ -64,5 +72,36 @@ def showProfile(request):
         return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
     else:
         return redirect('/authentication/login')
+
+def createSubscription(request):
+    if request.method == 'POST':
+        data = json.loads(request.data)
+        try:
+            # Attach the payment method to the customer
+            stripe.PaymentMethod.attach(
+                data['paymentMethodId'],
+                customer=data['customerId'],
+            )
+            # Set the default payment method on the customer
+            stripe.Customer.modify(
+                data['customerId'],
+                invoice_settings={
+                    'default_payment_method': data['paymentMethodId'],
+                },
+            )
+
+            # Create the subscription
+            subscription = stripe.Subscription.create(
+                customer=data['customerId'],
+                items=[
+                    {
+                        'price': 'price_HGd7M3DV3IMXkC'
+                    }
+                ],
+                expand=['latest_invoice.payment_intent'],
+            )
+            return JsonResponse(subscription)
+        except Exception as e:
+            return JsonResponse(error={'message': str(e)}), 200
 
 
