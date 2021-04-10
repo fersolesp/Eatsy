@@ -34,10 +34,6 @@ class EatsyApiTests(APITestCase):
         response = self.client.get('/', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
 
-    def test_subscription_page(self):
-        response = self.client.get('/subscribe/', {}, format= 'json')
-        self.assertEquals(response.status_code, 200)
-
     def test_product_list(self):
         response = self.client.get('/product/list', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
