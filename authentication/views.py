@@ -103,5 +103,6 @@ def createSubscription(request):
             return JsonResponse(subscription)
         except Exception as e:
             return JsonResponse(error={'message': str(e)}), 200
-
+    elif request.method == 'GET':
+        return render(request, 'subscribe.html')
 
