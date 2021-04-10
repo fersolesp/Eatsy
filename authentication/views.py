@@ -57,6 +57,10 @@ def logout_view(request):
     logout(request)
     return redirect("/")
 
+def subscribe(request):
+ 
+    return render(request, 'subscribe.html')
+
 def showProfile(request):
     usuario = request.user
     perfil = Perfil.objects.filter(user=usuario)
