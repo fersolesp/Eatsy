@@ -1,21 +1,39 @@
-{% load static %}
 
-<head>
-    <meta name="description" content="Landing page de una futura web destinada a personas con restricciones alimentarias."></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
-</head>
+{% extends 'products/base.html' %} {% block titulo %}Pagar suscripción{% endblock %} 
+{% block head %}
+<script src="https://js.stripe.com/v3/"></script><style>
 
+</style>
+{% endblock %}
 {% block contenido %}
+<div class="container">
 
-<input type="hidden" name="email" value="{{request.user.email}}">
+    <input type="hidden" name="email" value="{{request.user.email}}">
+    <div class="row justify-content-center">
+        <div class="nombreProducto"> Información de pago </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="product-card-inner col-sm-8 col-md-6">
+            <form class="form-group" id="payment-form">
 
+                <label for="nombreTarjeta">Nombre completo:</label>
+                <input type="text" class="form-control" id="nombreTarjeta" placeholder="Nombre Apellidos"></input>
+                <label class="mt-2" for="card-element">Datos de la tarjeta:</label>
+                <div class="form-control" id="card-element"></div>
+        
+            <!-- We'll put the error messages in this element -->
+            <div id="card-element-errors" role="alert"></div>
+            <div class="row justify-content-center">
+                <button class="mt-3 btn btn-warning btn-md" type="submit">¡Suscríbete!</button>
+ 
+            </div>
+           </form>
+        </div>
+
+        
+    </div>
+      
+</div>
 <script type="text/javascript">
     function createCustomer() {
         let billingEmail = document.querySelector('#email').value;
@@ -36,11 +54,43 @@
                 return result;
             });
     }
+    // Set your publishable key: remember to change this to your live publishable key in production
+    // See your keys here: https://dashboard.stripe.com/account/apikeys
+    let stripe = Stripe('pk_test_51IeRteJpVNPVJYiqJBA9s1zi6hciL8WXp84XNm5GZJUCimZQBJi1CNB0cT6OdLN9trllNiboToAfjRpGtrNIkJCL00PCFXbp1J');
+    let elements = stripe.elements();
+    let card = elements.create('card',{
+        style: {
+            base: {
+            iconColor: '#75cfb8',
+            fontWeight: '500',
+            fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+            fontSize: '16px',
+            fontSmoothing: 'antialiased',
+            ':-webkit-autofill': {
+                color: '#75cfb8',
+            },
+            '::placeholder': {
+                color: '#75cfb8',
+            },
+            },
+            invalid: {
+            iconColor: '#FFC7EE',
+            color: '#FFC7EE',
+            },
+        },
+        });
+    card.mount('#card-element');
+    card.on('change', function (event) {
+    displayError(event);
+    });
+    function displayError(event) {
+    changeLoadingStatePrices(false);
+    let displayError = document.getElementById('card-element-errors');
+    if (event.error) {
+        displayError.textContent = event.error.message;
+    } else {
+        displayError.textContent = '';
+    }
+}
 </script>
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
-
 {% endblock %}

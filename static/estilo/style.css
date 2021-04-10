@@ -27,6 +27,10 @@ body {
   color: #7F6000;
 }
 
+#nombreTarjeta::placeholder {
+  color: #75cfb8;
+}
+
 .nombreProductoShow {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.25em;
