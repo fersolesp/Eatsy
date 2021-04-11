@@ -7,5 +7,6 @@ urlpatterns = [
     path('login', views.loginPage, name='login'),
     path('logout', views.logout_view, name='logout'),
     path('profile', views.showProfile, name='profile'),
-    path('create-subscription', views.createSubscription, name='createSuscription')
+    path('create-subscription', views.createSubscription, name='createSuscription'),
+    path('create-customer', views.create_customer, name='createCustomer')
 ] 

@@ -11,10 +11,10 @@ import json, stripe
 from django.http import JsonResponse
 import os
 from dotenv import load_dotenv
+from django.views.decorators.csrf import csrf_protect
 
-load_dotenv()
-
-stripe.api_key = os.getenv('STRIPE_API_KEY')
+load_dotenv('AWS.env')
+stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
 def loginPage(request):
     form = LoginForm()
@@ -73,9 +73,30 @@ def showProfile(request):
     else:
         return redirect('/authentication/login')
 
+@csrf_protect
+def create_customer(request):
+    load_dotenv('AWS.env')
+    stripe.api_key = os.environ.get('STRIPE_API_KEY')
+    if request.method == 'POST':
+        # Reads application/json and returns a response
+        try:
+            # Create a new customer object
+            customer = stripe.Customer.create(email=request.user.email)
+
+            # At this point, associate the ID of the Customer object with your
+            # own internal representation of a customer, if you have one.
+            resp = JsonResponse({'customer':customer})
+
+            # We're simulating authentication here by storing the ID of the customer
+            # in a cookie.
+            resp.set_cookie('customer', customer.id)
+            return resp
+        except Exception as e:
+            return JsonResponse(error=str(e)), 403
+
 def createSubscription(request):
     if request.method == 'POST':
-        data = json.loads(request.data)
+        data = json.loads(request.body.decode('utf-8'))
         try:
             # Attach the payment method to the customer
             stripe.PaymentMethod.attach(
@@ -89,13 +110,12 @@ def createSubscription(request):
                     'default_payment_method': data['paymentMethodId'],
                 },
             )
-
             # Create the subscription
             subscription = stripe.Subscription.create(
                 customer=data['customerId'],
                 items=[
                     {
-                        'price': 'price_HGd7M3DV3IMXkC'
+                        'price': data['priceId']
                     }
                 ],
                 expand=['latest_invoice.payment_intent'],
