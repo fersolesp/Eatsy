@@ -7,6 +7,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from authentication.models import Perfil, Dieta
+import json, stripe
+from django.http import JsonResponse
+import os
+from dotenv import load_dotenv
+from django.views.decorators.csrf import csrf_protect
+
+load_dotenv('AWS.env')
+stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
 def loginPage(request):
     form = LoginForm()
@@ -57,6 +65,14 @@ def logout_view(request):
     logout(request)
     return redirect("/")
 
+
+def showProfile(request):
+    usuario = request.user
+    perfil = Perfil.objects.filter(user=usuario)
+    if usuario.is_authenticated:
+        return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
+    else:
+        return redirect('/authentication/login')
 def subscribe(request):
  
     return render(request, 'subscribe.html')
@@ -96,4 +112,57 @@ def resetPassword(request):
     else:
         return redirect('/authentication/login')
 
+
+@csrf_protect
+def create_customer(request):
+    load_dotenv('AWS.env')
+    stripe.api_key = os.environ.get('STRIPE_API_KEY')
+    if request.method == 'POST':
+        # Reads application/json and returns a response
+        try:
+            # Create a new customer object
+            customer = stripe.Customer.create(email=request.user.email)
+
+            # At this point, associate the ID of the Customer object with your
+            # own internal representation of a customer, if you have one.
+            resp = JsonResponse({'customer':customer})
+
+            # We're simulating authentication here by storing the ID of the customer
+            # in a cookie.
+            resp.set_cookie('customer', customer.id)
+            return resp
+        except Exception as e:
+            return JsonResponse(error=str(e)), 403
+
+def createSubscription(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        try:
+            # Attach the payment method to the customer
+            stripe.PaymentMethod.attach(
+                data['paymentMethodId'],
+                customer=data['customerId'],
+            )
+            # Set the default payment method on the customer
+            stripe.Customer.modify(
+                data['customerId'],
+                invoice_settings={
+                    'default_payment_method': data['paymentMethodId'],
+                },
+            )
+            # Create the subscription
+            subscription = stripe.Subscription.create(
+                customer=data['customerId'],
+                items=[
+                    {
+                        'price': data['priceId']
+                    }
+                ],
+                expand=['latest_invoice.payment_intent'],
+            )
+            return JsonResponse(subscription)
+        except Exception as e:
+            return JsonResponse(error={'message': str(e)}), 200
+    elif request.method == 'GET':
+        return render(request, 'subscribe.html')
 
