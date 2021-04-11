@@ -26,6 +26,11 @@ body {
   font-size: 1.4em;
   color: #7F6000;
 }
+.nombreProductoCreateReview {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2em;
+  color: #7F6000;
+}
 
 #nombreTarjeta::placeholder {
   color: #75cfb8;
@@ -93,6 +98,15 @@ a {
 .product-card-inner {
   display: grid;
   grid-template-rows: auto 1fr auto;
+  align-items: center;
+  padding: 2em;
+  border: 2px solid #A1C448;
+  border-radius: 0.5em;
+}
+
+.product-card-review-create {
+  display: grid;
+  grid-template-rows: auto 3fr auto;
   align-items: center;
   padding: 2em;
   border: 2px solid #A1C448;
