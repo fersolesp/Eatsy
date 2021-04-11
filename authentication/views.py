@@ -1,7 +1,7 @@
 #from django.shortcuts import render
 from django.contrib.auth.decorators import login_required #, staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
 #Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
-from authentication.forms import SignUpForm, LoginForm, resetPasswordForm
+from authentication.forms import SignUpForm, LoginForm, ProfileForm, resetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -61,13 +61,32 @@ def subscribe(request):
  
     return render(request, 'subscribe.html')
 
-def showProfile(request):
-    usuario = request.user
-    perfil = Perfil.objects.filter(user=usuario)
-    if usuario.is_authenticated:
-        return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
-    else:
-        return redirect('/authentication/login')
+@login_required(login_url='/authentication/login')
+def myProfile(request):
+    user = request.user
+    perfil = get_object_or_404(Perfil, user=user)
+    
+    if request.method == 'POST':
+        
+        form = ProfileForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            
+            user.first_name = form.cleaned_data['nombre']
+            user.last_name = form.cleaned_data['apellidos']
+            user.save()
+            perfil.dietas.clear()
+            for dieta in form.cleaned_data['dieta']:
+                perfil.dietas.add(get_object_or_404(Dieta, nombre=dieta))
+            perfil.save()
+    data = {
+            'nombre': user.first_name,
+            'apellidos': user.last_name,
+            'dieta': [dieta.nombre for dieta in perfil.dietas.all()],
+            'activada': perfil.activeAccount
+        }
+    form = ProfileForm(initial=data)
+    return render(request, 'perfil.html', {'form': form})
 
 def resetPassword(request):
     usuario = request.user

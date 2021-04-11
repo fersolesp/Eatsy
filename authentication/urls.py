@@ -7,6 +7,6 @@ urlpatterns = [
     path('subscribe', views.subscribe, name='subscribe'),
     path('login', views.loginPage, name='login'),
     path('logout', views.logout_view, name='logout'),
-    path('profile', views.showProfile, name='profile'),
+    path('profile', views.myProfile, name='profile'),
     path('resetpassword', views.resetPassword, name='resetpassword'),
 ] 
