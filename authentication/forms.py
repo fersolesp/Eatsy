@@ -8,7 +8,7 @@ class LoginForm(forms.ModelForm):
         model = User
         fields = ['password']
     username =  forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    password = forms.CharField(strip=False, widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
 
 class SignUpForm(forms.ModelForm):
     username = forms.CharField(label='Nombre de usuario', max_length=150, validators=[ASCIIUsernameValidator], error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) ) 
@@ -24,7 +24,7 @@ class SignUpForm(forms.ModelForm):
         ('Frutos secos', 'Frutos secos'),
     )
     dieta = forms.MultipleChoiceField(label='Dieta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control'}))
-    password_validator = RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', 'La contraseña debe contener entre 8 y 64 caractetes, tener una letra mayúscula, una minúscula, un dígito y un carácter especial')
+    password_validator = RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', 'La contraseña debe contener entre 8 y 64 caracteres, tener una letra mayúscula, una minúscula, un dígito y un carácter especial')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput, validators=[password_validator], strip=False)
     v_password = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput, validators=[password_validator], strip=False)
     
