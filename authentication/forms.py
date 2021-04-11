@@ -40,6 +40,14 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ['username', 'nombre', 'apellidos']
 
+class resetPasswordForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['password']
+    password =  forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    newPasswordConfirm = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+
 class ProfileForm(forms.Form):
     nombre = forms.CharField(label='Nombre', max_length=150, error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     apellidos = forms.CharField(label='Apellidos', max_length=150, error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
