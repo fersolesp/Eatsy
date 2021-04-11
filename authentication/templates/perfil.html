@@ -21,7 +21,66 @@
     <div class="row">
         <div class="col-3"></div>
         <div class=" col-6 product-card-inner " >
-            <!-- Datos personales -->
+            <form name="formProfile" enctype="multipart/form-data" method="POST" action="/authentication/profile">{% csrf_token %}
+                    <div class="product-card-inner">
+                        <label class="mt-2 text-center w-100" style="color:red;">*Solo estos campos son obligatorios.</label>
+                        
+                        <div class="row">
+                            <div class="col">
+                                <label>Nombre <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{ form.nombre}}</div>
+                                <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col">
+                                <label>Apellidos <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{ form.apellidos}}</div>
+                                <div style="color: red;">{{ form.errors.apellidos.as_text}}</div>    
+                            </div>
+                        </div>
+ 
+                        <div class="row mt-2">
+                            <div class="col">
+                                <label>Dieta o intolerancia<span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="col">{{form.dieta}}</div>
+                                <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col">
+                                <label>Cuenta ya activada <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{ form.activada}}</div>
+                                <div style="color: red;">{{ form.errors.activada.as_text}}</div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-auto m-auto" style="justify-content: center;">
+                                <button type="submit" class="save btn btn-warning">Actualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% comment %} <!-- Datos personales -->
             <div class="row">
                 <h3 class="text-center mt-2 mb-1 nombreProducto">&nbsp;&nbsp;&nbsp;Datos personales:</h3>
             </div>
@@ -60,7 +119,7 @@
             <div class="row mt-3">
                 <div class="titulito">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cuenta ya activada</div>&nbsp;
             </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
             <!-- Add otro if con un enlace para activar la cuenta -->
             
 
