@@ -61,12 +61,11 @@ def subscribe(request):
  
     return render(request, 'subscribe.html')
 
+@login_required(login_url='/authentication/login')
 def showProfile(request):
     usuario = request.user
     perfil = Perfil.objects.filter(user=usuario)
-    if usuario.is_authenticated:
-        return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
-    else:
-        return redirect('/authentication/login')
+    return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
+    
 
 

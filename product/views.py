@@ -3,7 +3,7 @@ from authentication.models import Perfil
 from product.models import Producto, Ubicacion, UbicacionProducto, Dieta, Valoracion, Aportacion, Reporte
 from product.forms import ReporteForm, CreateProductForm, ReviewProductForm, CommentForm, SearchProductForm, AddUbicationForm
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -12,10 +12,14 @@ from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Avg
 
+def  user_active_account(user):
+    return user.perfil.activeAccount
+
+@user_passes_test(user_active_account)
+@login_required(login_url='/authentication/login')
 def get_product_or_404(request, productId):
 
     """
-
     Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
     devuelve error 404.
     """
@@ -25,6 +29,8 @@ def get_product_or_404(request, productId):
         raise Http404()
     return product
 
+@user_passes_test(user_active_account)
+@login_required(login_url='/authentication/login')
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
@@ -99,6 +105,8 @@ def showProduct(request, productId):
             else:
                 return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
 
+@user_passes_test(user_active_account)
+@login_required(login_url='/authentication/login')
 def listProduct(request):
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
@@ -146,6 +154,8 @@ def listProduct(request):
         'products': products, 'searchProductForm': searchProductForm
         })
 
+@user_passes_test(user_active_account)
+@login_required(login_url='/authentication/login')
 def createProduct(request):
     if request.method=='GET':
         form=CreateProductForm()
@@ -193,8 +203,7 @@ def createProduct(request):
             return render(request,'products/create.html', {'form':form})
 
 
-# TODO: Cuando esté el login cambiar el login_url
-@user_passes_test(lambda u: u.is_superuser, login_url='/product/list')
+@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
 def reviewProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
     # TODO: Revisar, ¿a dónde redirigir si intentan entrar por URL para revisar producto aceptado? No hay página de error
@@ -263,7 +272,8 @@ def reviewProduct(request, productId):
 
     return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
-
+@user_passes_test(user_active_account)
+@login_required(login_url='/authentication/login')
 def rateProduct(request, productId):
     if request.method == 'POST':
         idProd = request.POST.get('id')
@@ -279,7 +289,8 @@ def rateProduct(request, productId):
             valoracion.save()
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
-
+@user_passes_test(user_active_account)
+@login_required(login_url='/authentication/login')
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
     if comment.user.user.pk == request.user.pk:
