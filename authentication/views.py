@@ -1,7 +1,7 @@
 #from django.shortcuts import render
 from django.contrib.auth.decorators import login_required #, staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
 #Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
-from authentication.forms import SignUpForm, LoginForm
+from authentication.forms import SignUpForm, LoginForm, resetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -66,6 +66,14 @@ def showProfile(request):
     perfil = Perfil.objects.filter(user=usuario)
     if usuario.is_authenticated:
         return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
+    else:
+        return redirect('/authentication/login')
+
+def resetPassword(request):
+    usuario = request.user
+    form = resetPasswordForm(request.POST)
+    if usuario.is_authenticated:
+        return render(request, 'resetPass.html', {'form':form})
     else:
         return redirect('/authentication/login')
 

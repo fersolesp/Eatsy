@@ -40,3 +40,11 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ['username', 'nombre', 'apellidos']
 
+class resetPasswordForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['password']
+    password =  forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    passwordConfirm = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+
