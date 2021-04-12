@@ -1,12 +1,20 @@
 #from django.shortcuts import render
 from django.contrib.auth.decorators import login_required #, staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
 #Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
-from authentication.forms import SignUpForm, LoginForm
+from authentication.forms import SignUpForm, LoginForm, ProfileForm, resetPasswordForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from authentication.models import Perfil, Dieta
+import json, stripe
+from django.http import JsonResponse
+import os
+from dotenv import load_dotenv
+from django.views.decorators.csrf import csrf_protect
+
+load_dotenv('AWS.env')
+stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
 def loginPage(request):
     form = LoginForm()
@@ -57,9 +65,6 @@ def logout_view(request):
     logout(request)
     return redirect("/")
 
-def subscribe(request):
- 
-    return render(request, 'subscribe.html')
 
 @login_required(login_url='/authentication/login')
 def showProfile(request):
@@ -67,5 +72,95 @@ def showProfile(request):
     perfil = Perfil.objects.filter(user=usuario)
     return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
     
+def subscribe(request):
+ 
+    return render(request, 'subscribe.html')
 
+@login_required(login_url='/authentication/login')
+def myProfile(request):
+    user = request.user
+    perfil = get_object_or_404(Perfil, user=user)
+    
+    if request.method == 'POST':
+        
+        form = ProfileForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            
+            user.first_name = form.cleaned_data['nombre']
+            user.last_name = form.cleaned_data['apellidos']
+            user.save()
+            perfil.dietas.clear()
+            for dieta in form.cleaned_data['dieta']:
+                perfil.dietas.add(get_object_or_404(Dieta, nombre=dieta))
+            perfil.save()
+    data = {
+            'nombre': user.first_name,
+            'apellidos': user.last_name,
+            'dieta': [dieta.nombre for dieta in perfil.dietas.all()],
+            'activada': perfil.activeAccount
+        }
+    form = ProfileForm(initial=data)
+    return render(request, 'perfil.html', {'form': form})
+
+def resetPassword(request):
+    usuario = request.user
+    form = resetPasswordForm(request.POST)
+    if usuario.is_authenticated:
+        return render(request, 'resetPass.html', {'form':form})
+    else:
+        return redirect('/authentication/login')
+
+@csrf_protect
+def create_customer(request):
+    load_dotenv('AWS.env')
+    stripe.api_key = os.environ.get('STRIPE_API_KEY')
+    if request.method == 'POST':
+        # Reads application/json and returns a response
+        try:
+            # Create a new customer object
+            customer = stripe.Customer.create(email=request.user.email)
+
+            # At this point, associate the ID of the Customer object with your
+            # own internal representation of a customer, if you have one.
+            resp = JsonResponse({'customer':customer})
+
+            # We're simulating authentication here by storing the ID of the customer
+            # in a cookie.
+            resp.set_cookie('customer', customer.id)
+            return resp
+        except Exception as e:
+            return JsonResponse(error=str(e)), 403
+
+def createSubscription(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        try:
+            # Attach the payment method to the customer
+            stripe.PaymentMethod.attach(
+                data['paymentMethodId'],
+                customer=data['customerId'],
+            )
+            # Set the default payment method on the customer
+            stripe.Customer.modify(
+                data['customerId'],
+                invoice_settings={
+                    'default_payment_method': data['paymentMethodId'],
+                },
+            )
+            # Create the subscription
+            subscription = stripe.Subscription.create(
+                customer=data['customerId'],
+                items=[
+                    {
+                        'price': data['priceId']
+                    }
+                ],
+                expand=['latest_invoice.payment_intent'],
+            )
+            return JsonResponse(subscription)
+        except Exception as e:
+            return JsonResponse(error={'message': str(e)}), 200
+    elif request.method == 'GET':
+        return render(request, 'subscribe.html')
 
