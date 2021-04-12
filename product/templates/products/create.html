@@ -10,20 +10,21 @@
 
 {% block contenido %}
 <main class="container-fluid">
+    <div id="colMap" class="col-sm-7  col-10"></div>
     <h3 class="text-center mt-5 mb-3 nombreProducto">Añadir producto</h3>
     <div class="row justify-content-center">
-        <div class="product-card-review-create col-8">
+        <div class="product-card-review-create col-sm-8  col-11">
             <form onsubmit="return validateUbicaciones()" name="formCreate" enctype="multipart/form-data" method="POST"
                 class="post-form" action="/product/create">{% csrf_token %}
                 <div class="form-group">
                     <label style="color:red; align-content: center;">*Solo estos campos son obligatorios.</label>
                     <br />
                     <div class="row">
-                        <div class="col-sm-2"><label>Imagen <span style="color:red;">*</span>:&nbsp;</label></div>
-                        <label style="cursor: pointer;" class="btn btn-warning col-sm-3"
+                        <div class="col-md-2"><label>Imagen <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <label style="cursor: pointer;" class="btn btn-warning col-md-3"
                             for="id_foto">Seleccionar archivo</label>
                         <div>{{ form.foto }}</div>
-                        <div class = "col-sm-5" id="Archivo">Ninguna imagen seleccionada</div>
+                        <div class = "col-md-5 text-center" id="Archivo">Ninguna imagen seleccionada</div>
                         <div class="col-12" style="color: red;">{{ form.errors.foto.as_text}}</div>
                     </div>
                     <br />
@@ -55,7 +56,7 @@
                     </div>
                     <br />
                     <div class="row">
-                        <div class="col-12"><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div  class="col-12"><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
                         <div class= "col-sm-10">{{form.ubicaciones}}</div>
                         <div class="col-sm-2" style="margin-top: 0.5%;">
                             <a onclick="mostrarMapa()" id="link">
@@ -63,8 +64,7 @@
                                     src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
                             </a>
                             
-                        </div>
-                       
+                        </div> 
                     </div>
                     <div style="color: red;">{{ form.errors.nombreComercio}}</div>
                     <div id="enseñaerror" class="row">
@@ -73,23 +73,30 @@
 
                     <!-- Button trigger modal -->
 
-                </div>
                 <!-- Modal -->
-
-                <div class="col-12" style="display:block;" id="displayer">
-                    <div class="col-sm-12"><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna
-                            opción):&nbsp;</label></div>
-                    {{form.nombreComercio}}
-                    {{form.lat}}
-                    {{form.lon}}
-                    <label class="col-sm-12" for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y
-                        clique en el mapa el lugar.):</label>
-                    <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad" class="form-control"></input>
-                    <div class="row justify-content-center col-12">
-                        <div style="width: 640px; height: 480px; margin-top: 2%" id="mapContainer">
-                        </div>
+                    <div style="display:block;" id="displayer">
+                            <div class="col-sm-12"><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna
+                                    opción):&nbsp;</label></div>
+                            {{form.nombreComercio}}
+                            {{form.lat}}
+                            {{form.lon}}
+                            <label class="col-sm-12" for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y
+                                clique en el mapa el lugar.):</label>
+                            <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad" class="form-control"></input>
+                                <div class="row justify-content-center"><div style=" height: 480px; margin-top: 2%" id="mapContainer">
+                                </div>
+                                </div>
                     </div>
-                </div>
+                <script type="text/javascript">
+                    let mapContainer = document.getElementById("mapContainer");
+                    let colMap = getComputedStyle(document.getElementById("colMap"));
+                    mapContainer.style.width = colMap.width;
+                    window.onresize=(ev)=>{
+                            console.log(colMap.width);
+                            mapContainer.style.width = colMap.width;
+                            mapContainer.style.height = window.innerHeight*0.49+"px";
+                        }
+                </script>
                 <div class="row mt-5 mb-5">
                     <div class="col-auto m-auto" style="justify-content: center;">
                         <a class="btn btn-danger" onclick="mostrarAlerta()">Cancelar</a>
@@ -98,6 +105,7 @@
                 </div>
 
 
+                </div>
             </form>
         </div>
     </div>
