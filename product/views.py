@@ -33,6 +33,7 @@ def get_product_or_404(request, productId):
 
 
 @login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/subscribe')
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
