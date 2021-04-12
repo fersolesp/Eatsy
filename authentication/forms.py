@@ -40,13 +40,19 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ['username', 'nombre', 'apellidos']
 
-class resetPasswordForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['password']
-    password =  forms.CharField(widget=forms.TextInput(attrs={'class' : 'form-control'}))
-    newPassword = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
-    newPasswordConfirm = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+class resetPasswordForm(forms.Form):
+    password_validator = RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', 'La contraseña debe contener entre 8 y 64 caracteres, tener una letra mayúscula, una minúscula, un dígito y un carácter especial')
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class' : 'form-control'}), validators=[password_validator], strip=False)
+    new_password = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput(attrs={'class' : 'form-control'}), validators=[password_validator], strip=False)
+    v_new_password = forms.CharField(label='Confirmar nueva contraseña', widget=forms.PasswordInput(attrs={'class' : 'form-control'}), validators=[password_validator], strip=False)
+    
+    def clean(self):
+        clean_data = super(resetPasswordForm, self).clean()
+        new_password = clean_data.get('new_password')
+        v_new_password = clean_data.get('v_new_password')
+        if new_password != v_new_password:
+            self.add_error('v_new_password', 'La nueva contraseña y su confirmación no coinciden')
+        return clean_data
 
 class ProfileForm(forms.Form):
     nombre = forms.CharField(label='Nombre', max_length=150, error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
