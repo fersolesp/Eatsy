@@ -1,16 +1,4 @@
-{% load static %}
-
-<head>
-    <meta name="description" content="Landing page de una futura web destinada a personas con restricciones alimentarias."></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
-</head>
+{% extends 'products/base.html' %} {% block titulo %}Cambiar contraseña{% endblock %}
 
 {% block contenido %}
 <script>
@@ -26,12 +14,8 @@
     }
 </script>
 
-<div class="container-fluid">
-    <div class="header row justify-content-center">
-        <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></img>
-        </a>
-    </div>
-</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <div>
         <div class="container">
         <h3 class="text-center mt-5 mb-3 nombreProducto">Cambiar contraseña</h3>
@@ -40,36 +24,38 @@
             <div class="col-6">
                 <form name="formCheckIn" enctype="multipart/form-data" method="POST" action="/authentication/resetpassword">{% csrf_token %}
                     <div class="product-card-inner">
+                        <label class="mt-2 text-center w-100" style="color:red;">*Los siguientes campos son obligatorios.</label>
                         <div class="row">
                             <div class="col">
-                                <label>Contraseña actual:&nbsp;</label>
+                                <label>Contraseña actual <span style="color:red;">*</span>:&nbsp;</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <div>{{form.password}} </div>
+                                <div style="color: red;">{{ form.errors.password.as_text}}</div>
                             </div>
                         </div>
-                        <br>
                         <div class="row mt-2">
                             <div class="col">
-                                <label>Nueva contraseña:&nbsp;</label>
+                                <label>Nueva contraseña <span style="color:red;">*</span>:&nbsp;</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <div> {{form.password}} </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <label>Vuelva a introducir la  nueva contraseña:&nbsp;</label>
+                                <div> {{form.new_password}} </div>
+                                <div style="color: red;">{{ form.errors.new_password.as_text}}</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <div>{{form.password}} </div>
+                                <label>Vuelva a introducir la  nueva contraseña <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{form.v_new_password}} </div>
+                                <div style="color: red;">{{ form.errors.v_new_password.as_text}}</div>
                             </div>
                         </div>
                         {% for message in messages %}
@@ -84,7 +70,7 @@
 
                         <div class="row mt-5 mb-5">
                             <div class="col-auto m-auto" style="justify-content: center;">
-                                <a class="btn btn-danger" href="/">Cancelar</a>
+                                <a class="btn btn-danger" href="/authentication/profile">Cancelar</a>
                                 <button type="submit" class="save btn btn-warning">Restablecer contraseña</button>
                             </div>
                         </div>
@@ -94,28 +80,5 @@
             </div>
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col">
-            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10 mt-5" src="{% static 'img/footer.png' %}">
-            <div class="container text-center">
-                <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col">
-            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10 mt-5" src="{% static 'img/footer.png' %}">
-            <div class="container text-center">
-                <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
-
 {% endblock %}
 

@@ -1,9 +1,10 @@
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
-from django.core.management import call_command
-from urllib.parse import urlencode
 import json
+from urllib.parse import urlencode
+
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.management import call_command
+from rest_framework.test import APIClient, APITestCase
+
 # Create your tests here.
 
 class EatsyApiTests(APITestCase):
@@ -34,6 +35,8 @@ class EatsyApiTests(APITestCase):
         response = self.client.get('/', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
 
+    # TODO: añadir login
+
     # def test_product_list(self):
     #     response = self.client.get('/product/list', {}, format= 'json')
     #     self.assertEquals(response.status_code, 200)
@@ -42,9 +45,9 @@ class EatsyApiTests(APITestCase):
     #     response = self.client.get('/product/show/24', {}, format= 'json')
     #     self.assertEquals(response.status_code, 200)
 
-    def test_pending_product(self):
-        response = self.client.get('/product/show/25', {}, format= 'json')
-        self.assertEquals(response.status_code, 302)
+    # def test_pending_product(self):
+    #     response = self.client.get('/product/show/25', {}, format= 'json')
+    #     self.assertEquals(response.status_code, 302)
 
     # def test_pending_product_as_admin(self):
     #     self.client.login(username="admin", password="admin")
@@ -52,9 +55,9 @@ class EatsyApiTests(APITestCase):
     #     self.assertEquals(response.status_code, 200)
     #     self.client.logout()
 
-    def test_report_list(self):
-        response = self.client.get('/product/report/list', {}, format= 'json')
-        self.assertEquals(response.status_code, 302)
+    # def test_report_list(self):
+    #     response = self.client.get('/product/report/list', {}, format= 'json')
+    #     self.assertEquals(response.status_code, 302)
 
     def test_report_list_as_admin(self):
         self.client.login(username="admin", password="admin")
@@ -62,9 +65,9 @@ class EatsyApiTests(APITestCase):
         self.assertEquals(response.status_code, 200)
         self.client.logout()
 
-    def test_product_review(self):
-        response = self.client.get('/product/review/26', {}, format= 'json')
-        self.assertEquals(response.status_code, 302)
+    # def test_product_review(self):
+    #     response = self.client.get('/product/review/26', {}, format= 'json')
+    #     self.assertEquals(response.status_code, 302)
 
     def test_product_review_as_admin(self):
         self.client.login(username="admin", password="admin")
@@ -196,24 +199,24 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.url, "/product/report/list")
         self.client.logout()
 
-    def test_report_decline(self):
-        self.client.login(username="admin", password="admin")
+    # def test_report_decline(self):
+    #     self.client.login(username="admin", password="admin")
 
-        data = urlencode({
-            "reportButton":"Enviar",
-            "causa":1,
-            "comentarios":"comentario de ejemplo",
-        })
-        self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
+    #     data = urlencode({
+    #         "reportButton":"Enviar",
+    #         "causa":1,
+    #         "comentarios":"comentario de ejemplo",
+    #     })
+    #     self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
 
-        data = urlencode({
-            "revision":"No Procede",
-        })
-        response = self.client.post('/product/report/action/1', data, content_type= 'application/x-www-form-urlencoded')
+    #     data = urlencode({
+    #         "revision":"No Procede",
+    #     })
+    #     response = self.client.post('/product/report/action/1', data, content_type= 'application/x-www-form-urlencoded')
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/product/report/list")
-        self.client.logout()
+    #     self.assertEqual(response.status_code, 302)
+    #     self.assertEqual(response.url, "/product/report/list")
+    #     self.client.logout()
 
     # def test_product_create(self):
 

@@ -88,13 +88,9 @@ def showProfile(request):
 def myProfile(request):
     user = request.user
     perfil = get_object_or_404(Perfil, user=user)
-    
     if request.method == 'POST':
-        
         form = ProfileForm(request.POST)
-        print(form.errors)
         if form.is_valid():
-            
             user.first_name = form.cleaned_data['nombre']
             user.last_name = form.cleaned_data['apellidos']
             user.save()
@@ -102,6 +98,8 @@ def myProfile(request):
             for dieta in form.cleaned_data['dieta']:
                 perfil.dietas.add(get_object_or_404(Dieta, nombre=dieta))
             perfil.save()
+        else:
+            return render(request, 'perfil.html', {'form': form})
     data = {
             'nombre': user.first_name,
             'apellidos': user.last_name,
@@ -113,9 +111,21 @@ def myProfile(request):
 
 @login_required(login_url='/authentication/login')
 def resetPassword(request):
-    usuario = request.user
-    form = resetPasswordForm(request.POST)
-    return render(request, 'resetPass.html', {'form':form})
+    user = request.user
+    perfil = get_object_or_404(Perfil, user=user)
+    form = resetPasswordForm()
+    if request.method == 'POST':
+        form = resetPasswordForm(request.POST)
+        if form.is_valid():
+            user = authenticate(request, username=user, password=form.cleaned_data['password'])
+            if user is not None:
+                user.set_password(form.cleaned_data['new_password'])
+                user.save()
+                return redirect('/authentication/profile')
+            else:
+                form.add_error('password', 'Contraseña incorrecta')
+                return render(request, 'resetPass.html', {'form':form})    
+    return render(request, 'resetPass.html', {'form': form})
 
 @login_required(login_url='/authentication/login')
 @csrf_protect
