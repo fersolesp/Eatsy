@@ -68,7 +68,7 @@ def showProduct(request, productId):
             if form.is_valid():
                 reporte = form.save(commit=False)
                 reporte.producto = Producto(id=productId)
-                reporte.user = get_object_or_404(User, pk=request.user.pk) # TODO _________________________________________________------------------------------///////////////////////
+                reporte.user = get_object_or_404(User, pk=request.user.pk) 
                 reporte.save()
                 return redirect('product:show', product.id)
             else:
@@ -82,7 +82,7 @@ def showProduct(request, productId):
             if formComment.is_valid():
                 comentario = formComment.save(commit=False)
                 comentario.producto = Producto(id=productId)
-                comentario.user = get_object_or_404(Perfil, user=request.user)  # TODO
+                comentario.user = get_object_or_404(Perfil, user=request.user)  
                 comentario.save()
                 return redirect('product:show', product.id)
             else:
@@ -101,11 +101,9 @@ def showProduct(request, productId):
                 if(nombre!='' and latitud!='' and longitud!=''):
                     ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
                     ubicacion.save()
-                    # TODO
                     ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio = precio)
                     ubicacionProducto.save()
                 else:
-                    # TODO
                     ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicaciones, user=get_object_or_404(Perfil, user=request.user), precio=precio)
                     ubicacionProducto.save()
 
@@ -191,13 +189,11 @@ def createProduct(request):
             if(form.cleaned_data['nombreComercio']!='' and form.cleaned_data['lat']!='' and form.cleaned_data['lon']!=''):
                 ubicacion = Ubicacion(nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
                 ubicacion.save()
-                # TODO
                 ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio = precio)
                 ubicacionProducto.save()
                 
             # Por cada supermercado crear tabla intermedia
             else:
-                # TODO
                 ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio=form.cleaned_data['precio'])
                 ubicacionProducto.save()
 
@@ -211,7 +207,6 @@ def createProduct(request):
 @user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def reviewProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
-    # TODO: Revisar, ¿a dónde redirigir si intentan entrar por URL para revisar producto aceptado? No hay página de error
     if request.method == 'GET':
         data = {
             'foto': producto.foto,
@@ -255,7 +250,6 @@ def reviewProduct(request, productId):
                 # Por cada supermercado crear tabla intermedia
                 producto.ubicaciones.clear()
                 for ubicacion in form.cleaned_data['ubicaciones']:
-                    # TODO
                     ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(user=request.user), precio=form.cleaned_data['precio'])
                     ubicacionProducto.save()
 
@@ -282,7 +276,6 @@ def rateProduct(request, productId):
         idProd = request.POST.get('id')
         rate = request.POST.get('rate')
 
-        # TODO
         numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, user=request.user), producto=get_object_or_404(Producto, pk=idProd)).count()
         if numValoraciones>=1:
              return JsonResponse({'success':'false', 'msj': "Ya ha realizado una valoración"}, safe=False)
