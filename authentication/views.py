@@ -182,3 +182,30 @@ def createSubscription(request):
     elif request.method == 'GET':
         return render(request, 'subscribe.html')
 
+
+
+def retrySubscription(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        try:
+
+            stripe.PaymentMethod.attach(
+                data['paymentMethodId'],
+                customer=data['customerId'],
+            )
+            # Set the default payment method on the customer
+            stripe.Customer.modify(
+                data['customerId'],
+                invoice_settings={
+                    'default_payment_method': data['paymentMethodId'],
+                },
+            )
+
+            invoice = stripe.Invoice.retrieve(
+                data['invoiceId'],
+                expand=['payment_intent'],
+            )
+            return JsonResponse(invoice)
+        except Exception as e:
+            return JsonResponse(error={'message': str(e)}), 200
+
