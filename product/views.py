@@ -18,7 +18,7 @@ def  user_active_account(user):
     return False
 
 @login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/subscribe')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def get_product_or_404(request, productId):
 
     """
@@ -33,7 +33,7 @@ def get_product_or_404(request, productId):
 
 
 @login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/subscribe')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
@@ -53,7 +53,7 @@ def showProduct(request, productId):
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
-            return redirect('/admin') #Esto habría que cambiarlo?
+            return redirect('/authentication/login') 
     elif request.method == 'POST':
         if 'reportButton' in request.POST:
             form = ReporteForm(request.POST)
@@ -109,7 +109,7 @@ def showProduct(request, productId):
                 return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
 
 @login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/subscribe')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def listProduct(request):
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
@@ -158,7 +158,7 @@ def listProduct(request):
         })
 
 @login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/subscribe')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def createProduct(request):
     if request.method=='GET':
         form=CreateProductForm()
@@ -276,7 +276,7 @@ def reviewProduct(request, productId):
     return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
 @login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/subscribe')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def rateProduct(request, productId):
     if request.method == 'POST':
         idProd = request.POST.get('id')
@@ -293,7 +293,7 @@ def rateProduct(request, productId):
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
 @login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/subscribe')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
     if comment.user.user.pk == request.user.pk:

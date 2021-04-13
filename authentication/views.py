@@ -16,6 +16,17 @@ from django.views.decorators.csrf import csrf_protect
 load_dotenv('AWS.env')
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
+def login_excluded(redirect_to):
+    """ This decorator kicks authenticated users out of a view """ 
+    def _method_wrapper(view_method):
+        def _arguments_wrapper(request, *args, **kwargs):
+            if request.user.is_authenticated:
+                return redirect(redirect_to) 
+            return view_method(request, *args, **kwargs)
+        return _arguments_wrapper
+    return _method_wrapper
+
+@login_excluded('../')
 def loginPage(request):
     form = LoginForm()
     if request.method == "POST":
@@ -35,7 +46,8 @@ def loginPage(request):
                 form.add_error('password', 'Inicio de sesión incorrecto')
                 return render(request, 'login.html', {'form':form})    
     return render(request, 'login.html', {'form':form})
-
+    
+@login_excluded('../')
 def signUp(request):
     form = SignUpForm()
     if request.method == 'POST':
@@ -71,10 +83,6 @@ def showProfile(request):
     usuario = request.user
     perfil = Perfil.objects.filter(user=usuario)
     return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
-    
-def subscribe(request):
- 
-    return render(request, 'subscribe.html')
 
 @login_required(login_url='/authentication/login')
 def myProfile(request):
@@ -103,14 +111,13 @@ def myProfile(request):
     form = ProfileForm(initial=data)
     return render(request, 'perfil.html', {'form': form})
 
+@login_required(login_url='/authentication/login')
 def resetPassword(request):
     usuario = request.user
     form = resetPasswordForm(request.POST)
-    if usuario.is_authenticated:
-        return render(request, 'resetPass.html', {'form':form})
-    else:
-        return redirect('/authentication/login')
+    return render(request, 'resetPass.html', {'form':form})
 
+@login_required(login_url='/authentication/login')
 @csrf_protect
 def create_customer(request):
     load_dotenv('AWS.env')
@@ -132,6 +139,7 @@ def create_customer(request):
         except Exception as e:
             return JsonResponse(error=str(e)), 403
 
+@login_required(login_url='/authentication/login')
 def createSubscription(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
