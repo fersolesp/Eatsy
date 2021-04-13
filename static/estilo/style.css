@@ -169,6 +169,10 @@ a {
   margin-bottom: 10px;
 }
 
+#card-element-errors {
+  color: red;
+}
+
 .msjError {
   background-color: rgb(167, 70, 53);
   text-align: center;
@@ -186,6 +190,10 @@ a {
 .product-img-list {
   max-height: 330px;
   width: 100%;
+}
+
+#name::placeholder{
+  color: #75cfb8;
 }
 
 .modal-header {
