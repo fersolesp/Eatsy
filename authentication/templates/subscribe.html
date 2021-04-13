@@ -31,22 +31,6 @@
 
 </div>
 <script type="text/javascript">
-    function createCustomer() {
-        return fetch('/authentication/create-customer', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',
-                },
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                // result.customer.id is used to map back to the customer object
-                return result;
-            });
-    }
 
     // Set your publishable key: remember to change this to your live publishable key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -79,7 +63,7 @@
     });
 
     function displayError(event) {
-        changeLoadingStatePrices(false);
+        // changeLoadingStatePrices(false);
         let displayError = document.getElementById('card-element-errors');
         if (event.error) {
             displayError.textContent = event.error.message;
@@ -106,18 +90,33 @@
         return "";
     }
 
-    createCustomer();
     form.addEventListener('submit', function(ev) {
-        createPaymentMethod({
-            card: card,
-        });
         ev.preventDefault();
+
+        let promise = fetch('/authentication/create-customer', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            }).then((response) => {
+                return response.json();
+            }).then((result) => {
+                return result;
+            });
+        
+        Promise.all([promise])            
+            .then(result=>{
+            createPaymentMethod({
+                card: card,
+                customerId: result[0]["customer"]["id"],
+            });
+        });
     });
 
     function createPaymentMethod({
-        card
+        card, customerId
     }) {
-        const customerId = getCookie('customer');
         // Set up payment method for recurring usage
         let billingName = document.querySelector('#name').value;
 
