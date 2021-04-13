@@ -13,7 +13,7 @@
         <div class="product-card-inner col-sm-8 col-md-6">
             <form class="form-group" id="subscription-form" method="POST" action="/authentication/create-subscription">{% csrf_token %}
                 <label for="name">Nombre completo:</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Nombre Apellidos"></input>
+                <input type="text" required class="form-control" id="name" name="name" placeholder="Nombre Apellidos"></input>
                 <label class="mt-2" for="card-element">Datos de la tarjeta:</label>
                 <div class="form-control" id="card-element"></div>
 
@@ -31,23 +31,6 @@
 
 </div>
 <script type="text/javascript">
-    function createCustomer() {
-        return fetch('/authentication/create-customer', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',
-                },
-            })
-            .then((response) => {
-                return response.json();
-            })
-            .then((result) => {
-                // result.customer.id is used to map back to the customer object
-                return result;
-            });
-    }
-
     // Set your publishable key: remember to change this to your live publishable key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
     let stripe = Stripe('pk_test_51IeRteJpVNPVJYiqJBA9s1zi6hciL8WXp84XNm5GZJUCimZQBJi1CNB0cT6OdLN9trllNiboToAfjRpGtrNIkJCL00PCFXbp1J');
@@ -79,7 +62,7 @@
     });
 
     function displayError(event) {
-        changeLoadingStatePrices(false);
+        // changeLoadingStatePrices(false);
         let displayError = document.getElementById('card-element-errors');
         if (event.error) {
             displayError.textContent = event.error.message;
@@ -106,18 +89,34 @@
         return "";
     }
 
-    createCustomer();
     form.addEventListener('submit', function(ev) {
-        createPaymentMethod({
-            card: card,
-        });
         ev.preventDefault();
+
+        let promise = fetch('/authentication/create-customer', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        }).then((response) => {
+            return response.json();
+        }).then((result) => {
+            return result;
+        });
+
+        Promise.all([promise])
+            .then(result => {
+                createPaymentMethod({
+                    card: card,
+                    customerId: result[0]["customer"]["id"],
+                });
+            });
     });
 
     function createPaymentMethod({
-        card
+        card,
+        customerId
     }) {
-        const customerId = getCookie('customer');
         // Set up payment method for recurring usage
         let billingName = document.querySelector('#name').value;
 
@@ -280,6 +279,65 @@
                 showCardError(error);
             })
         );
+    }
+
+    function handlePaymentThatRequiresCustomerAction({
+        subscription,
+        invoice,
+        priceId,
+        paymentMethodId,
+        isRetry,
+    }) {
+        if (subscription && subscription.status === 'active') {
+            // Subscription is active, no customer actions required.
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+        }
+
+        // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
+        // If it's a retry, the payment intent will be on the invoice itself.
+        let paymentIntent = invoice ? invoice.payment_intent : subscription.latest_invoice.payment_intent;
+
+        if (
+            paymentIntent.status === 'requires_action' ||
+            (isRetry === true && paymentIntent.status === 'requires_payment_method')
+        ) {
+            return stripe
+                .confirmCardPayment(paymentIntent.client_secret, {
+                    payment_method: paymentMethodId,
+                })
+                .then((result) => {
+                    if (result.error) {
+                        // Start code flow to handle updating the payment details.
+                        // Display error message in your UI.
+                        // The card was declined (i.e. insufficient funds, card has expired, etc).
+                        throw result;
+                    } else {
+                        if (result.paymentIntent.status === 'succeeded') {
+                            // Show a success message to your customer.
+                            return {
+                                priceId: priceId,
+                                subscription: subscription,
+                                invoice: invoice,
+                                paymentMethodId: paymentMethodId,
+                            };
+                        }
+                    }
+                })
+                .catch((error) => {
+                    displayError(error);
+                });
+        } else {
+            // No customer action needed.
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+        }
     }
 </script>
 <!-- Optional JavaScript -->

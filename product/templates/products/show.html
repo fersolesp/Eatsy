@@ -209,8 +209,10 @@
                                 {% endfor %} -->
                                 {% for aportacion in aportaciones %}
                                 <div class="product-card-comment mb-2">
+                                    <div class="row justify-content-center titulito"> {{aportacion.user}}: </div>
                                     <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
-                                    <div class="row justify-content-center">{{aportacion.mensaje}}</div>
+                                    <div class="row justify-content-center">  {{aportacion.mensaje}}</div>
+                                    <div class="row justify-content-center"> {{aportacion.fecha}} </div>
                                 </div>
                                 {% endfor %}
                             </div>
