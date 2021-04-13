@@ -2,7 +2,7 @@ from datetime import datetime
 
 from authentication.models import Perfil
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -17,10 +17,16 @@ from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
                             UbicacionProducto, Valoracion)
 
 
+def  user_active_account(user):
+    if user:
+        return user.perfil.activeAccount
+    return False
+
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def get_product_or_404(request, productId):
 
     """
-
     Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
     devuelve error 404.
     """
@@ -30,6 +36,9 @@ def get_product_or_404(request, productId):
         raise Http404()
     return product
 
+
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
@@ -49,7 +58,7 @@ def showProduct(request, productId):
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
-            return redirect('/admin')
+            return redirect('/authentication/login') 
     elif request.method == 'POST':
         if 'reportButton' in request.POST:
             form = ReporteForm(request.POST)
@@ -104,6 +113,8 @@ def showProduct(request, productId):
             else:
                 return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
 
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def listProduct(request):
     product_list = Producto.objects.all()
     if not request.user.is_superuser:
@@ -149,6 +160,8 @@ def listProduct(request):
         'products': products, 'searchProductForm': searchProductForm
         })
 
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def createProduct(request):
     if request.method=='GET':
         form=CreateProductForm()
@@ -196,8 +209,7 @@ def createProduct(request):
             return render(request,'products/create.html', {'form':form})
 
 
-# TODO: Cuando esté el login cambiar el login_url
-@user_passes_test(lambda u: u.is_superuser, login_url='/product/list')
+@user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def reviewProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
     # TODO: Revisar, ¿a dónde redirigir si intentan entrar por URL para revisar producto aceptado? No hay página de error
@@ -266,7 +278,8 @@ def reviewProduct(request, productId):
 
     return render(request, 'products/review.html', {'form': form, 'product_id': productId, 'producto':producto})
 
-
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def rateProduct(request, productId):
     if request.method == 'POST':
         idProd = request.POST.get('id')
@@ -282,7 +295,8 @@ def rateProduct(request, productId):
             valoracion.save()
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
-
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
     if comment.user.user.pk == request.user.pk:
@@ -293,7 +307,7 @@ def removeComment (request, commentId):
 
     return render(request, 'products/show.html')
 
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
+@user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def listReports(request):
     reports_list = Reporte.objects.filter(estado='Pendiente')
 
@@ -310,7 +324,7 @@ def listReports(request):
     return render(request, 'reports/list.html', { 'reports': reports })
 
 
-@user_passes_test(lambda u: u.is_superuser, login_url='/admin')
+@user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In 
 def reviewReport(request, reporteId):
 
     if request.method == 'POST':

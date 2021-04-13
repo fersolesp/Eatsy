@@ -30,17 +30,17 @@ class SeleniumTests(StaticLiveServerTestCase):
 #        self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
 #        self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
 
-    def test_admin_revisar(self):
-        self.driver.get(f'{self.live_server_url}/admin/')
-        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-        self.driver.find_element(By.ID, "id_username").send_keys("admin")
-        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-        self.driver.find_element(By.ID, "id_password").send_keys("admin")
-        self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
-        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
-        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-        self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
+#    def test_admin_revisar(self):
+#        self.driver.get(f'{self.live_server_url}/admin/')
+#        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+#        self.driver.find_element(By.ID, "id_username").send_keys("admin")
+#        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+#        self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+#        self.driver.find_element(By.ID, "id_password").send_keys("admin")
+#        self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
+#        self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
+#        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+#        self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
 
     def test_nav(self):
         self.driver.get(f'{self.live_server_url}/')

@@ -36,6 +36,7 @@ class EatsyApiTests(APITestCase):
         self.assertEquals(response.status_code, 200)
 
     # TODO: añadir login
+
     # def test_product_list(self):
     #     response = self.client.get('/product/list', {}, format= 'json')
     #     self.assertEquals(response.status_code, 200)
@@ -48,11 +49,11 @@ class EatsyApiTests(APITestCase):
     #     response = self.client.get('/product/show/25', {}, format= 'json')
     #     self.assertEquals(response.status_code, 302)
 
-    def test_pending_product_as_admin(self):
-        self.client.login(username="admin", password="admin")
-        response = self.client.get('/product/show/25', {}, format= 'json')
-        self.assertEquals(response.status_code, 200)
-        self.client.logout()
+    # def test_pending_product_as_admin(self):
+    #     self.client.login(username="admin", password="admin")
+    #     response = self.client.get('/product/show/25', {}, format= 'json')
+    #     self.assertEquals(response.status_code, 200)
+    #     self.client.logout()
 
     # def test_report_list(self):
     #     response = self.client.get('/product/report/list', {}, format= 'json')
