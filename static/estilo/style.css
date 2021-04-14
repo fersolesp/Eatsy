@@ -1,6 +1,6 @@
 body {
-  background-image: url("fondo.png");
-  background-size: cover;
+  background-image: url("fondito.png");
+  background-size: 100%;
 }
 
 .navbar {
@@ -26,6 +26,13 @@ body {
   font-size: 1.4em;
   color: #7F6000;
 }
+
+.nombreProductoPeque {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.2em;
+  color: #7F6000;
+}
+
 .nombreProductoCreateReview {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 2em;
@@ -102,6 +109,7 @@ a {
   padding: 2em;
   border: 2px solid #A1C448;
   border-radius: 0.5em;
+  background-image: url("fondocard.png");
 }
 
 .product-card-review-create {
@@ -386,6 +394,7 @@ a {
         padding: 0em;
         padding-bottom: 1em;
         padding-top: 1em;
+        background-image: url("fondocard.png");
     }
 
 }
