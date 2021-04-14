@@ -5,16 +5,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 {% endblock %}
 {% block contenido %}
-
-<div class="row p-5">
-    <div class="col">
+<div class="row p-5 justify-content-center">
+    <div class="col-lg-8 col-md-6 col-sm-4 col-8  ">
         <div class="row pl-3 pr-3">
-            <h3><div class="col tituloReporte">Notificaciones de productos reportados</div></h3>
+            <h3><div class="col nombreProducto">Notificaciones de productos reportados</div></h3>
         </div>
         <div class="row pl-3 pr-3">
-            <div class="col">
+            <div class="col-lg-12 col-md-6 col-sm-2 col-12 d-flex">
                 <table class="w-100  mt-3">
-                    <tr class="border-bottom border-dark">
+                    <tr class="border-bottom border-dark nombreProductoPeque">
                         <th>Nombre</th>
                         <th>Causa</th>
                         <th>Reportado por</th>
@@ -22,10 +21,10 @@
                     </tr>
                     {% for report in reports %}
                     <tr>
-                        <td>{{report.producto.titulo}}</td>
-                        <td>{{report.causa}}</td>
-                        <td>{{report.user.first_name}} {{report.user.last_name}}</td>
-                        <td style="text-align: center;"><a class="enlaceOjo" data-toggle="modal"
+                        <td class="descripcion">{{report.producto.titulo}}</td>
+                        <td class="descripcion">{{report.causa}}</td>
+                        <td class="descripcion">{{report.user.first_name}} {{report.user.last_name}}</td>
+                        <td style="text-align: center; "><a class="enlaceOjo" data-toggle="modal"
                                 data-target="#modalRep{{forloop.counter}}" role="button" aria-disabled="true" href=""><i
                                     class="fa fa-eye" style="font-size:44px"></a></i></td>
 
