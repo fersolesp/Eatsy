@@ -1,20 +1,45 @@
 #from django.shortcuts import render
-from django.contrib.auth.decorators import login_required #, staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
-#Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
-from authentication.forms import SignUpForm, LoginForm, ProfileForm, resetPasswordForm
-from django.shortcuts import render, get_object_or_404, redirect
+import json
+import os
+
+import stripe
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import \
+    login_required  # , staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
 from django.contrib.auth.models import User
-from authentication.models import Perfil, Dieta
-import json, stripe
 from django.http import JsonResponse
-import os
-from dotenv import load_dotenv
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_protect
+from dotenv import load_dotenv
+
+#Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
+from authentication.forms import (LoginForm, ProfileForm, SignUpForm,
+                                  resetPasswordForm)
+from authentication.models import Dieta, Perfil
 
 load_dotenv('AWS.env')
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
+
+def updateUserSubscriptionState(user):
+    load_dotenv('AWS.env')
+    stripe.api_key = os.environ.get('STRIPE_API_KEY')
+
+    active = False
+    customer = stripe.Customer.list(email=user.email)
+    if customer:
+        customer = customer['data'][0]
+
+        for subscription in stripe.Subscription.list(customer=customer['id'], status='all')['data']:
+            if subscription['status'] in ['active', 'trialing']:
+                active = True
+                break
+
+    perfil = Perfil.objects.get(user__id=user.id)
+    perfil.activeAccount = active
+    perfil.save()
+
+    return active
 
 def login_excluded(redirect_to):
     """ This decorator kicks authenticated users out of a view """ 
@@ -29,6 +54,7 @@ def login_excluded(redirect_to):
 @login_excluded('../')
 def loginPage(request):
     form = LoginForm()
+
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -36,12 +62,11 @@ def loginPage(request):
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                # if user.is_active:
                 login(request, user)
-                return redirect('/product/list')
-                # else:
-                #     form.add_error('password', 'Inicio de sesión incorrecto')
-                #     return render(request, 'login.html', {'form':form})
+                if updateUserSubscriptionState(user):
+                    return redirect('/product/list')
+                else:
+                    return redirect('authentication:profile')
             else:
                 form.add_error('password', 'Inicio de sesión incorrecto')
                 return render(request, 'login.html', {'form':form})    
@@ -76,7 +101,6 @@ def signUp(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
-
 
 @login_required(login_url='/authentication/login')
 def showProfile(request):
@@ -148,7 +172,7 @@ def create_customer(request):
 
             return resp
         except Exception as e:
-            return JsonResponse(error=str(e)), 403
+            return JsonResponse({'error': str(e)}, status=403)
 
 @login_required(login_url='/authentication/login')
 def createSubscription(request):
@@ -167,19 +191,34 @@ def createSubscription(request):
                     'default_payment_method': data['paymentMethodId'],
                 },
             )
+
             # Create the subscription
-            subscription = stripe.Subscription.create(
-                customer=data['customerId'],
-                items=[
-                    {
-                        'price': data['priceId']
-                    }
-                ],
-                expand=['latest_invoice.payment_intent'],
-            )
+            trial = len(stripe.Subscription.list(customer=data['customerId'], status='all')['data']) == 0
+            if trial:
+                subscription = stripe.Subscription.create(
+                    customer=data['customerId'],
+                    items=[
+                        {
+                            'price': data['priceId']
+                        }
+                    ],
+                    expand=['latest_invoice.payment_intent'],
+                    trial_period_days=30
+                )
+            else:
+                subscription = stripe.Subscription.create(
+                    customer=data['customerId'],
+                    items=[
+                        {
+                            'price': data['priceId']
+                        }
+                    ],
+                    expand=['latest_invoice.payment_intent']
+                )
+
             return JsonResponse(subscription)
         except Exception as e:
-            return JsonResponse(error={'message': str(e)}), 200
+            return JsonResponse({"error": str(e)}, status=200)
     elif request.method == 'GET':
         if request.user.perfil.activeAccount == False:
             return render(request, 'subscribe.html')
@@ -211,7 +250,7 @@ def retrySubscription(request):
             )
             return JsonResponse(invoice)
         except Exception as e:
-            return JsonResponse(error={'message': str(e)}), 200
+            return JsonResponse({"error": str(e)}, status=200)
 
 @login_required(login_url='/authentication/login')
 def cancelSubscription(request):
@@ -233,3 +272,10 @@ def cancelSubscription(request):
             return JsonResponse(error={'message': str(e)}), 200
     elif request.method == 'GET':
         return render(request, 'login.html')
+
+@csrf_protect
+@login_required(login_url='/authentication/login')
+def update_access(request):
+    if request.method == 'POST':
+        updateUserSubscriptionState(request.user)
+        return JsonResponse({}, status=200)

@@ -1,4 +1,5 @@
 from django.urls import path
+
 from authentication import views
 
 app_name = 'authentication'
@@ -10,6 +11,7 @@ urlpatterns = [
     path('cancel-subscription', views.cancelSubscription, name='cancelSuscription'),
     path('retry-invoice', views.retrySubscription, name='retrySubscription'),
     path('create-customer', views.create_customer, name='createCustomer'),
+    path('update-access', views.update_access, name='updateAccess'),
     path('profile', views.myProfile, name='profile'),
     path('resetpassword', views.resetPassword, name='resetpassword')
 ] 
