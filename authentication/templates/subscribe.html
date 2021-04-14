@@ -150,7 +150,7 @@
         paymentMethodId,
         priceId,
     }) {
-        if (subscription.status === 'active') {
+        if (subscription.status === 'active' || subscription.status === 'trialing') {
             // subscription is active, no customer actions required.
             return { subscription, priceId, paymentMethodId };
         } else if (
@@ -243,7 +243,7 @@
                     customerId: customerId,
                     paymentMethodId: paymentMethodId,
                     priceId: priceId,
-                }),
+                })
             })
                 .then((response) => {
                     return response.json();
@@ -285,7 +285,7 @@
 
     function onSubscriptionComplete(result) {
         // Payment was successful.
-        if (result.subscription.status === 'active') {
+        if (result.subscription.status === 'active' || result.subscription.status === 'trialing') {
             // Change your UI to show a success message to your customer.
             // Call your backend to grant access to your service based on
             // `result.subscription.items.data[0].price.product` the customer subscribed to.
@@ -294,10 +294,7 @@
                 headers: {
                     'Content-type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}',
-                },
-                body: JSON.stringify({
-                    product: result.subscription.items.data[0].price.product
-                }),
+                }
             })
                 .then(_ => {
                     window.location.href = "{% url 'product:list' %}"
@@ -312,7 +309,7 @@
         paymentMethodId,
         isRetry,
     }) {
-        if (subscription && subscription.status === 'active') {
+        if (subscription && (subscription.status === 'active' || subscription.status === 'trialing')) {
             // Subscription is active, no customer actions required.
             return {
                 subscription,
