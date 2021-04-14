@@ -220,7 +220,10 @@ def createSubscription(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=200)
     elif request.method == 'GET':
-        return render(request, 'subscribe.html')
+        if request.user.perfil.activeAccount == False:
+            return render(request, 'subscribe.html')
+        else:
+            return redirect("product:list")
 
 
 
@@ -250,7 +253,28 @@ def retrySubscription(request):
             return JsonResponse({"error": str(e)}, status=200)
 
 @login_required(login_url='/authentication/login')
+def cancelSubscription(request):
+    if request.method == 'POST':
+        try:
+            customer = stripe.Customer.list(email=request.user.email)
+            if not customer:
+                return JsonResponse(error={'message': str(e)}), 200
+            else:
+                for subscription in stripe.Subscription.list(customer=customer["data"][0]["id"])['data']:
+                    subscriptionId = subscription['id']
+                    # delete the subscription
+                    stripe.Subscription.delete(subscriptionId)
+                perfil = Perfil.objects.get(user__id=request.user.id)
+                perfil.activeAccount = False
+                perfil.save()
+                return JsonResponse(customer)
+        except Exception as e:
+            return JsonResponse(error={'message': str(e)}), 200
+    elif request.method == 'GET':
+        return render(request, 'login.html')
+
 @csrf_protect
+@login_required(login_url='/authentication/login')
 def update_access(request):
     if request.method == 'POST':
         updateUserSubscriptionState(request.user)

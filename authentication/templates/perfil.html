@@ -57,6 +57,19 @@
                             <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
                         </div>
                     </div>
+                    
+                    <div class="row mt-5 product-card-inner justify-content-center">
+                        <div class="col ">
+                            <div style=" text-align: center; " class="nombreProductoPeque"> Estado de la suscripción: </div>
+                            {% if request.user.perfil.activeAccount %}
+                                <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya esta activada </div>
+                                <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;">Cancelar subscripción</button>
+                            {% else %}
+                                <a class="btn btn-warning center" style="justify-content: center;" href="/authentication/create-subscription">Activa tu cuenta</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
                     <div class="row mt-5 mb-5">
                         <div class="col-auto m-auto" style="justify-content: center;">
                             <button type="submit" class="save btn btn-warning">Actualizar</button>
@@ -64,9 +77,24 @@
                         </div>
                     </div>
                 </div>
-            </form>   
+            </form>
         </div>
     </div>
 </div>
-{% endblock %}
+<script>
+let boton = document.getElementById("cancelButton");
+boton.addEventListener('click', function() {
 
+        fetch('/authentication/cancel-subscription', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        }).then((response) => {
+            window.location.href('/');
+        });
+    });
+
+</script>
+{% endblock %}
