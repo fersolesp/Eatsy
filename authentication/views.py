@@ -181,7 +181,10 @@ def createSubscription(request):
         except Exception as e:
             return JsonResponse(error={'message': str(e)}), 200
     elif request.method == 'GET':
-        return render(request, 'subscribe.html')
+        if request.user.perfil.activeAccount == False:
+            return render(request, 'subscribe.html')
+        else:
+            return redirect("product:list")
 
 
 
@@ -218,12 +221,14 @@ def cancelSubscription(request):
             if not customer:
                 return JsonResponse(error={'message': str(e)}), 200
             else:
-                subscriptionId = stripe.Subscription.list(customer=customer["data"][0]["id"])['data'][0]['id']
-                print(customer["data"][0]["id"])
-                # delete the subscription
-                subscription = stripe.Subscription.delete(subscriptionId)
-                print(subscription)
-                return JsonResponse(subscription)
+                for subscription in stripe.Subscription.list(customer=customer["data"][0]["id"])['data']:
+                    subscriptionId = subscription['id']
+                    # delete the subscription
+                    stripe.Subscription.delete(subscriptionId)
+                perfil = Perfil.objects.get(user__id=request.user.id)
+                perfil.activeAccount = False
+                perfil.save()
+                return JsonResponse(customer)
         except Exception as e:
             return JsonResponse(error={'message': str(e)}), 200
     elif request.method == 'GET':
