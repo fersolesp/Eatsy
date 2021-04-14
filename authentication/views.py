@@ -1,17 +1,22 @@
 #from django.shortcuts import render
-from django.contrib.auth.decorators import login_required #, staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
-#Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
-from authentication.forms import SignUpForm, LoginForm, ProfileForm, resetPasswordForm
-from django.shortcuts import render, get_object_or_404, redirect
+import json
+import os
+
+import stripe
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import \
+    login_required  # , staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
 from django.contrib.auth.models import User
-from authentication.models import Perfil, Dieta
-import json, stripe
 from django.http import JsonResponse
-import os
-from dotenv import load_dotenv
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import csrf_protect
+from dotenv import load_dotenv
+
+#Para comprobar si es superuser, poner @user_passes_test(lambda u: u.is_superuser) antes de definir la vista. Con el resto bastaría poner @login_required o @staff_member_required
+from authentication.forms import (LoginForm, ProfileForm, SignUpForm,
+                                  resetPasswordForm)
+from authentication.models import Dieta, Perfil
 
 load_dotenv('AWS.env')
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
@@ -147,7 +152,8 @@ def create_customer(request):
             resp.set_cookie('customer', customer.id)
             return resp
         except Exception as e:
-            return JsonResponse(error=str(e)), 403
+            print(str(e))
+            return JsonResponse({"error": str(e)}, status=403)
 
 @login_required(login_url='/authentication/login')
 def createSubscription(request):
@@ -178,7 +184,7 @@ def createSubscription(request):
             )
             return JsonResponse(subscription)
         except Exception as e:
-            return JsonResponse(error={'message': str(e)}), 200
+            return JsonResponse({"error": str(e)}, status=200)
     elif request.method == 'GET':
         return render(request, 'subscribe.html')
 
@@ -207,5 +213,23 @@ def retrySubscription(request):
             )
             return JsonResponse(invoice)
         except Exception as e:
-            return JsonResponse(error={'message': str(e)}), 200
+            return JsonResponse({"error": str(e)}, status=200)
 
+@login_required(login_url='/authentication/login')
+@csrf_protect
+def update_access(request):
+    if request.method == 'POST':
+        load_dotenv('AWS.env')
+        stripe.api_key = os.environ.get('STRIPE_API_KEY')
+
+        data = json.loads(request.body.decode('utf-8'))
+
+        product = stripe.Product.retrieve(data['product'])
+
+        print(product.active)
+        if product.active and product.statement_descriptor == "Eatsy" and product.name == "Suscripción":
+            perfil = Perfil.objects.get(user__id=request.user.id)
+            perfil.activeAccount = True
+            perfil.save()
+
+        return JsonResponse()
