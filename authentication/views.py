@@ -135,16 +135,17 @@ def create_customer(request):
     if request.method == 'POST':
         # Reads application/json and returns a response
         try:
-            # Create a new customer object
-            customer = stripe.Customer.create(email=request.user.email)
+            customer = stripe.Customer.list(email=request.user.email)
+            if not customer:
+                # Create a new customer object
+                customer = stripe.Customer.create(email=request.user.email)
+            else:
+                customer = customer["data"][0]
 
             # At this point, associate the ID of the Customer object with your
             # own internal representation of a customer, if you have one.
             resp = JsonResponse({'customer':customer})
 
-            # We're simulating authentication here by storing the ID of the customer
-            # in a cookie.
-            resp.set_cookie('customer', customer.id)
             return resp
         except Exception as e:
             return JsonResponse(error=str(e)), 403
@@ -209,3 +210,21 @@ def retrySubscription(request):
         except Exception as e:
             return JsonResponse(error={'message': str(e)}), 200
 
+@login_required(login_url='/authentication/login')
+def cancelSubscription(request):
+    if request.method == 'POST':
+        try:
+            customer = stripe.Customer.list(email=request.user.email)
+            if not customer:
+                return JsonResponse(error={'message': str(e)}), 200
+            else:
+                subscriptionId = stripe.Subscription.list(customer=customer["data"][0]["id"])['data'][0]['id']
+                print(customer["data"][0]["id"])
+                # delete the subscription
+                subscription = stripe.Subscription.delete(subscriptionId)
+                print(subscription)
+                return JsonResponse(subscription)
+        except Exception as e:
+            return JsonResponse(error={'message': str(e)}), 200
+    elif request.method == 'GET':
+        return render(request, 'login.html')
