@@ -158,6 +158,12 @@ a {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
   color: black;
+  transition: background-color 0.5s, color 0.5s; 
+}
+
+.boton-show-inner:hover{
+  background-color: #A1C448;
+  color: white;
 }
 
 .msj {
