@@ -21,6 +21,26 @@ from authentication.models import Dieta, Perfil
 load_dotenv('AWS.env')
 stripe.api_key = os.environ.get('STRIPE_API_KEY')
 
+def updateUserSubscriptionState(user):
+    load_dotenv('AWS.env')
+    stripe.api_key = os.environ.get('STRIPE_API_KEY')
+
+    active = False
+    customer = stripe.Customer.list(email=user.email)
+    if customer:
+        customer = customer['data'][0]
+
+        for subscription in stripe.Subscription.list(customer=customer['id'], status='all')['data']:
+            if subscription['status'] in ['active', 'trialing']:
+                active = True
+                break
+
+    perfil = Perfil.objects.get(user__id=user.id)
+    perfil.activeAccount = active
+    perfil.save()
+
+    return active
+
 def login_excluded(redirect_to):
     """ This decorator kicks authenticated users out of a view """ 
     def _method_wrapper(view_method):
@@ -34,6 +54,7 @@ def login_excluded(redirect_to):
 @login_excluded('../')
 def loginPage(request):
     form = LoginForm()
+
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -41,12 +62,11 @@ def loginPage(request):
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                # if user.is_active:
                 login(request, user)
-                return redirect('/product/list')
-                # else:
-                #     form.add_error('password', 'Inicio de sesión incorrecto')
-                #     return render(request, 'login.html', {'form':form})
+                if updateUserSubscriptionState(user):
+                    return redirect('/product/list')
+                else:
+                    return redirect('authentication:profile')
             else:
                 form.add_error('password', 'Inicio de sesión incorrecto')
                 return render(request, 'login.html', {'form':form})    
@@ -81,7 +101,6 @@ def signUp(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
-
 
 @login_required(login_url='/authentication/login')
 def showProfile(request):
@@ -140,20 +159,20 @@ def create_customer(request):
     if request.method == 'POST':
         # Reads application/json and returns a response
         try:
-            # Create a new customer object
-            customer = stripe.Customer.create(email=request.user.email)
+            customer = stripe.Customer.list(email=request.user.email)
+            if not customer:
+                # Create a new customer object
+                customer = stripe.Customer.create(email=request.user.email)
+            else:
+                customer = customer["data"][0]
 
             # At this point, associate the ID of the Customer object with your
             # own internal representation of a customer, if you have one.
             resp = JsonResponse({'customer':customer})
 
-            # We're simulating authentication here by storing the ID of the customer
-            # in a cookie.
-            resp.set_cookie('customer', customer.id)
             return resp
         except Exception as e:
-            print(str(e))
-            return JsonResponse({"error": str(e)}, status=403)
+            return JsonResponse({'error': str(e)}, status=403)
 
 @login_required(login_url='/authentication/login')
 def createSubscription(request):
@@ -172,16 +191,31 @@ def createSubscription(request):
                     'default_payment_method': data['paymentMethodId'],
                 },
             )
+
             # Create the subscription
-            subscription = stripe.Subscription.create(
-                customer=data['customerId'],
-                items=[
-                    {
-                        'price': data['priceId']
-                    }
-                ],
-                expand=['latest_invoice.payment_intent'],
-            )
+            trial = len(stripe.Subscription.list(customer=data['customerId'], status='all')['data']) == 0
+            if trial:
+                subscription = stripe.Subscription.create(
+                    customer=data['customerId'],
+                    items=[
+                        {
+                            'price': data['priceId']
+                        }
+                    ],
+                    expand=['latest_invoice.payment_intent'],
+                    trial_period_days=30
+                )
+            else:
+                subscription = stripe.Subscription.create(
+                    customer=data['customerId'],
+                    items=[
+                        {
+                            'price': data['priceId']
+                        }
+                    ],
+                    expand=['latest_invoice.payment_intent']
+                )
+
             return JsonResponse(subscription)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=200)
@@ -219,17 +253,5 @@ def retrySubscription(request):
 @csrf_protect
 def update_access(request):
     if request.method == 'POST':
-        load_dotenv('AWS.env')
-        stripe.api_key = os.environ.get('STRIPE_API_KEY')
-
-        data = json.loads(request.body.decode('utf-8'))
-
-        product = stripe.Product.retrieve(data['product'])
-
-        print(product.active)
-        if product.active and product.statement_descriptor == "Eatsy" and product.name == "Suscripción":
-            perfil = Perfil.objects.get(user__id=request.user.id)
-            perfil.activeAccount = True
-            perfil.save()
-
-        return JsonResponse()
+        updateUserSubscriptionState(request.user)
+        return JsonResponse({}, status=200)
