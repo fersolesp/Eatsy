@@ -68,7 +68,7 @@ def showProduct(request, productId):
             if form.is_valid():
                 reporte = form.save(commit=False)
                 reporte.producto = Producto(id=productId)
-                reporte.user = User(id=1) # TODO: CORREGIR CUANDO HAYA LOGIN
+                reporte.user = get_object_or_404(User, pk=request.user.pk) 
                 reporte.save()
                 return redirect('product:show', product.id)
             else:
@@ -82,7 +82,7 @@ def showProduct(request, productId):
             if formComment.is_valid():
                 comentario = formComment.save(commit=False)
                 comentario.producto = Producto(id=productId)
-                comentario.user = Perfil(pk=1)  # CORREGIR CUANDO HAYA LOGIN
+                comentario.user = get_object_or_404(Perfil, user=request.user)  
                 comentario.save()
                 return redirect('product:show', product.id)
             else:
@@ -101,12 +101,10 @@ def showProduct(request, productId):
                 if(nombre!='' and latitud!='' and longitud!=''):
                     ubicacion = Ubicacion(nombre=nombre, latitud=latitud, longitud=longitud)
                     ubicacion.save()
-                    # TODO: Adaptar el user cuando se haga el login
-                    ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                    ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio = precio)
                     ubicacionProducto.save()
                 else:
-                    # TODO: Adaptar el user cuando se haga el login
-                    ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicaciones, user=get_object_or_404(Perfil, pk=2), precio=precio)
+                    ubicacionProducto = UbicacionProducto(producto=product, ubicacion=ubicaciones, user=get_object_or_404(Perfil, user=request.user), precio=precio)
                     ubicacionProducto.save()
 
                 return redirect('product:show', product.id)
@@ -181,7 +179,7 @@ def createProduct(request):
             dieta = form.cleaned_data['dieta']
             ubicacion = form.cleaned_data['ubicaciones']
             
-            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, pk=2))
+            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, user=request.user))
             producto.save()
 
             for d in dieta:
@@ -191,15 +189,12 @@ def createProduct(request):
             if(form.cleaned_data['nombreComercio']!='' and form.cleaned_data['lat']!='' and form.cleaned_data['lon']!=''):
                 ubicacion = Ubicacion(nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
                 ubicacion.save()
-                # TODO: Adaptar el user cuando se haga el login
-                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, pk=2), precio = precio)
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio = precio)
                 ubicacionProducto.save()
                 
             # Por cada supermercado crear tabla intermedia
             else:
-                # TODO: Adaptar el user cuando se haga el login
-                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
-                    Perfil, pk=2), precio=form.cleaned_data['precio'])
+                ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio=form.cleaned_data['precio'])
                 ubicacionProducto.save()
 
             producto.save()
@@ -212,7 +207,6 @@ def createProduct(request):
 @user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def reviewProduct(request, productId):
     producto = get_object_or_404(Producto, pk=productId)
-    # TODO: Revisar, ¿a dónde redirigir si intentan entrar por URL para revisar producto aceptado? No hay página de error
     if request.method == 'GET':
         data = {
             'foto': producto.foto,
@@ -249,7 +243,6 @@ def reviewProduct(request, productId):
                 #     ubicacion = Ubicacion(
                 #         nombre=form.cleaned_data['nombreComercio'], latitud=form.cleaned_data['lat'], longitud=form.cleaned_data['lon'])
                 #     ubicacion.save()
-                #     # TODO: Adaptar el user cuando se haga el login
                 #     ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
                 #         Perfil, pk=1), precio=form.cleaned_data['precio'])
                 #     ubicacionProducto.save()
@@ -257,9 +250,7 @@ def reviewProduct(request, productId):
                 # Por cada supermercado crear tabla intermedia
                 producto.ubicaciones.clear()
                 for ubicacion in form.cleaned_data['ubicaciones']:
-                    # TODO: Adaptar el user cuando se haga el login
-                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(
-                        Perfil, pk=1), precio=form.cleaned_data['precio'])
+                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(user=request.user), precio=form.cleaned_data['precio'])
                     ubicacionProducto.save()
 
                 # Guardar las dietas
@@ -284,14 +275,12 @@ def rateProduct(request, productId):
     if request.method == 'POST':
         idProd = request.POST.get('id')
         rate = request.POST.get('rate')
-        # TODO: Adaptar el user cuando se haga el login
-        
-        numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, pk=2), producto=get_object_or_404(Producto, pk=idProd)).count()
+
+        numValoraciones = Valoracion.objects.filter(user=get_object_or_404(Perfil, user=request.user), producto=get_object_or_404(Producto, pk=idProd)).count()
         if numValoraciones>=1:
              return JsonResponse({'success':'false', 'msj': "Ya ha realizado una valoración"}, safe=False)
         else:
-            valoracion = Valoracion(puntuacion = rate, fecha = datetime.now(), user =get_object_or_404(
-                            Perfil, pk=2), producto = get_object_or_404(Producto, pk=idProd))
+            valoracion = Valoracion(puntuacion = rate, fecha = datetime.now(), user =get_object_or_404(Perfil, user=request.user), producto = get_object_or_404(Producto, pk=idProd))
             valoracion.save()
             return JsonResponse({'success':'true', 'msj': "Su voto ha sido procesado"}, safe=False)
 
@@ -302,8 +291,7 @@ def removeComment (request, commentId):
     if comment.user.user.pk == request.user.pk:
         comment.delete()
     else:
-        # TODO: redirigir a pantalla de error cuando esté
-        return redirect('product:list')
+        raise Http404
 
     return render(request, 'products/show.html')
 
