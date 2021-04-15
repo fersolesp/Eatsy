@@ -1,15 +1,13 @@
-{% extends 'products/base.html' %} {% block titulo %}Perfil{% endblock %}
-
-{% block contenido %}
+{% extends 'products/base.html' %} {% block titulo %}Perfil{% endblock %} {% block contenido %}
 <script>
     function verificar_pass() {
         let pass = document.getElementById("pass").value;
         let v_pass = document.getElementById("v_pass").value;
-        if(pass!=v_pass) {
+        if (pass != v_pass) {
             alert("Las contraseñas no coinciden.")
             return false;
         } else {
-            return  true;
+            return true;
         }
     }
 </script>
@@ -20,7 +18,7 @@
     <h2 class="text-center mt-5 mb-3 nombreProducto">Mi Perfil</h2>
     <div class="row">
         <div class="col-3"></div>
-        <div class=" col-6" >
+        <div class=" col-6">
             <form name="formProfile" enctype="multipart/form-data" method="POST" action="/authentication/profile">{% csrf_token %}
                 <div class="product-card-inner">
                     <div class="row">
@@ -42,7 +40,7 @@
                     <div class="row">
                         <div class="col">
                             <div>{{ form.apellidos}}</div>
-                            <div style="color: red;">{{ form.errors.apellidos.as_text}}</div>    
+                            <div style="color: red;">{{ form.errors.apellidos.as_text}}</div>
                         </div>
                     </div>
 
@@ -57,19 +55,17 @@
                             <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
                         </div>
                     </div>
-                    
+
                     <div class="row mt-5 product-card-inner justify-content-center">
                         <div class="col ">
                             <div style=" text-align: center; " class="nombreProductoPeque"> Estado de la suscripción: </div>
                             {% if request.user.perfil.activeAccount %}
-                                <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya esta activada </div>
-                                <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;">Cancelar subscripción</button>
-                            {% else %}
-                                <a class="btn btn-warning center" style="justify-content: center;" href="/authentication/create-subscription">Activa tu cuenta</a>
-                            {% endif %}
+                            <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya esta activada </div>
+                            <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;">Cancelar subscripción</button> {% else %}
+                            <a class="btn btn-warning center" style="justify-content: center;" href="/authentication/create-subscription">Activa tu cuenta</a> {% endif %}
                         </div>
                     </div>
-                    
+
                     <div class="row mt-5 mb-5">
                         <div class="col-auto m-auto" style="justify-content: center;">
                             <button type="submit" class="save btn btn-warning">Actualizar</button>
@@ -82,9 +78,9 @@
     </div>
 </div>
 <script>
-let boton = document.getElementById("cancelButton");
-boton.addEventListener('click', function() {
-
+    let boton = document.getElementById("cancelButton");
+    boton.addEventListener('click', function(ev) {
+        ev.preventDefault();
         fetch('/authentication/cancel-subscription', {
             method: 'post',
             headers: {
@@ -92,9 +88,8 @@ boton.addEventListener('click', function() {
                 'X-CSRFToken': '{{ csrf_token }}',
             },
         }).then((response) => {
-            window.location.href('/');
+            location.reload(true);
         });
     });
-
 </script>
 {% endblock %}
