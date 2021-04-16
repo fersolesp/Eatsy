@@ -311,9 +311,3 @@ class EatsyApiTests(APITestCase):
         self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
         self.assertEquals(response.url,'/authentication/login?next=/product/list')
         self.assertEquals(response.status_code, 302)
-
-
-    
-
-
-
