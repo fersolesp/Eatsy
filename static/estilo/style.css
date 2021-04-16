@@ -269,6 +269,12 @@ a {
   padding-top: 4.5%;
 }
 
+#bloque2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .bloqueverde {
   position: relative;
   width: 100%;
@@ -328,6 +334,11 @@ a {
 
 .enlaceOjo:hover {
   color: #ffc478;
+}
+
+#footer-main {
+  position: relative;
+  min-height: 12vh;
 }
 
 #page-container {
