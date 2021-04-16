@@ -56,7 +56,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.CSS_SELECTOR, ".container > .row").click()
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario2PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").click()
+        self.driver.get(f'{self.live_server_url}/product/list')
         assert self.driver.find_element(By.CSS_SELECTOR, ".col-sm-8").text == "Búsqueda de productos"
 
     def test_restriccionesadmin(self):
@@ -88,8 +88,6 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyAdminPasswordJQSA!=1")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/product/review/55')
-        self.driver.find_element(By.ID, "id_revision_0").click()
-        self.driver.find_element(By.ID, "id_revision_1").click()
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".save")
         assert len(elements) > 0
     
@@ -103,7 +101,7 @@ class SeleniumTests(StaticLiveServerTestCase):
         self.driver.find_element(By.ID, "id_password").send_keys("eatsyUsuario2PasswordJQSA!=")
         self.driver.find_element(By.CSS_SELECTOR, ".save").click()
         self.driver.get(f'{self.live_server_url}/product/show/55')
-        self.driver.find_element(By.CSS_SELECTOR, ".col-sm-4:nth-child(3) > .m-auto").click()
+        self.driver.find_element(By.XPATH, "//div[@id=\'collapseproducts\']/div[3]/span").click()
         self.driver.find_element(By.ID, "addUbicacion").click()
         self.driver.find_element(By.ID, "id_ubicaciones").click()
         dropdown = self.driver.find_element(By.ID, "id_ubicaciones")
@@ -131,4 +129,3 @@ class SeleniumTests(StaticLiveServerTestCase):
         assert len(elements) > 0
         self.driver.find_element(By.CSS_SELECTOR, ".mb-5 > .col-auto > .btn").click()
         elements = self.driver.find_elements(By.NAME, "reportButton")
-        assert len(elements) > 0
