@@ -1,4 +1,4 @@
-{% extends 'products/base.html' %} {% block titulo %}Perfil{% endblock %} {% block contenido %}
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Perfil{% endblock %} {% block contenido %}
 <script>
     function verificar_pass() {
         let pass = document.getElementById("pass").value;
@@ -16,6 +16,19 @@
 
 <div class="container">
     <h2 class="text-center mt-5 mb-3 nombreProducto">Mi Perfil</h2>
+    <div class="modal fade" style="text-align:center;" id="loading" tabindex="-1" role="dialog" aria-labelledby="modalLoading" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="modalComentarLabel">Cargando
+                    </h5>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <img src="{% static 'img/loader-2_food.gif' %}">
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-3"></div>
         <div class=" col-6">
@@ -78,9 +91,29 @@
     </div>
 </div>
 <script>
+    // selecting loading div
+    const loader = document.querySelector("#loading");
+
+    // showing loading
+    function displayLoading() {
+        $(document).ready(function() {
+            $('#loading').modal({
+                show: true
+            });
+        });
+    }
+
+    // hiding loading 
+    function hideLoading() {
+        $(document).ready(function() {
+            $('#loading').modal("hide");
+        });
+    }
+
     let boton = document.getElementById("cancelButton");
     boton.addEventListener('click', function(ev) {
         ev.preventDefault();
+        displayLoading();
         fetch('/authentication/cancel-subscription', {
             method: 'post',
             headers: {
