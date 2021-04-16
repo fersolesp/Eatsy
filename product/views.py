@@ -250,7 +250,7 @@ def reviewProduct(request, productId):
                 # Por cada supermercado crear tabla intermedia
                 producto.ubicaciones.clear()
                 for ubicacion in form.cleaned_data['ubicaciones']:
-                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(user=request.user), precio=form.cleaned_data['precio'])
+                    ubicacionProducto = UbicacionProducto(producto=producto, ubicacion=ubicacion, user=get_object_or_404(Perfil, user=request.user), precio=form.cleaned_data['precio'])
                     ubicacionProducto.save()
 
                 # Guardar las dietas

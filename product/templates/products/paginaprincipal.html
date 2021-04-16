@@ -13,20 +13,69 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+    <style>
+        @media (max-width: 676px) {
+          
+          .bloques{
+    
+            background-image: url("{% static 'estilo/fondocard.png' %}" );
+          }
+            }
+        @media (max-width: 1035px) {
+          #barprincipal{
+            display: none;
+          }
+          #menuMovil{
+            display: block;
+          }
+        }
+      </style>
 </head>
 
 <body>
-    <div class="navbar">
-        <b-navbar-brand href="/">
-            <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
-        </b-navbar-brand>
-        <div class="topnav-right">
-            {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
-            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
-            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a> {% else %}
-            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
-            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a> {% endif %}
+    <div id="barprincipal" class="navbar">
+      <b-navbar-brand href="/" style="margin-right: 0px !important;">
+        <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+      </b-navbar-brand>
+      <div class="topnav-right">
+        {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a>
+        {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a>
+        {% else %}
+          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a>
+        {% endif %}
+      </div>
+      <script type="text/javascript">
+      
+      </script>
+    </div>
+
+    <!-- MENU PARA EL MOVIL -->
+    <div id="menuMovil" class="collapse navbar navbar-collapse navbar-ex1-collapse ">
+        <div class="row justify-content-center">
+            <b-navbar-brand href="/">
+                <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            </b-navbar-brand>
         </div>
+        <ul  class="nav navbar-nav mt-2">
+            <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                Menú <b class="caret"></b>
+            </a>
+            <div style="background-color: #343a40" class="dropdown-menu ">
+                <div class="topnav-right">
+                    {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/product/list">Accede a la aplicación</a>
+                    {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/create-subscription">Subscribirse</a>
+                    {% else %}
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/signup">Registrarse</a>&nbsp;
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/login">Iniciar sesión</a>
+                    {% endif %}
+                </div>
+            </div>
+        </ul>
     </div>
 
     <div class="bloques">
