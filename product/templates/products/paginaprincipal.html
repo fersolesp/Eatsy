@@ -4,308 +4,160 @@
 <html lang="en">
 
 <head>
-    <meta name="description" content="Landing page de una futura web destinada a personas con restricciones alimentarias."></meta>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Landing page de una futura web destinada a personas con restricciones alimentarias."></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-
-    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
-    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
-  </head>
+  <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+  <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+</head>
 
 <body>
   <div class="navbar">
     <b-navbar-brand href="/">
-        <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+      <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
     </b-navbar-brand>
-        <div class="topnav-right" style="margin-left: 50%; margin-top: 1%;">
-            {% if request.user.is_authenticated %}
-              <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a>
-            {% else %}
-              <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Unirse</a>&nbsp;
-              <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a>
-            {% endif %}
+    <div class="topnav-left" style="padding-right: 43%;">
+      <a style="height: 50px;" class="btn btn-warning btn-lg" href="#bloque1">Bienvenido</a>
+      <a style="height: 50px;" class="btn btn-warning btn-lg" href="#bloqueCarrusel">Demo SlideShow</a>
+      <a style="height: 50px;" class="btn btn-warning btn-lg" href="#bloque2">Planes Futuros</a>
+    </div>
+    <div class="topnav-right">
+      {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+        <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a>
+      {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+        <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a>
+      {% else %}
+        <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+        <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="bloques">
+    <div id="bloque1" class="mt-5 mb-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="titleblock col-12">
+            ¡Bienvenidos a Eatsy!
+          </div>
         </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-3 col-6">
+            <img class="comida" src="{% static 'img/comida.png' %}"></img>
+          </div>
+          <div id="bodyblock1" class="bodyblock col-md-5">
+            Eatsy es un punto de encuentro para personas con necesidades alimentarias específicas en el que poder compartir productos, encontrar dónde adquirirlos, así como sus 
+            experiencias personales para hacer la vida más deliciosa.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bloqueCarrusel" class="mt-5 mb-5">
+      <div class="container">
+        <div style="width:100%;" class="product-card-inner">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                  <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                </ol>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img class="d-block w-100" src="{% static 'img/listadoProducto.jpg' %}" alt="Listado de productos">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="{% static 'img/filtradoProducto.jpg' %}" alt="Filtrado de productos">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="{% static 'img/descripcionProducto.jpg' %}" alt="Descripción de un producto">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="{% static 'img/comentarioProducto.jpg' %}" alt="Comentarios de un producto">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="{% static 'img/ubicacionProducto.jpg' %}" alt="Ubicaciones de un producto">
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bloque2" class="mt-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col mr-2">
+            <div class="row-fluid text-center nombreProducto mt-2">
+              <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde" src="{% static 'img/comiendo.png' %}" alt="Prueba gratis 1 mes">
+            </div>
+
+            <div class="row-fluid text-center nombreProducto mb-4">
+              <p>Al registrarte por primera vez obtén un mes de prueba totalmente GRATIS</p>
+            </div>
+
+            <div class="row-fluid text-center nombreProducto">
+              <p>Cancela cuando quieras</p>
+            </div>
+          </div>
+
+          <div class="col ml-2">
+            <div class="row-fluid text-center nombreProducto mt-2">
+              <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde" src="{% static 'img/familia.png' %}" alt="Suscripción">
+            </div>
+
+            <div class="row-fluid text-center nombreProducto">
+              <p>Puedes pertenecer a nuestra comunidad</p>
+            </div>
+
+            <div class="row-fluid text-center nombreProducto mb-3">
+              <p>por solo 1.99€ al mes</p>
+            </div>
+
+            <div class="row-fluid text-center nombreProducto">
+              <p>¿A qué esperas?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
   </div>
 
-    <div class="bloques">
-        <div id="bloque1" class="bloquemarron">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="titleblock col-12">
-                        ¿Qué es Eatsy?
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 col-6">
-                        <img class="comida" src="{% static 'img/comida.png' %}"></img>
-                    </div>
-                    <div id="bodyblock1" class="bodyblock col-md-5">
-                        Eatsy es un punto de encuentro para personas con necesidades alimenticias especiales dónde puedan compartir productos, dónde adquirirlos y su experiencia para hacer su vida más deliciosa.
-                    </div>
-                </div>
+    <div id="bloqueFooter" class="mt-5">
+      <div class="container">
+        <div id="footer-main">
+          <footer id="footer">
+            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+            <div class="container text-center">
+                <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
             </div>
-
-            </Fade>
+          </footer>
         </div>
-        <div id="bloque2" class="bloqueverde">
-
-            <Flip right>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="titleblock col-12">
-                            ¿De dónde nace la idea?
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-
-                        <div id="bodyblock1" class="bodyblock col-md-5">
-                            Nace como un proyecto estudiantil para la Universidad de Sevilla y tras un estudio exhaustivo del mercado creemos que dichas personas no tienen recursos suficientes para encontrar buenos productos.
-                        </div>
-                        <div class="col-lg-3 col-6">
-                            <img class="comida" src="{% static 'img/comiendo.png' %}" "></img>
-              </div> 
-            </div>
-          </div>    
-        </Flip>
-        </div>
-        <div id="bloque3 " class="bloquemarron "> 
-        <Fade bottom> 
-          <div class="container ">
-            <div class="row justify-content-center ">
-              <div class="titleblock col-12 ">
-                ¿Qué funcionalidad tendrá?
-              </div> 
-            </div>
-            <div class="row justify-content-center ">
-            <div class="col-lg-3 col-5 ">
-                <img class="comida " src="{% static 'img/tenedor.png' %} " ></img>
-              </div> 
-              <div id="bodyblock1 " class="bodyblock col-md-5 ">
-                Los usuarios podrán filtrar productos que cumplan ciertas restricciones alimenticias (como el glúten) o sigan
-                algunas dietas (como el vegetarianismo), de esos elementos se podrá saber la opinión de los usuarios sobre el mismo
-                y donde encontrarlo, así como una descripción más detallada. <br></br>Además, podrán añadir ellos mismos productos que serán aprobados
-                por un administrador, añadir ubicaciones a los alimentos y añadir restricciones adicionales si las cumple.
-                <br></br>Todo esto tendrá una prueba gratuita sin tener que meter la tarjeta y tras ella su uso sólo costará 1.99€/mes
-              </div> 
-            </div>
-          </div>
-      </Fade>
-        </div>
-  
-        <div id="bloque4 " class="bloqueverde ">
-      <Fade right >
-        <div class="container ">
-            <div class="row justify-content-center ">
-              <div class="titleblock col-12 ">
-                ¿Cuándo estará lista?
-              </div> 
-            </div>
-            <div class="row justify-content-center ">
-            
-              <div id="bodyblock1 " class="bodyblock col-md-5 ">
-               Podemos distinguir 3 fases:<br></br>
-               <ul>
-                 <li>
-                   <strong>Primera fase:</strong> tendremos todo lo importante relacionado con los productos. 05/04/2021.
-                 </li>
-               </ul>
-               <ul>
-                 <li>
-                   <strong>Segunda fase:</strong> la aplicación estará terminada en cuanto a funcionalidad. 27/04/2021.
-                 </li>
-               </ul>
-               <ul>
-                 <li>
-                   <strong>Tercera fase:</strong> se arreglarán fallos y se harán posibles mejoras como el de implementar recetas con productos relacionados. 11/05/2021.
-                 </li>
-               </ul>
-               </div> 
-              <div class="col-lg-3 col-6 ">
-                <img class="comida " src="{% static 'img/familia.png' %} " ></img>
-              </div> 
-            </div>
-          </div>    
-      </Fade>
-        </div>        
-  
-      <div id="bloque6 " class="bloquemarron ">  
-        <Fade bottom>
-          <div class="container ">
-            <div class="row justify-content-center ">
-              <div class="titleblock col-12 ">
-                Quiénes somos
-              </div> 
-              <div  class="col-12 titleblock text-center ">
-                Jefe de proyecto y coordinadoras
-              </div>
-            </div>
-            <div class="row justify-content-center ">
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFers.jpg' %} " />            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Fernando Luis Sola Espinosa</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaReyes.jpg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Reyes Blasco Cuadrado</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaMaria.jpeg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">María Marín Serrano</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-  
-            </div>
-          </div>
-      </Fade>
-        </div>
-      <div id="bloque7 " class="bloqueverde "> 
-      <Fade left> 
-          <div class="container ">
-            <div class="row justify-content-center ">
-              
-              <div  class="col-12 titleblock text-center ">
-                FrontEnd
-              </div>
-            </div>
-            <div class="row justify-content-center ">
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-success ">
-                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaFran.jpg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Francisco José Perejón Barrios</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-success ">
-                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaVane.png' %} " />            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Vanessa Pradas Fernández</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-success ">
-                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaFer.jpg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Fernando Romero Rioja</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-  
-            </div>
-          </div>
-      </Fade>
-        </div>
-    
-      <div id="bloque8 " class="bloquemarron "> 
-      <Fade right> 
-          <div class="container ">
-            <div class="row justify-content-center ">
-              <div  class="col-12 titleblock text-center ">
-                BackEnd
-              </div>
-            </div>
-            <div class="row justify-content-center ">
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaPablo.jpg' %} " />            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Pablo Cardenal Gamito</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded "  src="{% static 'img/blancaJose.jpg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Jose María Cornac Fisas</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJavi.jpg' %} " />            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Javier García Cerrada</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJuanfer.jpg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Juan Fernández Fernández</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaEstefania.jpeg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Estefanía Ganfornina Triguero</h4>
-                    
-                  </div>
-              
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-3 ">
-              <div class="card text-center border-wrong ">
-                  <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaSergio.jpeg' %} "/>            
-                  <div class="card-body ">
-                    <h4 class="card-title ">Sergio Sánchez León</h4>
-                  </div>
-              
-              </div>
-            </div>
-  
-            </div>
-          </div>
-      </Fade>
-        </div>
-  
-        
-      
+      </div>    
+    </div>
       
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
-  </body>
+</body>
 </html>

@@ -3,6 +3,10 @@ body {
   background-size: 100%;
 }
 
+.carousel-control-prev, .carousel-control-next, .carousel-indicators { 
+  filter: invert(1); 
+}
+
 .navbar {
   display: flex;
   background-color: #A1C448;
@@ -265,6 +269,12 @@ a {
   padding-top: 4.5%;
 }
 
+#bloque2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .bloqueverde {
   position: relative;
   width: 100%;
@@ -274,7 +284,7 @@ a {
 }
 
 .bloquemarron {
-  background-image: url("fondo.png");
+  background-image: url("fonditomain.jpg");
   background-size: cover;
   position: relative;
   width: 100%;
@@ -324,6 +334,11 @@ a {
 
 .enlaceOjo:hover {
   color: #ffc478;
+}
+
+#footer-main {
+  position: relative;
+  min-height: 12vh;
 }
 
 #page-container {
