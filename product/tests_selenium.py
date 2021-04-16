@@ -8,7 +8,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     def setUp(self):
         options = webdriver.ChromeOptions()
         options.headless = True
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = webdriver.Chrome('C:/Program Files/chromedriver.exe', options=options)
         self.driver.set_window_size(1920, 1080)
         super().setUp()
         call_command("flush", interactive=False)
@@ -26,39 +26,39 @@ class SeleniumTests(StaticLiveServerTestCase):
 
     #TODO: Rehacer los tests con el registro e inicio nuevos
     
-    # def test_unirse(self):
-    #    self.driver.get(f'{self.live_server_url}/')
-    #    self.driver.find_element(By.LINK_TEXT, "Unirse").click()
-    #    self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
-    #    self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
+    def test_unirse(self):
+       self.driver.get(f'{self.live_server_url}/')
+       self.driver.find_element(By.LINK_TEXT, "Unirse").click()
+       self.driver.find_element(By.CSS_SELECTOR, ".titleblock").click()
+       self.driver.find_element(By.CSS_SELECTOR, ".imgheader").click()
 
-    # def test_admin_revisar(self):
-    #    self.driver.get(f'{self.live_server_url}/admin/')
-    #    self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-    #    self.driver.find_element(By.ID, "id_username").send_keys("admin")
-    #    self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-    #    self.driver.find_element(By.CSS_SELECTOR, ".login").click()
-    #    self.driver.find_element(By.ID, "id_password").send_keys("admin")
-    #    self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
-    #    self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
-    #    self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-    #    self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
+    def test_admin_revisar(self):
+       self.driver.get(f'{self.live_server_url}/admin/')
+       self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+       self.driver.find_element(By.ID, "id_username").send_keys("admin")
+       self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+       self.driver.find_element(By.CSS_SELECTOR, ".login").click()
+       self.driver.find_element(By.ID, "id_password").send_keys("admin")
+       self.driver.find_element(By.CSS_SELECTOR, ".submit-row > input").click()
+       self.driver.find_element(By.CSS_SELECTOR, "a:nth-child(2)").click()
+       self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+       self.driver.find_elements(By.LINK_TEXT, "Revisar reportes")
 
-    # def test_nav(self):
-    #     self.driver.get(f'{self.live_server_url}/')
-    #     self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
-    #     self.driver.find_elements(By.LINK_TEXT, "Mi cuenta")
-    #     self.driver.find_elements(By.LINK_TEXT, "Lista de productos")
+    def test_nav(self):
+        self.driver.get(f'{self.live_server_url}/')
+        self.driver.find_element(By.LINK_TEXT, "Iniciar sesión").click()
+        self.driver.find_elements(By.LINK_TEXT, "Mi cuenta")
+        self.driver.find_elements(By.LINK_TEXT, "Lista de productos")
 
-    # def test_show(self):
-    #    self.driver.get(f'{self.live_server_url}/show/1')
-    #    assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .row > .titulito").text == "Dietas:"
-    #    assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2 > .titulito").text == "   Descripción:"
+    def test_show(self):
+       self.driver.get(f'{self.live_server_url}/show/1')
+       assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(1) > .row > .titulito").text == "Dietas:"
+       assert self.driver.find_element(By.CSS_SELECTOR, ".row:nth-child(3) > .mb-2 > .titulito").text == "   Descripción:"
 
-    # def test_add(self):
-    #    self.driver.get(f'{self.live_server_url}/product/create/')
-    #    self.driver.find_element(By.CSS_SELECTOR, ".save").click()
-    #    self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
-    #    self.driver.switch_to.alert.accept()
-    #    self.driver.find_element(By.ID, "menuNormal").click()
+    def test_add(self):
+       self.driver.get(f'{self.live_server_url}/product/create/')
+       self.driver.find_element(By.CSS_SELECTOR, ".save").click()
+       self.driver.find_element(By.LINK_TEXT, "Cancelar").click()
+       self.driver.switch_to.alert.accept()
+       self.driver.find_element(By.ID, "menuNormal").click()
 
