@@ -73,9 +73,9 @@
                         <div class="col ">
                             <div style=" text-align: center; " class="nombreProductoPeque"> Estado de la suscripción: </div>
                             {% if request.user.perfil.activeAccount %}
-                            <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya esta activada </div>
-                            <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;">Cancelar subscripción</button> {% else %}
-                            <a class="btn btn-warning center" style="justify-content: center;" href="/authentication/create-subscription">Activa tu cuenta</a> {% endif %}
+                            <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya está activada </div>
+                            <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;margin-left: 10%;">Cancelar suscripción</button> {% else %}
+                            <a class="btn btn-warning center" style="justify-content: center;margin-left: 15%;" href="/authentication/create-subscription">Activa tu cuenta</a> {% endif %}
                         </div>
                     </div>
 
