@@ -31,7 +31,7 @@ class EatsyApiTests(APITestCase):
 
     def test_accessing_admin(self):
         data = {}
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
         response = self.client.get('/admin/product/producto/', data, format= 'json')
         self.assertEquals(response.status_code, 200)
         self.client.logout()
@@ -219,7 +219,7 @@ class EatsyApiTests(APITestCase):
     #     self.client.logout()
 
     def test_report_decline(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
         data = urlencode({
             "reportButton":"Enviar",
