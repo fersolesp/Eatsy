@@ -1,4 +1,4 @@
-{% extends 'products/base.html' %} {% block titulo %}Pagar suscripción{% endblock %} {% block head %}
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Pagar suscripción{% endblock %} {% block head %}
 <script src="https://js.stripe.com/v3/"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -12,6 +12,20 @@
     <div class="row justify-content-center">
         <div class="nombreProducto"> Información de pago </div>
     </div>
+    <div class="modal fade" style="text-align:center;" id="loading" tabindex="-1" role="dialog" aria-labelledby="modalLoading" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="modalComentarLabel">Cargando
+                    </h5>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <img src="{% static 'img/loader-2_food.gif' %}">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row justify-content-center">
         <div class="product-card-inner col-sm-8 col-md-6">
             <form class="form-group" id="subscription-form" method="POST" action="/authentication/create-subscription">
@@ -65,8 +79,28 @@
         displayError(event);
     });
 
+    // selecting loading div
+    const loader = document.querySelector("#loading");
+
+    // showing loading
+    function displayLoading() {
+        $(document).ready(function() {
+            $('#loading').modal({
+                show: true
+            });
+        });
+    }
+
+    // hiding loading 
+    function hideLoading() {
+        $(document).ready(function() {
+            $('#loading').modal("hide");
+        });
+    }
+
     function displayError(event) {
         // changeLoadingStatePrices(false);
+        hideLoading();
         let displayError = document.getElementById('card-element-errors');
         if (event.error != "") {
             displayError.textContent = event.error.message;
@@ -96,7 +130,7 @@
 
     form.addEventListener('submit', function(ev) {
         ev.preventDefault();
-
+        displayLoading();
         let promise = fetch('/authentication/create-customer', {
             method: 'post',
             headers: {
@@ -300,7 +334,6 @@
 
     function onSubscriptionComplete(result) {
         // Payment was successful.
-        console.log(result.subscription.status);
         if (result.subscription.status === 'active' || result.subscription.status === 'trialing') {
             // Change your UI to show a success message to your customer.
             // Call your backend to grant access to your service based on
