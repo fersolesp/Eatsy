@@ -29,6 +29,7 @@ class EatsyApiTests(APITestCase):
         super().tearDown()
         # call_command("flush", interactive=False)
 
+    
     def test_accessing_admin(self):
         data = {}
         self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
@@ -72,21 +73,21 @@ class EatsyApiTests(APITestCase):
         response = self.client.get('/product/report/list', {}, format= 'json')
         self.assertEquals(response.status_code, 302)
 
-    # def test_report_list_as_admin(self):
-    #     self.client.login(username="admin", password="admin")
-    #     response = self.client.get('/product/report/list', {}, format= 'json')
-    #     self.assertEquals(response.status_code, 200)
-    #     self.client.logout()
+    def test_report_list_as_admin(self):
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
+        response = self.client.get('/product/report/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+        self.client.logout()
 
     def test_product_review(self):
         response = self.client.get('/product/review/26', {}, format= 'json')
         self.assertEquals(response.status_code, 302)
 
-    # def test_product_review_as_admin(self):
-    #     self.client.login(username="admin", password="admin")
-    #     response = self.client.get('/product/review/26', {}, format= 'json')
-    #     self.assertEquals(response.status_code, 200)
-    #     self.client.logout()
+    def test_product_review_as_admin(self):
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
+        response = self.client.get('/product/review/26', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+        self.client.logout()
 
     def test_product_report(self):
         self.client.login(username='john', password='johnpassword')
@@ -139,41 +140,43 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/24")
 
-    # def test_product_review_accept(self):
-    #     self.client.login(username="admin", password="admin")
+    def test_product_review_accept(self):
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
-    #     data = urlencode({
-    #         "foto":None,
-    #         "nombre":"Galleta maría sin gluten",
-    #         "descripcion":"Galletas maría sin gluten",
-    #         "precio":2.45,
-    #         "dieta":"Gluten",
-    #         "ubicaciones":3,
-    #         "revision":"Aceptar",
-    #     })
+        data = urlencode({
+            "foto":None,
+            "nombre":"Galleta maría sin gluten",
+            "descripcion":"Galletas maría sin gluten",
+            "precio":2.45,
+            "dieta":"Gluten",
+            "ubicaciones":3,
+            "revision":"Aceptar",
+        })
         
-    #     response = self.client.post('/product/review/26', data, content_type= 'application/x-www-form-urlencoded')
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(response.url, "/product/show/26")
-    #     self.client.logout()
+        response = self.client.post('/product/review/26', data, content_type= 'application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/product/show/26")
+        self.client.logout()
+    
 
-    # def test_product_review_decline(self):
-    #     self.client.login(username="admin", password="admin")
+    def test_product_review_decline(self):
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
-    #     data = urlencode({
-    #         "foto":None,
-    #         "nombre":"Crunchy Crumbs",
-    #         "descripcion":"Crunchy Crumb: rebozado crujiente sin gluten",
-    #         "precio":1.75,
-    #         "dieta":"Gluten",
-    #         "ubicaciones":3,
-    #         "revision":"Denegar",
-    #     })
+        data = urlencode({
+            "foto":None,
+            "nombre":"Crunchy Crumbs",
+            "descripcion":"Crunchy Crumb: rebozado crujiente sin gluten",
+            "precio":1.75,
+            "dieta":"Gluten",
+            "ubicaciones":3,
+            "revision":"Denegar",
+        })
         
-    #     response = self.client.post('/product/review/25', data, content_type= 'application/x-www-form-urlencoded')
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(response.url, "/product/list")
-    #     self.client.logout()
+        response = self.client.post('/product/review/25', data, content_type= 'application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/product/list")
+        self.client.logout()
+    
 
     def test_product_rate(self):
         self.client.login(username='john', password='johnpassword')
@@ -198,25 +201,27 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)["success"], "false")
         self.assertEqual(json.loads(response.content)["msj"], "Ya ha realizado una valoración")
+    
 
-    # def test_report_accept(self):
-    #     self.client.login(username="admin", password="admin")
+    def test_report_accept(self):
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
-    #     data = urlencode({
-    #         "reportButton":"Enviar",
-    #         "causa":1,
-    #         "comentarios":"comentario de ejemplo",
-    #     })
-    #     self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
+        data = urlencode({
+            "reportButton":"Enviar",
+            "causa":1,
+            "comentarios":"comentario de ejemplo",
+        })
+        self.client.post('/product/show/24', data, content_type= 'application/x-www-form-urlencoded')
 
-    #     data = urlencode({
-    #         "revision":"Resuelto",
-    #     })
-    #     response = self.client.post('/product/report/action/1', data, content_type= 'application/x-www-form-urlencoded')
+        data = urlencode({
+            "revision":"Resuelto",
+        })
+        response = self.client.post('/product/report/action/1', data, content_type= 'application/x-www-form-urlencoded')
 
-    #     self.assertEqual(response.status_code, 302)
-    #     self.assertEqual(response.url, "/product/report/list")
-    #     self.client.logout()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, "/product/report/list")
+        self.client.logout()
+    
 
     def test_report_decline(self):
         self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
@@ -311,3 +316,4 @@ class EatsyApiTests(APITestCase):
         self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
         self.assertEquals(response.url,'/authentication/login?next=/product/list')
         self.assertEquals(response.status_code, 302)
+    
