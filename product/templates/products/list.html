@@ -56,11 +56,12 @@
             </div>
         </div>
         
-        {% if request.GET.estado or request.GET.titulo or request.GET.dietas or request.GET.orderBy%}
+        {% if request.GET.estado or searchProductForm.dietas.value or searchProductForm.titulo.value or searchProductForm.orderBy.value %}
         <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-2 col-md-3 col-sm-4">
             <div class="col-auto m-auto"> 
-                <button onclick="location.href='/product/list'" class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button onclick="location.href='/product/list?titulo='" class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Borrar filtros
+                    
                 </button>            
             </div>
         </div>
