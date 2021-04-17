@@ -271,3 +271,43 @@ class EatsyApiTests(APITestCase):
 
             response = self.client.post('/product/create', data, format= 'multipart')
             self.assertEqual(response.status_code, 200)
+
+    def test_inicio_sesion_correcto(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/product/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+
+    def test_inicio_sesion_incorrecto(self):
+        self.client.get('/authentication/login', {}, format= 'json')
+        data = {}
+        response = self.client.post('/product/list', data, content_type= 'application/x-www-form-urlencoded')
+        self.assertEquals(response.status_code, 302)
+
+    def test_registro_correcto(self):
+        self.client.get('/authentication/signup', {}, format= 'json')
+        self.user = User.objects.create_user('johnny2', 'lennon@thebeatles.com', 'johnpassword')
+        user_admin = self.user.save()
+        response = self.client.post('/authentication/login', user_admin, content_type= 'application/x-www-form-urlencoded')
+        self.assertEquals(response.status_code, 200)
+
+    def test_cuenta_no_activa(self):
+        self.client.login(username='carpenter', password='johnpassword')
+        response = self.client.get('/authentication/create-subscription?next=/product/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 302)
+
+    def test_cuenta_activa(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/product/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+
+    def test_acceso_perfil(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/authentication/profile', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+
+    # Si el usuario no está registrado e intenta acceder al listado por ejemplo, le redirija al login
+    def test_no_registrado_login(self):
+        response = self.client.get('/product/list', {}, format= 'json')  
+        self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
+        self.assertEquals(response.url,'/authentication/login?next=/product/list')
+        self.assertEquals(response.status_code, 302)
