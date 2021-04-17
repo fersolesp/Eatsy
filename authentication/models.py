@@ -13,6 +13,6 @@ class Perfil(models.Model):
 
     dietas = models.ManyToManyField(Dieta)
     activeAccount = models.BooleanField(blank=False, null=False, default=False)
-    
+
     def __str__(self):
         return self.user.username

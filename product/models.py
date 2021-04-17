@@ -58,7 +58,7 @@ class UbicacionProducto(models.Model):
         null=None, max_digits=6, decimal_places=2, validators=[MinValueValidator(0)])
 
     def __str__(self):
-        
+
         "Devuelve el nombre de la ubicación"
         return self.ubicacion.nombre
 

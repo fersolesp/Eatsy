@@ -3,7 +3,6 @@ import json
 import os
 
 import stripe
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import \
     login_required  # , staff_member_required, user_passes_test #Usar estos métodos para controlar quién puede acceder a las vistas
@@ -42,11 +41,11 @@ def updateUserSubscriptionState(user):
     return active
 
 def login_excluded(redirect_to):
-    """ This decorator kicks authenticated users out of a view """ 
+    """ This decorator kicks authenticated users out of a view """
     def _method_wrapper(view_method):
         def _arguments_wrapper(request, *args, **kwargs):
             if request.user.is_authenticated:
-                return redirect(redirect_to) 
+                return redirect(redirect_to)
             return view_method(request, *args, **kwargs)
         return _arguments_wrapper
     return _method_wrapper
@@ -69,9 +68,9 @@ def loginPage(request):
                     return redirect('authentication:profile')
             else:
                 form.add_error('password', 'Inicio de sesión incorrecto')
-                return render(request, 'login.html', {'form':form})    
+                return render(request, 'login.html', {'form':form})
     return render(request, 'login.html', {'form':form})
-    
+
 @login_excluded('../')
 def signUp(request):
     form = SignUpForm()
@@ -136,7 +135,6 @@ def myProfile(request):
 @login_required(login_url='/authentication/login')
 def resetPassword(request):
     user = request.user
-    perfil = get_object_or_404(Perfil, user=user)
     form = resetPasswordForm()
     if request.method == 'POST':
         form = resetPasswordForm(request.POST)
@@ -148,7 +146,7 @@ def resetPassword(request):
                 return redirect('/authentication/profile')
             else:
                 form.add_error('password', 'Contraseña incorrecta')
-                return render(request, 'resetPass.html', {'form':form})    
+                return render(request, 'resetPass.html', {'form':form})
     return render(request, 'resetPass.html', {'form': form})
 
 @login_required(login_url='/authentication/login')
@@ -227,30 +225,30 @@ def createSubscription(request):
 
 
 
-def retrySubscription(request):
-    if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        try:
+# def retrySubscription(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body.decode('utf-8'))
+#         try:
 
-            stripe.PaymentMethod.attach(
-                data['paymentMethodId'],
-                customer=data['customerId'],
-            )
-            # Set the default payment method on the customer
-            stripe.Customer.modify(
-                data['customerId'],
-                invoice_settings={
-                    'default_payment_method': data['paymentMethodId'],
-                },
-            )
+#             stripe.PaymentMethod.attach(
+#                 data['paymentMethodId'],
+#                 customer=data['customerId'],
+#             )
+#             # Set the default payment method on the customer
+#             stripe.Customer.modify(
+#                 data['customerId'],
+#                 invoice_settings={
+#                     'default_payment_method': data['paymentMethodId'],
+#                 },
+#             )
 
-            invoice = stripe.Invoice.retrieve(
-                data['invoiceId'],
-                expand=['payment_intent'],
-            )
-            return JsonResponse(invoice)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=200)
+#             invoice = stripe.Invoice.retrieve(
+#                 data['invoiceId'],
+#                 expand=['payment_intent'],
+#             )
+#             return JsonResponse(invoice)
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=200)
 
 @login_required(login_url='/authentication/login')
 def cancelSubscription(request):
@@ -258,7 +256,7 @@ def cancelSubscription(request):
         try:
             customer = stripe.Customer.list(email=request.user.email)
             if not customer:
-                return JsonResponse(error={'message': str(e)}), 200
+                return JsonResponse(error={'message': "El cliente para el que se quiere cancelar la suscripción no existe."}), 200
             else:
                 for subscription in stripe.Subscription.list(customer=customer["data"][0]["id"])['data']:
                     subscriptionId = subscription['id']

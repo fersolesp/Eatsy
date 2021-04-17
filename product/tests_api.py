@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from rest_framework.test import APIClient, APITestCase
 from django.contrib.auth.models import User
-from authentication.models import Perfil, Dieta
+from authentication.models import Perfil
 
 # Create your tests here.
 
@@ -29,7 +29,7 @@ class EatsyApiTests(APITestCase):
         super().tearDown()
         # call_command("flush", interactive=False)
 
-    
+
     def test_accessing_admin(self):
         data = {}
         self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
@@ -312,7 +312,7 @@ class EatsyApiTests(APITestCase):
 
     # Si el usuario no está registrado e intenta acceder al listado por ejemplo, le redirija al login
     def test_no_registrado_login(self):
-        response = self.client.get('/product/list', {}, format= 'json')  
+        response = self.client.get('/product/list', {}, format= 'json')
         self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
         self.assertEquals(response.url,'/authentication/login?next=/product/list')
         self.assertEquals(response.status_code, 302)
