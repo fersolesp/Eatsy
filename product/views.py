@@ -58,7 +58,7 @@ def showProduct(request, productId):
         else:
             messages.error(
                 request, 'Los productos pendientes de revisión solo pueden ser vistos por el administrador.')
-            return redirect('/authentication/login') 
+            return redirect('/authentication/login')
     elif request.method == 'POST':
         if 'reportButton' in request.POST:
             form = ReporteForm(request.POST)
@@ -68,7 +68,7 @@ def showProduct(request, productId):
             if form.is_valid():
                 reporte = form.save(commit=False)
                 reporte.producto = Producto(id=productId)
-                reporte.user = get_object_or_404(User, pk=request.user.pk) 
+                reporte.user = get_object_or_404(User, pk=request.user.pk)
                 reporte.save()
                 return redirect('product:show', product.id)
             else:
@@ -82,7 +82,7 @@ def showProduct(request, productId):
             if formComment.is_valid():
                 comentario = formComment.save(commit=False)
                 comentario.producto = Producto(id=productId)
-                comentario.user = get_object_or_404(Perfil, user=request.user)  
+                comentario.user = get_object_or_404(Perfil, user=request.user)
                 comentario.save()
                 return redirect('product:show', product.id)
             else:
@@ -121,7 +121,7 @@ def listProduct(request):
         if request.GET.get('estado','') == "aceptado" or request.GET.get('estado','') == "pendiente":
             estado_get = "Aceptado" if request.GET["estado"] == "aceptado" else "Pendiente"
             product_list = product_list.filter(estado=estado_get)
-    
+
     if request.GET & SearchProductForm.base_fields.keys():
         searchProductForm = SearchProductForm(request.GET)
     else:
@@ -312,7 +312,7 @@ def listReports(request):
     return render(request, 'reports/list.html', { 'reports': reports })
 
 
-@user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In 
+@user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def reviewReport(request, reporteId):
 
     if request.method == 'POST':

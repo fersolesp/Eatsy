@@ -39,7 +39,7 @@ class CreateProductForm(forms.ModelForm):
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False )
     lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
 
-  
+
 
 class AddUbicationForm(forms.ModelForm):
     ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all().order_by("nombre"),required=False, widget=forms.Select(attrs={'class' : 'form-control'}))

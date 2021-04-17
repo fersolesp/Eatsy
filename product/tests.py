@@ -146,7 +146,7 @@ class ReporteTestCase(BaseTestCase):
         rep.save()
         reporte = Reporte.objects.get(pk=rep.pk)
         self.assertEqual(reporte.estado,"No procede")
-    
+
     def test_delete_report(self):
         reporte = create_report()
         reporte_pk = reporte.pk
