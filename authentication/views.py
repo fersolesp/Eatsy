@@ -46,7 +46,7 @@ def login_excluded(redirect_to):
         def _arguments_wrapper(request, *args, **kwargs):
             if request.user.is_authenticated:
                 return redirect(redirect_to)
-                return view_method(request, *args, **kwargs)
+            return view_method(request, *args, **kwargs)
         return _arguments_wrapper
     return _method_wrapper
 
@@ -225,30 +225,30 @@ def createSubscription(request):
 
 
 
-def retrySubscription(request):
-    if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        try:
+# def retrySubscription(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body.decode('utf-8'))
+#         try:
 
-            stripe.PaymentMethod.attach(
-                data['paymentMethodId'],
-                customer=data['customerId'],
-            )
-            # Set the default payment method on the customer
-            stripe.Customer.modify(
-                data['customerId'],
-                invoice_settings={
-                    'default_payment_method': data['paymentMethodId'],
-                },
-            )
+#             stripe.PaymentMethod.attach(
+#                 data['paymentMethodId'],
+#                 customer=data['customerId'],
+#             )
+#             # Set the default payment method on the customer
+#             stripe.Customer.modify(
+#                 data['customerId'],
+#                 invoice_settings={
+#                     'default_payment_method': data['paymentMethodId'],
+#                 },
+#             )
 
-            invoice = stripe.Invoice.retrieve(
-                data['invoiceId'],
-                expand=['payment_intent'],
-            )
-            return JsonResponse(invoice)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=200)
+#             invoice = stripe.Invoice.retrieve(
+#                 data['invoiceId'],
+#                 expand=['payment_intent'],
+#             )
+#             return JsonResponse(invoice)
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=200)
 
 @login_required(login_url='/authentication/login')
 def cancelSubscription(request):
