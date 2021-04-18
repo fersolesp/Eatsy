@@ -1,4 +1,4 @@
-{% extends 'products/base.html' %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %}
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %}
 
 <script>
     function change_to_tab_1() {
@@ -31,6 +31,7 @@
         pest_3.style.display = "inherit";
     }
 </script>
+<script src="{% static 'js/rating.js' %}" defer></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="container-fluid page-content">
 
@@ -68,12 +69,10 @@
             <div class="row justify-content-center">
                 <div id="msjreporte" class="msj">{{msj}}</div>
             </div>
-            {% endif %}
-            
-            {% if product.estado == 'Pendiente' %}
-                <div class="row justify-content-center">
-                    <div style="background-color: #ffc107;" id="msjRevision" class="msj">Este producto está pendiente de revisión. </div>
-                </div>
+            {% endif %} {% if product.estado == 'Pendiente' %}
+            <div class="row justify-content-center">
+                <div style="background-color: #ffc107;" id="msjRevision" class="msj">Este producto está pendiente de revisión. </div>
+            </div>
             {% endif %}
             <div class="row justify-content-center">
                 <div style="display:block;" id="menucolapsar">
@@ -86,14 +85,14 @@
             </div>
             <div class="row" id="collapseproducts">
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
-                    <span class="m-auto opProducto boton-show-inner">DESCRIPCIÓN</span>
+                    <span class="m-auto opProducto boton-show-inner">Descripcion</span>
                 </div>
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
-                    <span class="m-auto opProducto boton-show-inner">COMENTARIOS</span>
+                    <span class="m-auto opProducto boton-show-inner">Comentarios</span>
 
                 </div>
                 <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
-                    <span class="m-auto opProducto boton-show-inner">UBICACIONES</span>
+                    <span class="m-auto opProducto boton-show-inner">Ubicaciones</span>
                 </div>
             </div>
             <script>
@@ -121,7 +120,8 @@
                         <!-- DIETAS -->
                         <div class="row mt-3 mb-3 product-card-descripcion">
                             <div class="row mb-2">
-                                &nbsp;&nbsp;&nbsp;<div class="titulito">Dietas:</div>&nbsp; 
+                                &nbsp;&nbsp;&nbsp;
+                                <div class="titulito">Dietas:</div>&nbsp;
                             </div>
                             <div class="row">
                                 {% for dieta in product.dietas.all %}
@@ -133,7 +133,7 @@
                         <!-- DESCRIPCION + PRECIO -->
                         <div class="row mt-3 mb-3 product-card-descripcion">
                             <div class="row mb-2">
-                                <div class="titulito">&nbsp;&nbsp;&nbsp;Descripción:</div>&nbsp; 
+                                <div class="titulito">&nbsp;&nbsp;&nbsp;Descripción:</div>&nbsp;
                             </div>
 
                             <div class="row mb-4">
@@ -146,13 +146,12 @@
                         </div>
                         <!-- MODAL REPORTAR -->
                         <div class="row mt-5 mb-5">
-                            <div class="col-auto m-auto"> 
-                                
-                            {% if product.estado != 'Pendiente' %}
-                                <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button>
-                            {% endif %}
+                            <div class="col-auto m-auto">
+
+                                {% if product.estado != 'Pendiente' %}
+                                <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button> {% endif %}
                             </div>
-                            
+
                             <div class="modal fade" id="modalReport" tabindex="-1" role="dialog" aria-labelledby="modalReportLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
@@ -202,25 +201,27 @@
 
                     <!-- Comentarios -->
                     {% if aportaciones %}
-                        <div class="row mb-3">
-                            <div class="scrolli">
-                                <!-- {% for dieta in dietas %}
+                    <div class="row mb-3">
+                        <div class="scrolli">
+                            <!-- {% for dieta in dietas %}
                                 <div class="col"> Comentarios </div>
                                 {% endfor %} -->
-                                {% for aportacion in aportaciones %}
-                                <div class="product-card-comment mb-2">
-                                    <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
-                                    <div class="row justify-content-center">{{aportacion.mensaje}}</div>
-                                </div>
-                                {% endfor %}
+                            {% for aportacion in aportaciones %}
+                            <div class="product-card-comment mb-2">
+                                <div class="row justify-content-center titulito"> {{aportacion.user}}: </div>
+                                <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
+                                <div class="row justify-content-center"> {{aportacion.mensaje}}</div>
+                                <div class="row justify-content-center"> {{aportacion.fecha}} </div>
                             </div>
+                            {% endfor %}
                         </div>
+                    </div>
                     {% endif %}
                     <!-- MODAL COMENTAR -->
 
 
                     <div class="row mt-5">
-                        <div class="col-auto m-auto"> 
+                        <div class="col-auto m-auto">
                             {% if product.estado != 'Pendiente' %}<button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalComentar" role="button" aria-disabled="true">Comentar</button>{% endif %}</div>
                         <div class="modal fade" id="modalComentar" tabindex="-1" role="dialog" aria-labelledby="modalComentarLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -265,8 +266,8 @@
                     </div>
                     <div class="row mt-2 justify-content-center">
                         {% if product.estado != 'Pendiente' %}
-                            <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
-                        {% endif %}    
+                        <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        {% endif %}
                     </div>
                     {% include 'products/createMap.html' %}
                 </div>
@@ -312,6 +313,4 @@
     />
 </a>
 {% if user.is_superuser %}
-<a href="/product/review/{{product.id}}" class="btn btn-success btn-lg" role="button" aria-disabled="true">Editar</a>
-{% endif %} 
-{% endblock %}
+<a href="/product/review/{{product.id}}" class="btn btn-success btn-lg" role="button" aria-disabled="true">Editar</a> {% endif %} {% endblock %}

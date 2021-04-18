@@ -1,9 +1,12 @@
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
-from django.core.management import call_command
-from urllib.parse import urlencode
 import json
+from urllib.parse import urlencode
+
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.management import call_command
+from rest_framework.test import APIClient, APITestCase
+from django.contrib.auth.models import User
+from authentication.models import Perfil
+
 # Create your tests here.
 
 class EatsyApiTests(APITestCase):
@@ -12,15 +15,24 @@ class EatsyApiTests(APITestCase):
         call_command("collectstatic", interactive=False)
         call_command("flush", interactive=False)
         call_command("loaddata", "datosEjemplo.json")
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        perfil = Perfil(user=self.user, activeAccount=True)
+        perfil.save()
+        user_admin = User(username='admin2', is_staff=True, is_superuser=True, first_name='admin_firstname', last_name='admin_lastname')
+        user_admin.set_password('qwerty')
+        user_admin.save()
+        perfil_admin= Perfil(user=user_admin, activeAccount=True)
+        perfil_admin.save()
         super().setUp()
 
     def tearDown(self):
         super().tearDown()
         # call_command("flush", interactive=False)
 
+
     def test_accessing_admin(self):
         data = {}
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
         response = self.client.get('/admin/product/producto/', data, format= 'json')
         self.assertEquals(response.status_code, 200)
         self.client.logout()
@@ -34,24 +46,25 @@ class EatsyApiTests(APITestCase):
         response = self.client.get('/', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
 
-    def test_subscription_page(self):
-        response = self.client.get('/subscribe/', {}, format= 'json')
-        self.assertEquals(response.status_code, 200)
+    #TODO: añadir login
 
     def test_product_list(self):
+        self.client.login(username='john', password='johnpassword')
         response = self.client.get('/product/list', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
 
     def test_product_show(self):
+        self.client.login(username='john', password='johnpassword')
         response = self.client.get('/product/show/24', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
 
     def test_pending_product(self):
+        self.client.login(username='john', password='johnpassword')
         response = self.client.get('/product/show/25', {}, format= 'json')
         self.assertEquals(response.status_code, 302)
 
     def test_pending_product_as_admin(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin2", password="qwerty")
         response = self.client.get('/product/show/25', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
         self.client.logout()
@@ -61,7 +74,7 @@ class EatsyApiTests(APITestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_report_list_as_admin(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
         response = self.client.get('/product/report/list', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
         self.client.logout()
@@ -71,12 +84,13 @@ class EatsyApiTests(APITestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_product_review_as_admin(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
         response = self.client.get('/product/review/26', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
         self.client.logout()
 
     def test_product_report(self):
+        self.client.login(username='john', password='johnpassword')
         data = urlencode({
             "reportButton":"Enviar",
             "causa":1,
@@ -88,6 +102,7 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.url, "/product/show/24")
 
     def test_product_comment(self):
+        self.client.login(username='john', password='johnpassword')
         data = urlencode({
             "commentButton":"Enviar",
             "titulo":"Comentario de prueba",
@@ -99,6 +114,7 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.url, "/product/show/24")
 
     def test_product_add_ubication_supermarket(self):
+        self.client.login(username='john', password='johnpassword')
         data = urlencode({
             "ubicaciones":3,
             "precio":12,
@@ -110,6 +126,7 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.url, "/product/show/24")
 
     def test_product_add_ubication(self):
+        self.client.login(username='john', password='johnpassword')
         data = urlencode({
             "supermercado":"no",
             "lat":40.403085626411965,
@@ -124,7 +141,7 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.url, "/product/show/24")
 
     def test_product_review_accept(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
         data = urlencode({
             "foto":None,
@@ -140,9 +157,10 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/show/26")
         self.client.logout()
+    
 
     def test_product_review_decline(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
         data = urlencode({
             "foto":None,
@@ -158,8 +176,10 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/list")
         self.client.logout()
+    
 
     def test_product_rate(self):
+        self.client.login(username='john', password='johnpassword')
         data = urlencode({
             "id":24,
             "rate":3,
@@ -171,6 +191,7 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(json.loads(response.content)["msj"], "Su voto ha sido procesado")
 
     def test_product_rate_duplicated(self):
+        self.client.login(username='john', password='johnpassword')
         data = urlencode({
             "id":24,
             "rate":3,
@@ -180,9 +201,10 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)["success"], "false")
         self.assertEqual(json.loads(response.content)["msj"], "Ya ha realizado una valoración")
+    
 
     def test_report_accept(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
         data = urlencode({
             "reportButton":"Enviar",
@@ -199,9 +221,10 @@ class EatsyApiTests(APITestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/report/list")
         self.client.logout()
+    
 
     def test_report_decline(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
 
         data = urlencode({
             "reportButton":"Enviar",
@@ -220,7 +243,7 @@ class EatsyApiTests(APITestCase):
         self.client.logout()
 
     def test_product_create(self):
-
+        self.client.login(username='john', password='johnpassword')
         with open("static/img/logo.png", 'rb') as f:
             foto = SimpleUploadedFile("logo.png", f.read(),content_type="image/png")
 
@@ -239,7 +262,7 @@ class EatsyApiTests(APITestCase):
             self.assertEqual(response.url, "/product/list")
 
     def test_product_create_no_name(self):
-
+        self.client.login(username='john', password='johnpassword')
         with open("static/img/logo.png", 'rb') as f:
             foto = SimpleUploadedFile("logo.png", f.read(),content_type="image/png")
 
@@ -253,3 +276,44 @@ class EatsyApiTests(APITestCase):
 
             response = self.client.post('/product/create', data, format= 'multipart')
             self.assertEqual(response.status_code, 200)
+
+    def test_inicio_sesion_correcto(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/product/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+
+    def test_inicio_sesion_incorrecto(self):
+        self.client.get('/authentication/login', {}, format= 'json')
+        data = {}
+        response = self.client.post('/product/list', data, content_type= 'application/x-www-form-urlencoded')
+        self.assertEquals(response.status_code, 302)
+
+    def test_registro_correcto(self):
+        self.client.get('/authentication/signup', {}, format= 'json')
+        self.user = User.objects.create_user('johnny2', 'lennon@thebeatles.com', 'johnpassword')
+        user_admin = self.user.save()
+        response = self.client.post('/authentication/login', user_admin, content_type= 'application/x-www-form-urlencoded')
+        self.assertEquals(response.status_code, 200)
+
+    def test_cuenta_no_activa(self):
+        self.client.login(username='carpenter', password='johnpassword')
+        response = self.client.get('/authentication/create-subscription?next=/product/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 302)
+
+    def test_cuenta_activa(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/product/list', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+
+    def test_acceso_perfil(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/authentication/profile', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
+
+    # Si el usuario no está registrado e intenta acceder al listado por ejemplo, le redirija al login
+    def test_no_registrado_login(self):
+        response = self.client.get('/product/list', {}, format= 'json')
+        self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
+        self.assertEquals(response.url,'/authentication/login?next=/product/list')
+        self.assertEquals(response.status_code, 302)
+    

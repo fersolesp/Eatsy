@@ -1,0 +1,84 @@
+{% extends 'products/base.html' %} {% block titulo %}Cambiar contraseña{% endblock %}
+
+{% block contenido %}
+<script>
+    function verificar_pass() {
+        let pass = document.getElementById("pass").value;
+        let v_pass = document.getElementById("v_pass").value;
+        if(pass!=v_pass) {
+            alert("Las contraseñas no coinciden.")
+            return false;
+        } else {
+            return  true;
+        }
+    }
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div>
+        <div class="container">
+        <h3 class="text-center mt-5 mb-3 nombreProducto">Cambiar contraseña</h3>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form name="formCheckIn" enctype="multipart/form-data" method="POST" action="/authentication/resetpassword">{% csrf_token %}
+                    <div class="product-card-inner">
+                        <label class="mt-2 text-center w-100" style="color:red;">*Los siguientes campos son obligatorios.</label>
+                        <div class="row">
+                            <div class="col">
+                                <label>Contraseña actual <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{form.password}} </div>
+                                <div style="color: red;">{{ form.errors.password.as_text}}</div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <label>Nueva contraseña <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div> {{form.new_password}} </div>
+                                <div style="color: red;">{{ form.errors.new_password.as_text}}</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Vuelva a introducir la  nueva contraseña <span style="color:red;">*</span>:&nbsp;</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div>{{form.v_new_password}} </div>
+                                <div style="color: red;">{{ form.errors.v_new_password.as_text}}</div>
+                            </div>
+                        </div>
+                        {% for message in messages %}
+
+                        <div class="alert alert-success">
+                            <a class="close" href="#" data-dismiss="alert">×</a>
+    
+                            {{ message }}
+    
+                        </div>
+                         {% endfor %}
+
+                        <div class="row mt-5 mb-5">
+                            <div class="col-auto m-auto" style="justify-content: center;">
+                                <a class="btn btn-danger" href="/authentication/profile">Cancelar</a>
+                                <button type="submit" class="save btn btn-warning">Restablecer contraseña</button>
+                            </div>
+                        </div>
+                    </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

@@ -12,8 +12,9 @@
     <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="{% static 'js/rating.js' %}" defer></script>
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
 
     <style>
 
@@ -29,59 +30,59 @@
         <b-navbar-brand href="/">
             <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
         </b-navbar-brand>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
 
-            {% if user.is_superuser %}
-            <a id="menuNormal" class="btn btn-dark" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
+        {% if user.is_superuser %}
+        <a id="menuNormal" class="btn btn-dark botonNav" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
 
-            <a id="menuNormal"  class="btn btn-dark" href="/product/list" role="button">Lista de productos</a>
-            <div id="menuNormal"  class="dropdown show">
-                <a class="btn btn-dark dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a id="menuNormal" class="btn btn-dark botonNav" href="/product/list" role="button">Lista de productos</a>
+        <div id="menuNormal" class="dropdown show botonNav">
+            <a class="btn dropdown-toggle botonNav" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Mi cuenta
             </a>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">Mi Perfil</a>
-                    <a class="dropdown-item" href="#">Cerrar sesión</a>
-                </div>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="/authentication/profile">Mi Perfil</a>
+                <a class="dropdown-item" href="/authentication/logout">Cerrar sesión</a>
             </div>
+        </div>
 
-            <!-- MENU PARA EL MOVIL -->
-            <div id="menuMovil" class="collapse navbar-collapse navbar-ex1-collapse ">
+        <!-- MENU PARA EL MOVIL -->
+        <div id="menuMovil" class="collapse navbar-collapse navbar-ex1-collapse ">
             <div class="row justify-content-center">
                 <b-navbar-brand href="/">
                     <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
                 </b-navbar-brand>
             </div>
-                <ul  class="nav navbar-nav mt-2">
-                    <a href="#" class="dropdown-toggle btn btn-dark" data-toggle="dropdown">
+            <ul class="nav navbar-nav mt-2">
+                <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
                       Menú <b class="caret"></b>
                     </a>
-                    <div style="background-color: #343a40" class="dropdown-menu ">
-                        {% if user.is_superuser %}
-                        <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
-                        
-                        <a  class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
-                            <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div style="background-color: #343a40" class="dropdown-menu ">
+                    {% if user.is_superuser %}
+                    <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
+
+                    <a class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
+                    <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Mi cuenta
                         </a>
 
-                            <div style="background-color: #343a40;border: none;"  class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
-                                <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
-                                <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
-                            </div>
-                        </div>
+                    <div style="background-color: #343a40;border: none;" class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
+                        <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
+                        <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
                     </div>
-                </ul>   
-            </div>         
+                </div>
+        </div>
+        </ul>
+    </div>
     </div>
 
 

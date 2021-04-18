@@ -1,12 +1,24 @@
 body {
-  background-image: url("fondo.png");
-  background-size: cover;
+  background-image: url("fondito.png");
+  background-size: 100%;
+}
+
+.carousel-control-prev, .carousel-control-next, .carousel-indicators { 
+  filter: invert(1); 
 }
 
 .navbar {
   display: flex;
-  background-color: #75cfb8;
+  background-color: #A1C448;
 }
+
+.botonNav {
+  background-color: #7F6000;
+  color: white;
+  border-radius: 10px;
+  border: 2px #291f00;
+}
+
 
 .page-content {
   padding: 5em;
@@ -14,27 +26,41 @@ body {
 }
 
 .nombreProducto {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 1.1em;
-  font-weight: bold;
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.4em;
+  color: #7F6000;
+}
+
+.nombreProductoPeque {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.2em;
+  color: #7F6000;
+}
+
+.nombreProductoCreateReview {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2em;
+  color: #7F6000;
+}
+
+#nombreTarjeta::placeholder {
+  color: #75cfb8;
 }
 
 .nombreProductoShow {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.25em;
-  font-weight: bold;
+  color: #7F6000;
 }
 
 .descripcion {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
 }
 
 .botonProducto {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.1em;
-  font-weight: bold;
-  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -57,7 +83,7 @@ hr {
 }
 
 a {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   color: aliceblue;
   font-size: 0.7em;
   font-weight: bold;
@@ -85,35 +111,51 @@ a {
   grid-template-rows: auto 1fr auto;
   align-items: center;
   padding: 2em;
-  border: 2px solid black;
+  border: 2px solid #A1C448;
   border-radius: 0.5em;
-  background-color: #bbdfc8;
+  background-image: url("fondocard.png");
 }
+
+.product-card-review-create {
+  display: grid;
+  grid-template-rows: auto 3fr auto;
+  align-items: center;
+  padding: 2em;
+  border: 2px solid #A1C448;
+  border-radius: 0.5em;
+}
+
+
 
 .titulito {
   font-weight: bold;
 }
+
 
 .product-card-comment {
   display: grid;
   grid-template-rows: auto 1fr auto;
   align-items: center;
   padding: 1em;
-  border: 1px solid black;
+  border: 2px solid #A1C448;
   border-radius: 0.5em;
-  background-color: #fff4df;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #f3ffd4;
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
+}
+
+.btn-warning {
+  background-color: #FFDD47;
 }
 
 .product-card-descripcion {
   display: grid;
   padding: 1em;
   grid-template-rows: auto 1fr auto;
-  border: 1px solid black;
+  border: 2px solid #A1C448;
   border-radius: 0.5em;
-  background-color: #fff4df;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #f3ffd4;
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
 }
 
@@ -123,9 +165,17 @@ a {
   align-items: center;
   padding: 0.7em;
   border-radius: 0.5em;
-  background-color: #75cfb8;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  border: 1px solid;
+  border-color: #A1C448;
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
+  color: black;
+  transition: background-color 0.5s, color 0.5s; 
+}
+
+.boton-show-inner:hover{
+  background-color: #A1C448;
+  color: white;
 }
 
 .msj {
@@ -135,6 +185,10 @@ a {
   padding-bottom: 10px;
   border-radius: 50px;
   margin-bottom: 10px;
+}
+
+#card-element-errors {
+  color: red;
 }
 
 .msjError {
@@ -156,13 +210,19 @@ a {
   width: 100%;
 }
 
+#name::placeholder{
+  color: #75cfb8;
+}
+
 .modal-header {
-  background-color: #bbdfc8;
+  background-color: #A1C448;
+  color: black;
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .header {
   padding-bottom: 10px;
-  background-color: #75cfb8;
+  background-color: #A1C448;
 }
 
 .imgheader {
@@ -192,20 +252,27 @@ a {
 }
 
 .titleblock {
-  font-family: Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 3rem;
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7F6000;
+  font-size: 5vw;
   text-align: center;
 }
 
 .bodyblock {
   text-align: justify;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: "Oxygen", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 1.3rem;
-  color: gray;
+  color: #533e00;
 }
 
 #bodyblock1 {
   padding-top: 4.5%;
+}
+
+#bloque2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .bloqueverde {
@@ -213,15 +280,16 @@ a {
   width: 100%;
   padding-top: 100px;
   padding-bottom: 100px;
-  background-color: #bbdfc8;
+  background-color: #d4e4ac;
 }
 
 .bloquemarron {
+  background-image: url("fonditomain.jpg");
+  background-size: cover;
   position: relative;
   width: 100%;
   padding-top: 100px;
   padding-bottom: 100px;
-  background-color: #f0e5d8;
 }
 
 .btn-primary {
@@ -265,6 +333,11 @@ a {
 
 .enlaceOjo:hover {
   color: #ffc478;
+}
+
+#footer-main {
+  position: relative;
+  min-height: 12vh;
 }
 
 #page-container {
@@ -335,12 +408,13 @@ a {
         padding: 0em;
         padding-bottom: 1em;
         padding-top: 1em;
+        background-image: url("fondocard.png");
     }
 
 }
 
 .tituloReporte {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   text-decoration: underline;
 }
 

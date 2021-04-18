@@ -1,5 +1,8 @@
-from django.shortcuts import render
 from django.http import (HttpResponseNotFound, HttpResponseServerError, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseGone, HttpResponseNotAllowed)
+
+
+from django.contrib.auth import login
+from django.shortcuts import render
 # Create your views here.
 
 def principalScreen(request):
@@ -23,6 +26,5 @@ def errorGoneView(request,exception):
 def errorNotAllowedView(request,exception):
      return HttpResponseNotAllowed(render(request,"products/errorView.html"))
 
-def subscribe(request):
-     return render(request,'products/subscribe.html')
+
 

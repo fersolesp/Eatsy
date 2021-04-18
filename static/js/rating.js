@@ -4,7 +4,7 @@ const two = document.getElementById("second");
 const three = document.getElementById("third");
 const four = document.getElementById("fourth");
 const five = document.getElementById("fifth");
-const valoracion_media = document.getElementById("valoracion_media");
+const valoracionMedia = document.getElementById("valoracion_media");
 
 // get the form and csrf token
 const form = document.querySelector(".rate-form");
@@ -62,26 +62,26 @@ const getNumericValue = (stringValue) => {
     return numericValue;
 };
 
-handleStarSelect(valoracion_media.value);
+handleStarSelect(valoracionMedia.value);
 
 if (one) {
     const arr = [one, two, three, four, five];
 
-    arr.forEach(item => item.addEventListener("mouseover", (event) => {
+    arr.forEach((item) => item.addEventListener("mouseover", (event) => {
         handleSelect(event.target.id);
     }));
 
-    arr.forEach(item => item.addEventListener("mouseout", (event) => {
-        handleStarSelect(valoracion_media.value);
+    arr.forEach((item) => item.addEventListener("mouseout", (event) => {
+        handleStarSelect(valoracionMedia.value);
 
-    }))
+    }));
 
-    arr.forEach(item => item.addEventListener("click", (event) => {
+    arr.forEach((item) => item.addEventListener("click", (event) => {
         // value of the rating not numeric
         const val = event.target.id;
 
-        let isSubmit = false
-        form.addEventListener("submit", e => {
+        let isSubmit = false;
+        form.addEventListener("submit", (e) => {
             e.preventDefault();
             if (isSubmit) {
                 return;
@@ -90,7 +90,7 @@ if (one) {
             // picture id
             const id = e.target.id;
             // value of the rating translated into numeric
-            const val_num = getNumericValue(val);
+            const valNum = getNumericValue(val);
 
             $.ajax({
                 type: "POST",
@@ -98,7 +98,7 @@ if (one) {
                 data: {
                     "csrfmiddlewaretoken": csrf[0].value,
                     "id": id,
-                    "rate": val_num,
+                    "rate": valNum,
                 },
                 success: function(response) {
                     document.getElementById("msjrating").display = "block";
@@ -118,6 +118,6 @@ if (one) {
                     }, 3000);
                 }
             });
-        })
-    }))
+        });
+    }));
 }

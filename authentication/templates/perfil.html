@@ -1,0 +1,128 @@
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Perfil{% endblock %} {% block contenido %}
+<script>
+    function verificar_pass() {
+        let pass = document.getElementById("pass").value;
+        let v_pass = document.getElementById("v_pass").value;
+        if (pass != v_pass) {
+            alert("Las contraseñas no coinciden.")
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="container">
+    <h2 class="text-center mt-5 mb-3 nombreProducto">Mi Perfil</h2>
+    <div class="modal fade" style="text-align:center;" id="loading" tabindex="-1" role="dialog" aria-labelledby="modalLoading" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title justify-content-center" id="modalComentarLabel">Cargando
+                    </h5>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                    <img src="{% static 'img/loader-2_food.gif' %}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class=" col-6">
+            <form name="formProfile" enctype="multipart/form-data" method="POST" action="/authentication/profile">{% csrf_token %}
+                <div class="product-card-inner">
+                    <div class="row">
+                        <div class="col">
+                            <label>Nombre</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div>{{ form.nombre}}</div>
+                            <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col">
+                            <label>Apellidos</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div>{{ form.apellidos}}</div>
+                            <div style="color: red;">{{ form.errors.apellidos.as_text}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col">
+                            <label>Dieta o intolerancia</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div>{{form.dieta}}</div>
+                            <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5 product-card-inner justify-content-center">
+                        <div class="col ">
+                            <div style=" text-align: center; " class="nombreProductoPeque"> Estado de la suscripción: </div>
+                            {% if request.user.perfil.activeAccount %}
+                            <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya está activada </div>
+                            <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;margin-left: 10%;">Cancelar suscripción</button> {% else %}
+                            <a class="btn btn-warning center" style="justify-content: center;margin-left: 15%;" href="/authentication/create-subscription">Activa tu cuenta</a> {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mt-5 mb-5">
+                        <div class="col-auto m-auto" style="justify-content: center;">
+                            <button type="submit" class="save btn btn-warning">Actualizar</button>
+                            <a class="btn btn-warning" href="/authentication/resetpassword">Cambiar contraseña</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // selecting loading div
+    const loader = document.querySelector("#loading");
+
+    // showing loading
+    function displayLoading() {
+        $(document).ready(function() {
+            $('#loading').modal({
+                show: true
+            });
+        });
+    }
+
+    // hiding loading 
+    function hideLoading() {
+        $(document).ready(function() {
+            $('#loading').modal("hide");
+        });
+    }
+
+    let boton = document.getElementById("cancelButton");
+    boton.addEventListener('click', function(ev) {
+        ev.preventDefault();
+        displayLoading();
+        fetch('/authentication/cancel-subscription', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        }).then((response) => {
+            location.reload(true);
+        });
+    });
+</script>
+{% endblock %}

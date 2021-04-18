@@ -68,7 +68,7 @@
         document.getElementById('mapContainer'),
         defaultLayers2.vector.normal.map,
         {
-          zoom: 13,
+          zoom: 0,
           center: { lng: ubicaciones[0][1], lat: ubicaciones[0][2]} //ejemplo para marcar ubicacion
         });
 
@@ -87,13 +87,16 @@
               let coordenada1 = parseFloat(target[0].replace(",", "."));
               let coordenada2 = parseFloat(target[1].replace(",", "."));
               let coords = {lng: coordenada1, lat: coordenada2};
-
+              map2.setZoom(15);
               msjUbicacion.style.display = "none"
               map2.setCenter(coords); 
+
             } else {
               msjUbicacion.style.display = "block"
               msjUbicacion.style.backgroundColor = "#ffc107"
               msjUbicacion.innerText = "No se muestran ubicaciones de supermercados."
+
+              map2.setZoom(0);
               setTimeout(()=> msjUbicacion.style.display="none",3000)
             }
               
@@ -148,13 +151,13 @@
             ui2.addBubble(bubble);
           }, false);
           ubicaciones.forEach(el => {
-            var coordenada1  = el[1]
-            var coordenada2  = el[2]
+            var coordenada1  = el[1];
+            var coordenada2  = el[2];
             if(el[4]!="True"){
-                  addMarkerToGroup(group2, {lat:coordenada2, lng:coordenada1},
+                addMarkerToGroup(group2, {lat:coordenada2, lng:coordenada1},
                   '<div style="color:#75cfb8"><strong>'+el[0]+
                   '</strong></div><div ><strong>precio:</strong> '+el[3]+'€ </div>');
-
+                map2.setZoom(15);
                 map2.setCenter({lat:coordenada2, lng:coordenada1}); 
               }
               });

@@ -12,6 +12,7 @@ class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     dietas = models.ManyToManyField(Dieta)
+    activeAccount = models.BooleanField(blank=False, null=False, default=False)
 
     def __str__(self):
         return self.user.username

@@ -28,9 +28,9 @@ class CreateProductForm(forms.ModelForm):
         ('Frutos secos', 'Frutos secos'),
     )
 
-    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 350px'}))
+    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
 
-    ubicaciones = CustomMMCF(queryset=Ubicacion.objects.all(), required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 400px'}))
+    ubicaciones = CustomMMCF(queryset=Ubicacion.objects.all(), required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     class Meta:
         model = Ubicacion
         fields = ['nombre']
@@ -39,7 +39,7 @@ class CreateProductForm(forms.ModelForm):
     lat =  forms.DecimalField(label='Latitud', widget=forms.HiddenInput, required=False )
     lon = forms.DecimalField(label='Longitud', widget=forms.HiddenInput ,required=False)
 
-  
+
 
 class AddUbicationForm(forms.ModelForm):
     ubicaciones = CustomMMCF(queryset= Ubicacion.objects.all().order_by("nombre"),required=False, widget=forms.Select(attrs={'class' : 'form-control'}))
@@ -98,12 +98,12 @@ class SearchProductForm(forms.ModelForm):
             return cls[member].value[1]
     
     orderBy = forms.TypedChoiceField(
-        choices = [(orderBy.value[1], orderBy.value[0]) for orderBy in OrderBy],
+        choices = [(orderBy.name, orderBy.value[0]) for orderBy in OrderBy],
         coerce = OrderBy.get_value,
-        required = True,
+        required = False,
         initial = OrderBy.newest.name,
         label = 'Ordenar por',
-        widget=forms.Select(attrs={"form":"filtros-form", 'class': 'form-control'})
+        widget = forms.Select(attrs={"form":"filtros-form", 'class': 'form-control'})
     )
 
     def __init__(self, *args, **kwargs):
@@ -111,16 +111,6 @@ class SearchProductForm(forms.ModelForm):
         
         self.fields['titulo'].required = False
         self.fields['dietas'].required = False
-        
-        # Rellenar para el segundo sprint con las dietas del usuario
-        # self.fields['dietas'].initial = [  ]
-
-class MiniSearchProductForm(SearchProductForm):
-    def __init__(self, *args, **kwargs):
-        super(MiniSearchProductForm, self).__init__(*args, **kwargs)
-        
-        self.fields['dietas'].widget = forms.MultipleHiddenInput()
-        self.fields['orderBy'].widget = forms.HiddenInput()
 
 class ReviewProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
