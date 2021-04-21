@@ -31,6 +31,12 @@ body {
   color: #7F6000;
 }
 
+.nombreProductovw {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2vw;
+  color: #7F6000;
+}
+
 .nombreProductoPeque {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.2em;
@@ -380,16 +386,36 @@ a {
 
 .active {}
 
+@media (max-width: 1142px) {
+  .nombreProductovw {
+    font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 4.5vw;
+    color: #7F6000;
+  }
+}
+@media (max-width: 650px) {
+  #menuMovil {
+    display: block;
+  }    
+  #menuNormal {
+    display: none;
+  }
+}
 @media (max-width: 450px) {
-    #menuMovil {
-        display: block;
+
+    .ponfondo{
+      background-image: url("fondocard.png");
     }
+    .nombreProductovw {
+      font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 10vw;
+      color: #7F6000;
+    }
+
     .product-img-list {
         max-width: 90% !important;
     }
-    #menuNormal {
-        display: none;
-    }
+
     .page-content {
         padding: 2em;
         padding-top: 1em;
@@ -412,7 +438,6 @@ a {
     }
 
 }
-
 .tituloReporte {
   font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
   text-decoration: underline;
