@@ -28,7 +28,11 @@
 
         <!-- MENU PARA ORDENADOR -->
         <b-navbar-brand href="/">
+            {% if request.user.perfil.activeAccount %}
+            <a href="/product/list"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            {% else %}
             <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            {% endif %}
         </b-navbar-brand>
         <div></div>
         <div></div>
