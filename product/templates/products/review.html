@@ -18,7 +18,7 @@
                 <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/review/{{product_id}}">{% csrf_token %}
                     <div class="form-group" style="margin-left: 2%;">
                         <br/>
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mb-2">
                             <label style="cursor: pointer;" class="col-sm-6 col-md-3  btn btn-warning" for="id_foto">Cambiar imagen</label>
                             <div>{{ form.foto}}</div>
                            

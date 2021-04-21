@@ -146,11 +146,10 @@
                         </div>
                         <!-- MODAL REPORTAR -->
                         <div class="row mt-5 mb-5">
-                            <div class="col-auto m-auto">
 
-                                {% if product.estado != 'Pendiente' %}
-                                <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button> {% endif %}
-                            </div>
+                            {% if product.estado != 'Pendiente' %}
+                            <div class="col-9"></div>
+                            <button class="btn btn-warning btn-lg col-3 descripcion w-200" data-toggle="modal" data-target="#modalReport" role="button" aria-disabled="true">Reportar Producto</button> {% endif %}
 
                             <div class="modal fade" id="modalReport" tabindex="-1" role="dialog" aria-labelledby="modalReportLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -264,9 +263,11 @@
                     <div class="row ">
                         <div id="colMap" style="padding:0px !important" class="col-12"> {% include 'products/map.html' %}</div>
                     </div>
-                    <div class="row mt-2 justify-content-center">
+                    <div class="row mt-5 justify-content-center">
                         {% if product.estado != 'Pendiente' %}
-                        <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        <div class="col-auto m-auto">  
+                            <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
+                        </div>
                         {% endif %}
                     </div>
                     {% include 'products/createMap.html' %}
