@@ -1,4 +1,6 @@
 {% load static %}
+<!DOCTYPE html> {% load static %}
+<html lang="en">
 
 <head>
     <meta name="description" content="Landing page de una futura web destinada a personas con restricciones alimentarias."></meta>
@@ -12,16 +14,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
 </head>
 
-{% block contenido %}
 
-
-<div class="container-fluid">
-    <div class="header row justify-content-center">
-        <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></img>
-        </a>
+<body>
+    <div id="barprincipal" class="navbar">
+        <b-navbar-brand href="/" style="margin-right: 0px !important;">
+        <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+        </b-navbar-brand>
     </div>
-</div>
-<div>
+
     <div class="container">
         <h3 class="text-center mt-5 mb-3 nombreProducto">Inicio de sesión</h3>
         <div class="row">
@@ -74,20 +74,22 @@
             </div>
         </div>
     </div>
-    <div class="row mt-5">
-        <div class="col">
-            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10 mt-5" src="{% static 'img/footer.png' %}">
+</body>
+
+<div id="footer" class="mt-5">
+    <div class="container">
+        <footer>
+            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
             <div class="container text-center">
                 <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
             </div>
-        </div>
+        </footer>
     </div>
+</div>
 
-
+</html>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
-
-{% endblock %}
 
