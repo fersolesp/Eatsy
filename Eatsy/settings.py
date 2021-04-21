@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'authentication',
     'product',
     'storages',
-    'shoppingList'
-    'recipe'
+    'shoppingList',
+    'recipe',
 ]
 
 MIDDLEWARE = [
