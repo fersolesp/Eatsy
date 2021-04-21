@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'product',
-    'storages'
+    'storages',
+    'recipe'
 ]
 
 MIDDLEWARE = [
