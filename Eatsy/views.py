@@ -8,6 +8,15 @@ from django.shortcuts import render
 def principalScreen(request):
      return render(request, 'products/paginaprincipal.html')
 
+def aboutUs(request):
+     return render(request, 'products/aboutUs.html')
+
+def contactUs(request):
+     return render(request, 'products/contactUs.html')
+
+def privacyPolicy(request):
+     return render(request, 'products/privacyPolicy.html')
+
 def errorNotFoundView(request,exception):
      return HttpResponseNotFound(render(request,"products/404.html"))
 

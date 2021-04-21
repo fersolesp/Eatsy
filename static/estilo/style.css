@@ -265,6 +265,25 @@ a {
   color: #533e00;
 }
 
+#aboutUstitle {
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7F6000;
+  font-size: 4vw;
+  text-align: center;
+}
+
+#aboutUssubtitle {
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7F6000;
+  font-size: 2vw;
+  text-align: center;
+}
+
+#botonesNavbar {
+  display: grid;
+  align-items: center;
+}
+ 
 #bodyblock1 {
   padding-top: 4.5%;
 }

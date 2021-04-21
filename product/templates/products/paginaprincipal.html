@@ -29,27 +29,27 @@
             display: block;
           }
         }
-      </style>
+    </style>
 </head>
 
 <body>
     <div id="barprincipal" class="navbar">
-      <b-navbar-brand href="/" style="margin-right: 0px !important;">
-        <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
-      </b-navbar-brand>
-      <div class="topnav-right">
-        {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
-          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a>
-        {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
-          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a>
-        {% else %}
-          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
-          <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a>
-        {% endif %}
-      </div>
-      <script type="text/javascript">
+        <b-navbar-brand href="/" style="margin-right: 0px !important;">
+            <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+        </b-navbar-brand>
+        <div class="topnav-right">
+            {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a>
+            {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a>
+            {% else %}
+                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a>
+            {% endif %}
+        </div>
+        <script type="text/javascript">
       
-      </script>
+        </script>
     </div>
 
     <!-- MENU PARA EL MOVIL -->
