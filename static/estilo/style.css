@@ -1,5 +1,5 @@
 body {
-  background-image: url("fondito.png");
+  background-image: url("fondito2.jpg");
   background-size: 100%;
 }
 
@@ -37,10 +37,14 @@ body {
   color: #7F6000;
 }
 
-.nombreProductoCreateReview {
+.nombreProductoGrande {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 2em;
   color: #7F6000;
+}
+
+.coll {
+  background-color: #A1C448;
 }
 
 #nombreTarjeta::placeholder {
@@ -223,6 +227,14 @@ a {
 .header {
   padding-bottom: 10px;
   background-color: #A1C448;
+}
+
+.modal-content {
+  border-radius: 10px;
+}
+
+.modal-header {
+  border-radius: 10px;
 }
 
 .imgheader {
