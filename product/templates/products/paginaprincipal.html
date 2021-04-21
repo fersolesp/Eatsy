@@ -28,6 +28,12 @@
           #menuMovil{
             display: block;
           }
+          #bloqueFooter {
+            display: none;
+          }
+          #footerMovil{
+            display: block;
+          }
         }
     </style>
 </head>
@@ -179,17 +185,58 @@
                 </div>
             </div>
         </div>
-    </div>
+    
+        <div id="bloqueFooter" class="mt-5">
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div id="botonesFooterLeft" class="col">
+                                    <a style="height: 50px;" class="btn btn-warning btn-lg" href="/aboutUs/">About Us</a>
+                                </div>
+                                <div id="botonesFooterCenter" class="col">
+                                    <a style="height: 50px;" class="btn btn-warning btn-lg" href="/contactUs/">Contact Us</a>
+                                </div>
+                                <div id="botonesFooterRight" class="col">
+                                    <a style="height: 50px;" class="btn btn-warning btn-lg" href="/privacyPolicy/">Privacy</a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
 
-    <div id="bloqueFooter" class="mt-5">
-        <div class="container">
-            <div id="footer-main">
-                <footer id="footer">
-                    <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
-                    <div class="container text-center">
-                        <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
-                    </div>
-                </footer>
+        <!-- FOOTER PARA EL MOVIL -->
+
+        <div id="footerMovil" class="collapse mt-5">
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
+
+                        <ul  class="nav navbar-nav mt-2">
+                            <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                                Footer <b class="caret"></b>
+                            </a>
+                            <div style="background-color: #343a40" class="dropdown-menu ">
+                                <div class="topnav-right">
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/aboutUs/">About Us</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/contactUs/">Contact Us</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/privacyPolacy/">Privacy</a>
+                                </div>
+                            </div>
+                        </ul>
+                    </footer>
+                </div>
             </div>
         </div>
     </div>
