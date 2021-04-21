@@ -15,6 +15,7 @@ from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
 from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
                             UbicacionProducto, Valoracion)
+from recipe.models import Receta
 
 
 def  user_active_account(user):
@@ -45,6 +46,7 @@ def showProduct(request, productId):
     precio_medio=UbicacionProducto.objects.filter(producto=product).aggregate(Avg('precio'))["precio__avg"]
     valoracion_media=int(round(valoracion,0)) if valoracion!=None else 0
     aportaciones = Aportacion.objects.filter(producto=product)
+    recetas= Receta.objects.filter(productos__in=[product]).distinct()
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
@@ -53,7 +55,7 @@ def showProduct(request, productId):
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas ,'formUbicacion' :formUbicacion})
 
         else:
             messages.error(
@@ -72,7 +74,7 @@ def showProduct(request, productId):
                 reporte.save()
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas, 'formUbicacion' :formUbicacion})
 
         if 'commentButton' in request.POST:
             form = ReporteForm()
@@ -86,7 +88,7 @@ def showProduct(request, productId):
                 comentario.save()
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas ,'formUbicacion' :formUbicacion})
         if 'addingUbication' in request.POST:
             form = ReporteForm()
             formComment= CommentForm()
@@ -109,7 +111,7 @@ def showProduct(request, productId):
 
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'recetas':recetas, 'formUbicacion' :formUbicacion})
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
