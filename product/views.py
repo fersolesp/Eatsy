@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from shoppingList.models import ListaDeCompra
 from authentication.models import Perfil
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -340,4 +340,27 @@ def reviewReport(request, reporteId):
             reporte.save()
 
         return redirect("/product/report/list")
-  
+
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
+def addProductToShoppingList(request):
+    if request.method == 'POST':
+        idProd = request.POST.get('id')
+        producto = get_object_or_404(Producto.objects.filter(pk=idProd))
+        listaCompra = ListaDeCompra.objects.filter(perfil=get_object_or_404(Perfil, user=request.user))
+        if listaCompra.exists():
+            lista = listaCompra.get()
+            if producto.listadecompra_set.filter(pk=lista.pk).exists():
+                messages.error(request, 'No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma')
+                return redirect('product:show', idProd)
+            else:
+                listaCompra.get().productos.add(producto)
+                messages.success(request, 'El producto se ha añadido correctamente a la lista de la compra')
+                return redirect('product:show', idProd)
+            
+        else:
+            lista = ListaDeCompra(perfil=get_object_or_404(Perfil, user=request.user))
+            lista.save()
+            lista.productos.add(producto)
+            messages.success(request, 'El producto se ha añadido correctamente a la lista de la compra')
+            return redirect('product:show', idProd)                
