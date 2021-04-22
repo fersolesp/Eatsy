@@ -299,22 +299,22 @@ a {
 #botonesFooterLeft {
   display: grid;
   justify-content: right;
-  margin-left: 22%;
+  margin-left: 24%;
 }
 
 #botonesFooterRight {
   display: grid;
   justify-content: left;
-  margin-right: 22%;
+  margin-right: 24%;
 }
 
 #desplegableFooter {
-  margin-right: 13%; 
-  margin-left: 13%; 
-  display: grid; 
+  margin-right: 13%;
+  margin-left: 13%;
+  display: grid;
   justify-items: center
 }
- 
+
 #bodyblock1 {
   padding-top: 4.5%;
 }

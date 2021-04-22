@@ -17,15 +17,35 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
 
     <style>
+        @media (max-width: 676px) {
+          
+          .bloques{
+    
+            background-image: url("{% static 'estilo/fondocard.png' %}" );
+          }
+        }
 
+        @media (max-width: 1035px) {
+          #barprincipal{
+            display: none;
+          }
+          #menuMovil{
+            display: block;
+          }
+          #bloqueFooter {
+            display: none;
+          }
+          #footerMovil{
+            display: block;
+          }
+        }
     </style>
 </head>
 
 <body>
 
     <!-- Navbar -->
-    <div class="navbar">
-
+    <div id="barprincipal" class="navbar">
         <!-- MENU PARA ORDENADOR -->
         <b-navbar-brand href="/">
             {% if request.user.perfil.activeAccount %}
@@ -43,65 +63,103 @@
         <div></div>
         <div></div>
         <div></div>
-
         {% if user.is_superuser %}
-        <a id="menuNormal" class="btn btn-dark botonNav" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
-
+            <a id="menuNormal" class="btn btn-dark botonNav" href="/product/report/list" role="button">Revisar reportes</a> 
+        {% endif %}
         <a id="menuNormal" class="btn btn-dark botonNav" href="/product/list" role="button">Lista de productos</a>
         <div id="menuNormal" class="dropdown show botonNav">
             <a class="btn dropdown-toggle botonNav" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Mi cuenta
             </a>
-
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href="/authentication/profile">Mi Perfil</a>
                 <a class="dropdown-item" href="/authentication/logout">Cerrar sesión</a>
             </div>
         </div>
+    </div>
 
-        <!-- MENU PARA EL MOVIL -->
-        <div id="menuMovil" class="collapse navbar-collapse navbar-ex1-collapse ">
-            <div class="row justify-content-center">
-                <b-navbar-brand href="/">
-                    <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
-                </b-navbar-brand>
-            </div>
-            <ul class="nav navbar-nav mt-2">
-                <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
-                      Menú <b class="caret"></b>
-                    </a>
-                <div style="background-color: #343a40" class="dropdown-menu ">
-                    {% if user.is_superuser %}
-                    <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
-
-                    <a class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
-                    <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Mi cuenta
-                        </a>
-
-                    <div style="background-color: #343a40;border: none;" class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
-                        <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
-                        <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
-                    </div>
-                </div>
+    <!-- MENU PARA EL MOVIL -->
+    <div id="menuMovil" class="collapse navbar navbar-collapse navbar-ex1-collapse ">
+        <div class="row justify-content-center">
+            <b-navbar-brand href="/">
+                <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            </b-navbar-brand>
         </div>
+        <ul class="nav navbar-nav mt-2">
+            <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                Menú <b class="caret"></b>
+            </a>
+            <div style="background-color: #343a40" class="dropdown-menu ">
+                {% if user.is_superuser %}
+                    <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> 
+                {% endif %}
+                <a class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
+                <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mi cuenta
+                </a>
+                <div style="background-color: #343a40;border: none;" class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
+                    <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
+                    <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
+                </div>
+            </div>
         </ul>
     </div>
+
+
+    <!-- Footer -->
+    <div id="bloqueFooter" class="mt-5">
+        <!-- MENU PARA ORDENADOR -->
+        <div class="container">
+            <div id="footer-main">
+                <footer id="footer">
+                    <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                    <div class="container text-center">
+                        <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div id="botonesFooterLeft" class="col">
+                                <a style="height: 50px; color: black; font-size: 1.5vw;" href="/aboutUs/"><u>About Us</u></a>
+                            </div>
+                            <div id="botonesFooterCenter" class="col">
+                                <a style="height: 50px; color: black; font-size: 1.5vw;" href="/contactUs/"><u>Contact Us</u></a>
+                            </div>
+                            <div id="botonesFooterRight" class="col">
+                                <a style="height: 50px; color: black; font-size: 1.5vw;" href="/privacyPolicy/"><u>Privacy</u></a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
     </div>
 
+    <!-- FOOTER PARA EL MOVIL -->
 
+    <div id="footerMovil" class="collapse mt-5">
+        <div class="container">
+            <div id="footer-main">
+                <footer id="footer">
+                    <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                    <div class="container text-center">
+                        <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                    </div>
 
-
-    <div id="page-container">
-        <div id="content-wrap">
-            {% block contenido %} {% endblock %}
-        </div>
-        <footer id="footer">
-            <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
-            <div class="container text-center">
-                <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                    <ul  class="nav navbar-nav mt-2">
+                        <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                            Footer <b class="caret"></b>
+                        </a>
+                        <div style="background-color: #343a40;" class="dropdown-menu col-12">
+                            <div class="topnav-right">
+                                <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../aboutUs/">About Us</a>
+                                <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../contactUs/">Contact Us</a>
+                                <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../privacyPolacy/">Privacy</a>
+                            </div>
+                        </div>
+                    </ul>
+                </footer>
             </div>
-        </footer>
+        </div>
     </div>
 
 </body>
