@@ -17,6 +17,14 @@ from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
                             UbicacionProducto, Valoracion)
 from recipe.models import Receta
 
+def aboutUs(request):
+     return render(request, 'products/aboutUs.html')
+
+def contactUs(request):
+     return render(request, 'products/contactUs.html')
+
+def privacyPolicy(request):
+     return render(request, 'products/privacyPolicy.html')
 
 def  user_active_account(user):
     if user:

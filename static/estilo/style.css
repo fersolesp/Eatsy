@@ -88,8 +88,7 @@ hr {
 
 a {
   font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
-  color: aliceblue;
-  font-size: 0.7em;
+  font-size: 0.95em;
   font-weight: bold;
 }
 
@@ -290,6 +289,44 @@ a {
   font-family: "Oxygen", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 1.3rem;
   color: #533e00;
+}
+
+#aboutUstitle {
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7F6000;
+  font-size: 4vw;
+  text-align: center;
+}
+
+#aboutUssubtitle {
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7F6000;
+  font-size: 3vw;
+  text-align: center;
+}
+
+#botonesFooterCenter {
+  display: grid;
+  justify-content: center;
+}
+
+#botonesFooterLeft {
+  display: grid;
+  justify-content: right;
+  margin-left: 24%;
+}
+
+#botonesFooterRight {
+  display: grid;
+  justify-content: left;
+  margin-right: 24%;
+}
+
+#desplegableFooter {
+  margin-right: 13%;
+  margin-left: 13%;
+  display: grid;
+  justify-items: center
 }
 
 #bodyblock1 {
