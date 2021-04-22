@@ -92,6 +92,21 @@ a {
   font-weight: bold;
 }
 
+.enlaceRecetas {
+  font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
+  color: #7F6000 !important;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.nombreRecetaNormal{
+  display: block;
+}
+
+.nombreRecetaMovil{
+  display: none;
+}
+
 .botonAdd a {
   border-radius: 10em;
   color: white;
@@ -409,6 +424,11 @@ a {
   display: block;
   margin: auto;
 }
+@media (max-width: 1142px) {
+  .scrolli {
+    width: 100%;
+  }
+}
 
 .padding-list {
   padding-left: 2em;
@@ -430,6 +450,9 @@ a {
 .active {}
 
 @media (max-width: 450px) {
+    .enlaceRecetas {
+      font-size: 5vw;
+    }
     #menuMovil {
         display: block;
     }

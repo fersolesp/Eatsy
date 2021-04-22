@@ -1,34 +1,65 @@
 {% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %}
+{% block head %}
+<style>
 
+    @media (max-width: 575px) {
+        .nombreRecetaNormal{
+        display: none;
+        }
+        
+        .nombreRecetaMovil{
+        display: block;
+        }
+    }
+</style>
+{% endblock %}
 <script>
     function change_to_tab_1() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
         let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
 
         pest_1.style.display = "inherit";
         pest_2.style.display = "none";
         pest_3.style.display = "none";
+        pest_4.style.display = "none";
     }
 
     function change_to_tab_2() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
         let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
 
         pest_1.style.display = "none";
         pest_2.style.display = "inherit";
         pest_3.style.display = "none";
+        pest_4.style.display = "none";
     }
 
     function change_to_tab_3() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
         let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
 
         pest_1.style.display = "none";
         pest_2.style.display = "none";
         pest_3.style.display = "inherit";
+        pest_4.style.display = "none";
+    }
+    change_to_tab_4()
+    function change_to_tab_4() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+        let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
+
+        pest_1.style.display = "none";
+        pest_2.style.display = "none";
+        pest_3.style.display = "none";
+        pest_4.style.display = "inherit";
     }
 </script>
 <script src="{% static 'js/rating.js' %}" defer></script>
@@ -98,15 +129,18 @@
                 </div>
             </div>
             <div class="row" id="collapseproducts">
-                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
-                    <span class="m-auto opProducto boton-show-inner">Descripción</span>
+                <div class="col-md-3 col-sm-6 d-flex botonProducto" onclick="change_to_tab_1()">
+                    <span class="m-auto  opProducto boton-show-inner">Descripcion</span>
                 </div>
-                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
+                <div class="col-md-3 col-sm-6  d-flex botonProducto" onclick="change_to_tab_2()">
                     <span class="m-auto opProducto boton-show-inner">Comentarios</span>
 
                 </div>
-                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
+                <div class="col-md-3 col-sm-6 mt-md-0 mt-sm-2 d-flex botonProducto" onclick="change_to_tab_3()">
                     <span class="m-auto opProducto boton-show-inner">Ubicaciones</span>
+                </div>
+                <div class="col-md-3 col-sm-6 mt-md-0 mt-sm-2 d-flex botonProducto" onclick="change_to_tab_4()">
+                    <span class="m-auto opProducto boton-show-inner text-center">Recetas</span>
                 </div>
             </div>
             <script>
@@ -115,7 +149,7 @@
                 menuShow()
 
                 function menuShow() {
-                    if (window.innerWidth < 573) {
+                    if (window.innerWidth < 653) {
                         menucolapsar.style.display = "block";
                         collapseproducts.classList.add("collapse");
                     } else {
@@ -285,6 +319,56 @@
                         {% endif %}
                     </div>
                     {% include 'products/createMap.html' %}
+                </div>
+            </div>
+
+            <!-- RECETAS -->
+            <div  id="p-4">
+                <div class="container-fluid">
+                    {% if recetas %}
+                    <div class="row mb-3">
+                        <div class="scrolli">
+                            {% for receta in recetas %}
+                            <div class="product-card-comment mb-2">
+                                <div class="row titulito">
+                                    <div class="col-sm-12 text-center">
+                                        
+                                    </div>  
+                                </div>
+                                <div class="row justify-content-center">
+                                        <img style="border-radius: 50px; max-height: 250px;" src="{{receta.imagen.url}}" class="col-sm-4"></img> 
+                                        <div class="col-sm-4 nombreRecetaNormal col-md-6 ">
+                                            <div style="height: 100%; vertical-align: center; display: table; " >
+                                                    <div style="display: table-cell; vertical-align: middle;">
+                                                      <div class="text-center">
+                                                            <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
+                                                      </div>
+
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="row nombreRecetaMovil justify-content-center">
+                                            <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
+                                        </div>
+                                        
+                                            <div class=" nombreRecetaNormal text-center ">
+                                                <div style="height: 100%; vertical-align: center; display: table; " >
+                                                    <div style="display: table-cell; vertical-align: middle;">
+                                                    <div >
+                                                        <a class="enlaceOjo text-center" href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></a></i>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                <div class="row justify-content-center">
+                                    <br class="nombreRecetaMovil">
+                                        <a class="nombreRecetaMovil enlaceOjo " href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></i></a> </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
