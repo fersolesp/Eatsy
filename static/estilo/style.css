@@ -309,12 +309,12 @@ a {
 }
 
 #desplegableFooter {
-  margin-right: 13%; 
-  margin-left: 13%; 
-  display: grid; 
+  margin-right: 13%;
+  margin-left: 13%;
+  display: grid;
   justify-items: center
 }
- 
+
 #bodyblock1 {
   padding-top: 4.5%;
 }
