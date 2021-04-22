@@ -344,23 +344,24 @@ def reviewReport(request, reporteId):
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def addProductToShoppingList(request):
+    print("ENTRA AL MÑETODO")
     if request.method == 'POST':
-        idProd = request.POST.get('id')
-        producto = get_object_or_404(Producto.objects.filter(pk=idProd))
+        print("ENTRA AL FORM")
+        idProd = request.POST.get('productId')
+        print(idProd)
+        producto = get_object_or_404(Producto.objects.filter(pk=idProd))        
         listaCompra = ListaDeCompra.objects.filter(perfil=get_object_or_404(Perfil, user=request.user))
         if listaCompra.exists():
+            print("EXISTE LISTA")
             lista = listaCompra.get()
             if producto.listadecompra_set.filter(pk=lista.pk).exists():
-                messages.error(request, 'No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma')
-                return redirect('product:show', idProd)
+                return JsonResponse({'success':'false', 'msj': "No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma"}, safe=False)
             else:
                 listaCompra.get().productos.add(producto)
-                messages.success(request, 'El producto se ha añadido correctamente a la lista de la compra')
-                return redirect('product:show', idProd)
+                return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)
             
         else:
             lista = ListaDeCompra(perfil=get_object_or_404(Perfil, user=request.user))
             lista.save()
             lista.productos.add(producto)
-            messages.success(request, 'El producto se ha añadido correctamente a la lista de la compra')
-            return redirect('product:show', idProd)                
+            return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)               
