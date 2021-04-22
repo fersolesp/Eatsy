@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from product import views
 
 app_name = 'product'
@@ -11,4 +11,7 @@ urlpatterns = [
     path('remove/<int:commentId>', views.removeComment, name='remove'),
     path('show/<int:productId>/rate', views.rateProduct, name='rate'),
     path('report/action/<int:reporteId>', views.reviewReport, name='review'),
+    # path('aboutUs/', include('Eatsy.urls')),
+    # path('contactUs/', include('Eatsy.urls')),
+    # path('privacyPolicy/', include('Eatsy.urls')),
 ] 

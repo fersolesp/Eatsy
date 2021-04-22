@@ -299,13 +299,13 @@ a {
 #botonesFooterLeft {
   display: grid;
   justify-content: right;
-  margin-left: 22%;
+  margin-left: 24%;
 }
 
 #botonesFooterRight {
   display: grid;
   justify-content: left;
-  margin-right: 22%;
+  margin-right: 24%;
 }
 
 #desplegableFooter {
