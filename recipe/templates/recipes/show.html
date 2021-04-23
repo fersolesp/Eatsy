@@ -1,0 +1,123 @@
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de receta{% endblock %} {% block contenido %}
+
+<script>
+    function change_to_tab_1() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+
+        pest_1.style.display = "inherit";
+        pest_2.style.display = "none";
+    }
+
+    function change_to_tab_2() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+
+        pest_1.style.display = "none";
+        pest_2.style.display = "inherit";
+    }
+
+</script>
+<script src="{% static 'js/rating.js' %}" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container-fluid page-content">
+
+    <div class="row">
+
+
+        <div class="col-lg-5 mb-5">
+            <div class="product-card-inner">
+                <div class="row justify-content-center">
+                    <div class="col-auto mb-5 nombreProducto">Receta: {{receta.nombre}}</div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-sm-8 col-12 ">
+                        <img class="product-img" style="width: 100%; max-height: 600px; border-radius: 25px;" src="{{receta.imagen.url}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="row justify-content-center">
+                <div style="display:block;" id="menucolapsar">
+                    <nav class="col-sm-4 d-flex  navbar-light">
+                        <button class="navbar-toggler coll" type="button" data-toggle="collapse" data-target="#collapseproducts" aria-controls="collapseproducts" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon "></span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+            <div class="row" id="collapseproducts">
+                <div class="col-sm-6 d-flex botonProducto" onclick="change_to_tab_1()">
+                    <span class="m-auto opProducto boton-show-inner">Descripción</span>
+                </div>
+                <div class="col-sm-6 d-flex botonProducto" onclick="change_to_tab_2()">
+                    <span class="m-auto opProducto boton-show-inner">Ingredientes</span>
+
+                </div>
+            </div>
+            <script>
+                let collapseproducts = document.getElementById("collapseproducts");
+                let menucolapsar = document.getElementById("menucolapsar");
+                menuShow()
+
+                function menuShow() {
+                    if (window.innerWidth < 573) {
+                        menucolapsar.style.display = "block";
+                        collapseproducts.classList.add("collapse");
+                    } else {
+                        collapseproducts.classList.remove("collapse");
+                        menucolapsar.style.display = "none"
+                    }
+                }
+            </script>
+            <div class="row">
+                <hr>
+            </div>
+            <div class="row">
+                <!-- DESCRIPCION -->
+                <div class="col" id="p-1">
+                    <div class="container-fluid descripcion">
+                        <!-- DESCRIPCION + PRECIO -->
+                        <div class="row mt-3 mb-3 product-card-descripcion">
+                            <div class="row mb-2">
+                                <div class="titulito">&nbsp;&nbsp;&nbsp;Descripción:</div>&nbsp;
+                            </div>
+
+                            <div class="row mb-4">
+                                <div> &nbsp;&nbsp;&nbsp;{{receta.descripcion}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMENTAR -->
+            <div class="col" id="p-2">
+                <div class="container-fluid">
+
+                    <!-- Comentarios -->
+                    {% if receta.productos %}
+                    <div class="row mb-3">
+                        <div class="scrolli">
+                            {% for producto in receta.productos.all %}
+                            <div class="product-card-comment mb-2">
+                                <div class="row">
+                                    <div class="col-sm-3 justify-content-center"> <img class="product-img" style="border-radius: 25px;" src="{{producto.foto.url}}" alt=""> </div>
+                                    <div class="col-sm-7 justify-content-center my-auto"><a class="text-dark" style="font-size: 17px;" href="/product/show/{{producto.id}}">{{producto.titulo}}</a></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    change_to_tab_1()
+</script>{% endblock %}

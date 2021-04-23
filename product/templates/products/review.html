@@ -12,13 +12,13 @@
 
     {% block contenido %}
     <main class="container">
-        <h3 class="text-center mt-5 mb-3 nombreProductoCreateReview">Revisar producto</h3>
+        <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Revisar producto</h3>
         <div class="row justify-content-center">
             <div class="product-card-review-create col-12 ">
                 <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/review/{{product_id}}">{% csrf_token %}
                     <div class="form-group" style="margin-left: 2%;">
                         <br/>
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mb-2">
                             <label style="cursor: pointer;" class="col-sm-6 col-md-3  btn btn-warning" for="id_foto">Cambiar imagen</label>
                             <div>{{ form.foto}}</div>
                            
@@ -67,7 +67,7 @@
 
                     <div class="form-group">
 
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center nombreProductoPeque">
                            <strong> Resultado de la revisión:</strong>
                         </div>
                         <div class="row justify-content-center">

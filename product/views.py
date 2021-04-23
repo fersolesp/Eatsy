@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from shoppingList.models import ListaDeCompra
 from authentication.models import Perfil
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -15,7 +15,16 @@ from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
 from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
                             UbicacionProducto, Valoracion)
+from recipe.models import Receta
 
+def aboutUs(request):
+     return render(request, 'products/aboutUs.html')
+
+def contactUs(request):
+     return render(request, 'products/contactUs.html')
+
+def privacyPolicy(request):
+     return render(request, 'products/privacyPolicy.html')
 
 def  user_active_account(user):
     if user:
@@ -45,6 +54,7 @@ def showProduct(request, productId):
     precio_medio=UbicacionProducto.objects.filter(producto=product).aggregate(Avg('precio'))["precio__avg"]
     valoracion_media=int(round(valoracion,0)) if valoracion!=None else 0
     aportaciones = Aportacion.objects.filter(producto=product)
+    recetas= Receta.objects.filter(productos__in=[product]).distinct()
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
@@ -53,7 +63,7 @@ def showProduct(request, productId):
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas ,'formUbicacion' :formUbicacion})
 
         else:
             messages.error(
@@ -72,7 +82,7 @@ def showProduct(request, productId):
                 reporte.save()
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas, 'formUbicacion' :formUbicacion})
 
         if 'commentButton' in request.POST:
             form = ReporteForm()
@@ -86,7 +96,7 @@ def showProduct(request, productId):
                 comentario.save()
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas ,'formUbicacion' :formUbicacion})
         if 'addingUbication' in request.POST:
             form = ReporteForm()
             formComment= CommentForm()
@@ -109,7 +119,7 @@ def showProduct(request, productId):
 
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'recetas':recetas, 'formUbicacion' :formUbicacion})
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
@@ -330,4 +340,28 @@ def reviewReport(request, reporteId):
             reporte.save()
 
         return redirect("/product/report/list")
-  
+
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
+def addProductToShoppingList(request):
+    print("ENTRA AL MÑETODO")
+    if request.method == 'POST':
+        print("ENTRA AL FORM")
+        idProd = request.POST.get('productId')
+        print(idProd)
+        producto = get_object_or_404(Producto.objects.filter(pk=idProd))        
+        listaCompra = ListaDeCompra.objects.filter(perfil=get_object_or_404(Perfil, user=request.user))
+        if listaCompra.exists():
+            print("EXISTE LISTA")
+            lista = listaCompra.get()
+            if producto.listadecompra_set.filter(pk=lista.pk).exists():
+                return JsonResponse({'success':'false', 'msj': "No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma"}, safe=False)
+            else:
+                listaCompra.get().productos.add(producto)
+                return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)
+            
+        else:
+            lista = ListaDeCompra(perfil=get_object_or_404(Perfil, user=request.user))
+            lista.save()
+            lista.productos.add(producto)
+            return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)               

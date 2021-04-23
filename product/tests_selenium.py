@@ -107,6 +107,7 @@ class SeleniumTests(StaticLiveServerTestCase):
     #     dropdown = self.driver.find_element(By.ID, "select")
     #     dropdown.find_element(By.XPATH, "//option[. = 'Lidl']").click()
 
+    #   TODO test que falla para arreglar
     # def test_reportar(self):
     #     self.driver.get(f'{self.live_server_url}/')
     #     self.driver.set_window_size(1080, 1036)
