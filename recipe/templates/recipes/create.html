@@ -13,15 +13,15 @@
     <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Crear una nueva receta</h3>
     <div class="row justify-content-center">
         <div class="product-card-review-create col-sm-8  col-11">
-            <form name="formCreate" enctype="multipart/form-data" method="POST"
-                class="post-form" action="/product/create">{% csrf_token %}
+            <form onsubmit="return validateImage()" name="formCreate" enctype="multipart/form-data" method="POST"
+                class="post-form" action="/recipe/create">{% csrf_token %}
                 <div class="form-group">
                     <label style="color:red; align-content: center;">*Solo estos campos son obligatorios.</label>
                     <br />
                     <div class="row">
                         <div class="col-md-2"><label>Imagen <span style="color:red;">*</span>:&nbsp;</label></div>
                         <label style="cursor: pointer;" class="btn btn-warning col-md-3"
-                            for="id_foto">Seleccionar archivo</label>
+                            for="id_imagen">Seleccionar archivo</label>
                         <div>{{ form.imagen }}</div>
                         <div class = "col-md-5 text-center" id="Archivo">Ninguna imagen seleccionada</div>
                         <div class="col-12" style="color: red;">{{ form.errors.imagen.as_text}}</div>
@@ -87,14 +87,14 @@
 </script>
 
 <script type="text/javascript">
-    document.getElementById('id_foto').onchange = function () {
+    document.getElementById('id_imagen').onchange = function () {
 
-        document.getElementById("Archivo").innerText = document.getElementById('id_foto').files[0].name;
+        document.getElementById("Archivo").innerText = document.getElementById('id_imagen').files[0].name;
         previewFile();
     }
     function previewFile() {
         var preview = document.querySelector('#foto');
-        var file    = document.querySelector('#id_foto').files[0];
+        var file    = document.querySelector('#id_imagen').files[0];
         var reader  = new FileReader();
 
         reader.onloadend = function () {
@@ -106,6 +106,14 @@
         } else {
             preview.src = "";
         }
+    }
+
+    function validateImage() {
+        var z = document.getElementById("id_imagen").files[0];
+        if (!z) {
+            alert("Elige una foto");
+            return false;
+        }  
     }
     
 </script>
