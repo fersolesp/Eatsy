@@ -22,11 +22,15 @@ def showReceta(request, recetaId):
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def createReceta(request):
+    productos = Producto.objects.all().order_by('titulo')
+    formProducts=[]
+    for product in productos:
+        formProducts.append((product.id,product.titulo)) 
+    form = CreateRecipeForm(formProducts)
     if request.method=='GET':
-        form = CreateRecipeForm()
         return render(request,'recipes/create.html', {'form':form})
     if request.method=='POST':
-        form = CreateRecipeForm(request.POST, request.FILES)
+        form = CreateRecipeForm(formProducts,request.POST, request.FILES)
         if form.is_valid():
             path = default_storage.save(form.cleaned_data['imagen'].name, ContentFile(form.cleaned_data['imagen'].read()))
             nombre = form.cleaned_data["nombre"]
