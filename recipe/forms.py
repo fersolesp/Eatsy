@@ -1,11 +1,6 @@
-from enum import Enum
-
 from django import forms
 from django.core.validators import FileExtensionValidator
-
 from .models import Receta
-from product.models import Producto
-
 
 class CreateRecipeForm(forms.ModelForm):
     def __init__(self, productos, *args, **kwargs):
