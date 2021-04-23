@@ -174,7 +174,12 @@
                             </div>
                             <div class="row">
                                 {% for dieta in product.dietas.all %}
-                                <div> &nbsp;&nbsp;&nbsp;{{dieta.nombre}}&nbsp;&nbsp;</div>
+                                <div style="padding:14px;"> 
+                                    &nbsp;&nbsp;&nbsp;
+                                    <img class="nada" src="/static/{{dieta.logo}}" title="{{dieta.nombre}}" alt="{{dieta.nombre}}" width="35" height="35"/>
+                                    &nbsp;{{dieta.nombre}}
+                                    &nbsp;&nbsp;
+                                </div>
                                 {% endfor %}
                             </div>
                         </div>
