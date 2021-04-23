@@ -20,7 +20,11 @@ def showReceta(request, recetaId):
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def createReceta(request):
     if request.method=='GET':
-        form = CreateRecipeForm()
+        productos = Producto.objects.all().order_by('titulo')
+        formProducts=[]
+        for product in productos:
+            formProducts.append((product.id,product.titulo))  
+        form = CreateRecipeForm(formProducts)
         return render(request,'recipes/create.html', {'form':form})
 
     # TODO: el controlador de crear recetita - Javi :p
