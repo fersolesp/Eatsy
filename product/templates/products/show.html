@@ -1,14 +1,11 @@
-{% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %}
-{% block head %}
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %} {% block head %}
 <style>
-
     @media (max-width: 575px) {
-        .nombreRecetaNormal{
-        display: none;
+        .nombreRecetaNormal {
+            display: none;
         }
-        
-        .nombreRecetaMovil{
-        display: block;
+        .nombreRecetaMovil {
+            display: block;
         }
     }
 </style>
@@ -50,6 +47,7 @@
         pest_4.style.display = "none";
     }
     change_to_tab_4()
+
     function change_to_tab_4() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
@@ -71,7 +69,7 @@
 
         <div class="col-lg-5 mb-5">
             <div class="product-card-inner">
-                
+
                 <div class="row justify-content-center">
                     <div class="col-auto mb-5 nombreProducto">{{product.titulo}}</div>
                 </div>
@@ -92,18 +90,18 @@
                     </form>
                     <br/>
                     <div class="mt-2" id="msjrating"></div>
+                    <div class="mt-2" id="msjlistaCompra" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 </div>
                 <div class="row  justify-content-center">
-                        {% if user.is_superuser %}
-                        <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> 
-                        {% endif %} 
+                    {% if user.is_superuser %}
+                    <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
 
                     <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
                         <form method="POST" class="formAddLista" action="">
                             {% csrf_token %}
                             <input type="hidden" value="{{product.id}}" name="productId" id="productId">
-                            <a href="#" class = "buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
-                        
+                            <a href="#" class="buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
+
                         </form>
                     </div>
                 </div>
@@ -314,7 +312,7 @@
                     </div>
                     <div class="row mt-5 justify-content-center">
                         {% if product.estado != 'Pendiente' %}
-                        <div class="col-auto m-auto">  
+                        <div class="col-auto m-auto">
                             <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
                         </div>
                         {% endif %}
@@ -324,7 +322,7 @@
             </div>
 
             <!-- RECETAS -->
-            <div  id="p-4">
+            <div id="p-4">
                 <div class="container-fluid">
                     {% if recetas %}
                     <div class="row mb-3">
@@ -333,83 +331,89 @@
                             <div class="product-card-comment mb-2">
                                 <div class="row titulito">
                                     <div class="col-sm-12 text-center">
-                                        
-                                    </div>  
+
+                                    </div>
                                 </div>
                                 <div class="row justify-content-center">
-                                        <img style="border-radius: 50px; max-height: 250px;" src="{{receta.imagen.url}}" class="col-sm-4"></img> 
-                                        <div class="col-sm-4 nombreRecetaNormal col-md-6 ">
-                                            <div style="height: 100%; vertical-align: center; display: table; " >
-                                                    <div style="display: table-cell; vertical-align: middle;">
-                                                      <div class="text-center">
-                                                            <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
-                                                      </div>
+                                    <img style="border-radius: 50px; max-height: 250px;" src="{{receta.imagen.url}}" class="col-sm-4"></img>
+                                    <div class="col-sm-4 nombreRecetaNormal col-md-6 ">
+                                        <div style="height: 100%; vertical-align: center; display: table; ">
+                                            <div style="display: table-cell; vertical-align: middle;">
+                                                <div class="text-center">
+                                                    <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
+                                                </div>
 
-                                                    </div>
                                             </div>
-                                        </div>
-                                        <div class="row nombreRecetaMovil justify-content-center">
-                                            <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
-                                        </div>
-                                        
-                                            <div class=" nombreRecetaNormal text-center ">
-                                                <div style="height: 100%; vertical-align: center; display: table; " >
-                                                    <div style="display: table-cell; vertical-align: middle;">
-                                                    <div >
-                                                        <a class="enlaceOjo text-center" href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></a></i>
-                                                    </div>
-                                            </div>
-                                        </div>
                                         </div>
                                     </div>
+                                    <div class="row nombreRecetaMovil justify-content-center">
+                                        <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
+                                    </div>
+
+                                    <div class=" nombreRecetaNormal text-center ">
+                                        <div style="height: 100%; vertical-align: center; display: table; ">
+                                            <div style="display: table-cell; vertical-align: middle;">
+                                                <div>
+                                                    <a class="enlaceOjo text-center" href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></a></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row justify-content-center">
                                     <br class="nombreRecetaMovil">
-                                        <a class="nombreRecetaMovil enlaceOjo " href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></i></a> </div>
+                                    <a class="nombreRecetaMovil enlaceOjo " href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></i></a> </div>
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                    {% endif %}
+                    {% endif %} {% if product.estado != 'Pendiente' %}
+                    <div class="col-auto m-auto" style="width: max-content;">
+                        <form action="/recipe/create" method="GET">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning btn-lg">Añadir Receta</button>
+                        </form>{% endif %}
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
+</div>
+</div>
 </div>
 
 
 <script type="text/javascript">
-const formAddShoppingList = document.querySelector(".buttonAddList");
-formAddShoppingList.addEventListener("click", (e) => {
-            e.preventDefault();
-            console.log("PRE AJAX");
-            console.log(document.getElementById("productId").value);
-$.ajax({
-                type: "POST",
-                url: "/product/show/shoppingList/add",
-                data: {
-                    "csrfmiddlewaretoken": csrf[0].value,
-                    "productId": document.getElementById("productId").value
-                },
-                success: function(response) {
-                    console.log(response);
-                    document.getElementById("msjrating").display = "block";
-                    if (response["msj"] === "El producto se ha añadido correctamente a la lista de la compra") {
-                        document.getElementById("msjrating").classList.add("msjError");
-                    } else {
-                        document.getElementById("msjrating").classList.add("msj");
-                    }
-                    document.getElementById("msjrating").innerHTML = response["msj"];
-                    setTimeout(() => {
-                        document.getElementById("msjrating").style.display = "none";
-                        if (response["msj"] === "El producto se ha añadido correctamente a la lista de la compra") {
-                            document.getElementById("msjrating").classList.remove("msjError");
-                        } else {
-                            document.getElementById("msjrating").classList.remove("msj");
-                        }
-                    }, 3000);
+    const formAddShoppingList = document.querySelector(".buttonAddList");
+    formAddShoppingList.addEventListener("click", (e) => {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/product/show/shoppingList/add",
+            data: {
+                "csrfmiddlewaretoken": csrf[0].value,
+                "productId": document.getElementById("productId").value
+            },
+            success: function(response) {
+                document.getElementById("msjlistaCompra").display = "block";
+                if (response["msj"] === "No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma") {
+                    document.getElementById("msjlistaCompra").classList.add("msjError");
+                } else {
+                    document.getElementById("msjlistaCompra").classList.add("msj");
                 }
-            });
+                document.getElementById("msjlistaCompra").innerHTML = response["msj"];
+                setTimeout(() => {
+                    document.getElementById("msjlistaCompra").style.display = "none";
+                    if (response["msj"] === "No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma") {
+                        document.getElementById("msjlistaCompra").classList.remove("msjError");
+                    } else {
+                        document.getElementById("msjlistaCompra").classList.remove("msj");
+                    }
+                }, 3000);
+            }
         });
+    });
 </script>
 <script type="text/javascript">
     if (document.getElementById("msjreporte")) {
@@ -443,12 +447,11 @@ $.ajax({
 
 
 <a id="botonAdd" style="left:0px !important" class="botonAdd" href="/product/create" role="button">
-    <img style="box-shadow:5px 5px 4px black; border-radius: 50%;"  height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
+    <img style="box-shadow:5px 5px 4px black; border-radius: 50%;" height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
     />
 </a>
 <script>
-    document.getElementById("botonAdd").style.left = window.innerWidth-100 +"px";
-
+    document.getElementById("botonAdd").style.left = window.innerWidth - 100 + "px";
 </script>
 
 {% endblock %}
