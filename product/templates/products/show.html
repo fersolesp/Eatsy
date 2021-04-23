@@ -99,9 +99,10 @@
                         {% endif %} 
 
                     <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
-                        <form method="POST" id="formAddLista" action="/action/form">
-                            <input type="hidden" value="3" name="id" id="id">
-                            <a href="#" onclick="document.getElementById('formAddLista').submit();">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
+                        <form method="POST" class="formAddLista" action="">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{product.id}}" name="productId" id="productId">
+                            <a href="#" class = "buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
                         
                         </form>
                     </div>
@@ -376,6 +377,40 @@
 </div>
 
 
+<script type="text/javascript">
+const formAddShoppingList = document.querySelector(".buttonAddList");
+formAddShoppingList.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log("PRE AJAX");
+            console.log(document.getElementById("productId").value);
+$.ajax({
+                type: "POST",
+                url: "/product/show/shoppingList/add",
+                data: {
+                    "csrfmiddlewaretoken": csrf[0].value,
+                    "productId": document.getElementById("productId").value
+                },
+                success: function(response) {
+                    console.log(response);
+                    document.getElementById("msjrating").display = "block";
+                    if (response["msj"] === "El producto se ha añadido correctamente a la lista de la compra") {
+                        document.getElementById("msjrating").classList.add("msjError");
+                    } else {
+                        document.getElementById("msjrating").classList.add("msj");
+                    }
+                    document.getElementById("msjrating").innerHTML = response["msj"];
+                    setTimeout(() => {
+                        document.getElementById("msjrating").style.display = "none";
+                        if (response["msj"] === "El producto se ha añadido correctamente a la lista de la compra") {
+                            document.getElementById("msjrating").classList.remove("msjError");
+                        } else {
+                            document.getElementById("msjrating").classList.remove("msj");
+                        }
+                    }, 3000);
+                }
+            });
+        });
+</script>
 <script type="text/javascript">
     if (document.getElementById("msjreporte")) {
         setTimeout(() => {

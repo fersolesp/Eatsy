@@ -14,4 +14,5 @@ urlpatterns = [
     path('aboutUs/', views.aboutUs, name='aboutUs'),
     path('contactUs/', views.contactUs, name='contactUs'),
     path('privacyPolicy/', views.privacyPolicy, name='privacyPolicy'),
+    path('show/shoppingList/add', views.addProductToShoppingList, name='addToShoppingList'),
 ] 
