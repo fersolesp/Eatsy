@@ -1,4 +1,13 @@
 {% extends 'products/base.html' %}{% load static %} {% block titulo %}Perfil{% endblock %} {% block contenido %}
+{% block head %}
+    <style>
+        @media (max-width: 450px) {
+            .product-card-inner {
+                padding: 0.5em !important ;
+            }
+        }
+    </style>
+{% endblock %}
 <script>
     function verificar_pass() {
         let pass = document.getElementById("pass").value;
@@ -24,14 +33,13 @@
                     </h5>
                 </div>
                 <div class="modal-body" style="text-align:center;">
-                    <img src="{% static 'img/loader-2_food.gif' %}">
+                    <img class="col-12" src="{% static 'img/loader-2_food.gif' %}">
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-3"></div>
-        <div class=" col-6">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-8">
             <form name="formProfile" enctype="multipart/form-data" method="POST" action="/authentication/profile">{% csrf_token %}
                 <div class="product-card-inner">
                     <div class="row">
@@ -68,23 +76,33 @@
                             <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="row mt-5 product-card-inner justify-content-center">
+                            <div class="col ">
+                                <div class="row justify-content-center">
+                                    <div style=" text-align: center; " class="nombreProductoPeque"> Estado de la suscripción: </div>
+                                </div>
+                                {% if request.user.perfil.activeAccount %}
+                                <div class="row justify-content-center">
+                                    <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya está activada </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <button id="cancelButton" class="btn btn-warning" >Cancelar suscripción</button> 
+                                </div>
+                                {% else %}
 
-                    <div class="row mt-5 product-card-inner justify-content-center">
-                        <div class="col ">
-                            <div style=" text-align: center; " class="nombreProductoPeque"> Estado de la suscripción: </div>
-                            {% if request.user.perfil.activeAccount %}
-                            <div style="color: black; font-weight: bold; text-align: center;"> Tu cuenta ya está activada </div>
-                            <button id="cancelButton" class="btn btn-warning center" style="justify-content: center;margin-left: 10%;">Cancelar suscripción</button> {% else %}
-                            <a class="btn btn-warning center" style="justify-content: center;margin-left: 15%;" href="/authentication/create-subscription">Activa tu cuenta</a> {% endif %}
+                                <div class="row justify-content-center">
+                                    <a class="btn btn-warning center" style="justify-content: center;margin-left: 15%;" href="/authentication/create-subscription">Activa tu cuenta</a> 
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row mt-5 mb-5">
-                        <div class="col-auto m-auto" style="justify-content: center;">
-                            <button type="submit" class="save btn btn-warning">Actualizar</button>
-                            <a class="btn btn-warning" href="/authentication/resetpassword">Cambiar contraseña</a>
+                        <div class="row justify-content-center mt-5 mb-5">
+                            <button type="submit" class="save btn btn-warning  col-md-4 col-sm-3 col-10">Actualizar</button>
+                            <a class="btn btn-warning mt-sm-0 mt-3 offset-0 offset-sm-3 col-md-4 col-sm-3 col-10  " href="/authentication/resetpassword">Cambiar contraseña</a>
                         </div>
-                    </div>
+                    
                 </div>
             </form>
         </div>
@@ -93,7 +111,6 @@
 <script>
     // selecting loading div
     const loader = document.querySelector("#loading");
-
     // showing loading
     function displayLoading() {
         $(document).ready(function() {
