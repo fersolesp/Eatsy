@@ -18,26 +18,24 @@
 
     <style>
         @media (max-width: 676px) {
-          
-          .bloques{
-    
-            background-image: url("{% static 'estilo/fondocard.png' %}" );
-          }
+            .bloques {
+                background-image: url("{% static 'estilo/fondocard.png' %}");
+            }
         }
-
+        
         @media (max-width: 1035px) {
-          #barprincipal{
-            display: none;
-          }
-          #menuMovil{
-            display: block;
-          }
-          #bloqueFooter {
-            display: none;
-          }
-          #footerMovil{
-            display: block;
-          }
+            #barprincipal {
+                display: none;
+            }
+            #menuMovil {
+                display: block;
+            }
+            #bloqueFooter {
+                display: none;
+            }
+            #footerMovil {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -64,8 +62,7 @@
         <div></div>
         <div></div>
         {% if user.is_superuser %}
-            <a id="menuNormal" class="btn btn-dark botonNav" href="/product/report/list" role="button">Revisar reportes</a> 
-        {% endif %}
+        <a id="menuNormal" class="btn btn-dark botonNav" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
         <a id="menuNormal" class="btn btn-dark botonNav" href="/product/list" role="button">Lista de productos</a>
         <div id="menuNormal" class="dropdown show botonNav">
             <a class="btn dropdown-toggle botonNav" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -73,6 +70,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href="/authentication/profile">Mi Perfil</a>
+                <a class="dropdown-item" href="/shoppingList/">Mi Lista</a>
                 <a class="dropdown-item" href="/authentication/logout">Cerrar sesión</a>
             </div>
         </div>
@@ -91,14 +89,14 @@
             </a>
             <div style="background-color: #343a40" class="dropdown-menu ">
                 {% if user.is_superuser %}
-                    <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> 
-                {% endif %}
+                <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
                 <a class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
                 <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Mi cuenta
                 </a>
                 <div style="background-color: #343a40;border: none;" class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
                     <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
+                    <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Lista</a>
                     <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
                 </div>
             </div>
@@ -110,61 +108,61 @@
             {% block contenido %} {% endblock %}
         </div>
 
-    <!-- Footer -->
-    <div id="bloqueFooter" >
-        <!-- MENU PARA ORDENADOR -->
-        <div class="container">
-            <div id="footer-main">
-                <footer id="footer">
-                    <img class="imgfooter col-lg-3 col-md-4 col-sm-4 col-9" src="{% static 'img/footer.png' %}">
-                    <div class="container text-center">
-                        <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
-                    </div>
-                    <div>
-                        <div class="row">
-                            <div id="botonesFooterLeft" class="col">
-                                <a style="height: 50px; color: black; font-size: 1.25vw;" href="/aboutUs/"><u>About Us</u></a>
-                            </div>
-                            <div id="botonesFooterCenter" class="col">
-                                <a style="height: 50px; color: black; font-size: 1.25vw;" href="/contactUs/"><u>Contact Us</u></a>
-                            </div>
-                            <div id="botonesFooterRight" class="col">
-                                <a style="height: 50px; color: black; font-size: 1.25vw;" href="/privacyPolicy/"><u>Privacy</u></a>
+        <!-- Footer -->
+        <div id="bloqueFooter">
+            <!-- MENU PARA ORDENADOR -->
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-4 col-9" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <div id="botonesFooterLeft" class="col">
+                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/aboutUs/"><u>About Us</u></a>
+                                </div>
+                                <div id="botonesFooterCenter" class="col">
+                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/contactUs/"><u>Contact Us</u></a>
+                                </div>
+                                <div id="botonesFooterRight" class="col">
+                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/privacyPolicy/"><u>Privacy</u></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </footer>
+                    </footer>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- FOOTER PARA EL MOVIL -->
+        <!-- FOOTER PARA EL MOVIL -->
 
-    <div id="footerMovil" class="collapse mt-5">
-        <div class="container">
-            <div id="footer-main">
-                <footer id="footer">
-                    <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
-                    <div class="container text-center">
-                        <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
-                    </div>
+        <div id="footerMovil" class="collapse mt-5">
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
 
-                    <ul  class="nav navbar-nav mt-2">
-                        <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                        <ul class="nav navbar-nav mt-2">
+                            <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
                             Footer <b class="caret"></b>
                         </a>
-                        <div style="background-color: #343a40;" class="dropdown-menu col-12">
-                            <div class="topnav-right">
-                                <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../aboutUs/">About Us</a>
-                                <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../contactUs/">Contact Us</a>
-                                <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../privacyPolacy/">Privacy</a>
+                            <div style="background-color: #343a40;" class="dropdown-menu col-12">
+                                <div class="topnav-right">
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../aboutUs/">About Us</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../contactUs/">Contact Us</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../privacyPolacy/">Privacy</a>
+                                </div>
                             </div>
-                        </div>
-                    </ul>
-                </footer>
+                        </ul>
+                    </footer>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 

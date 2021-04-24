@@ -1,14 +1,9 @@
-{% extends 'products/base.html' %} {% block titulo %}Productos{% endblock %} {% block contenido %}
-{% load dietas_filter %}
+{% extends 'products/base.html' %} {% block titulo %}Productos{% endblock %} {% block contenido %} {% load dietas_filter %}
 
 <div class="padding-list-container container-fluid page-content">
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == "error" %}
-                <div class="row justify-content-center msj">{{ message }} </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% if messages %} {% for message in messages %} {% if message.tags == "error" %}
+    <div class="row justify-content-center msj">{{ message }} </div>
+    {% endif %} {% endfor %} {% endif %}
     <div class="row justify-content-center ">
         <div class="col-sm-8 nombreProductoGrande">Búsqueda de productos</div>
     </div>
@@ -55,35 +50,23 @@
 
             </div>
         </div>
-        
+
         {% if request.GET.estado or searchProductForm.dietas.value or searchProductForm.titulo.value or searchProductForm.orderBy.value %}
         <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-2 col-md-3 col-sm-4">
-            <div class="col-auto m-auto"> 
+            <div class="col-auto m-auto">
                 <button onclick="location.href='/product/list?titulo='" class="w-100 btn btn-warning btn-md" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Borrar filtros
                     
-                </button>            
+                </button>
             </div>
         </div>
-        {% endif %}
+        {% endif %} {% if user.is_superuser %}
 
-        {% if user.is_superuser %}
-        
         <form method="GET" action="" id="estado-form">
             {% if request.GET.titulo %}
-                <input type="hidden" name="titulo" value="{{request.GET.titulo}}"> 
-            {% endif %}
-            
-            {% if request.GET.dietas %}
-                {% for a in request.GET|get_list:'dietas' %}
-                    <input type="hidden" name="dietas" value="{{a}}"> 
-                {% endfor %}
-            {% endif %}
-
-
-            {% if request.GET.orderBy %}
-                <input type="hidden" name="orderBy" value="{{request.GET.orderBy}}"> 
-            {% endif %}
+            <input type="hidden" name="titulo" value="{{request.GET.titulo}}"> {% endif %} {% if request.GET.dietas %} {% for a in request.GET|get_list:'dietas' %}
+            <input type="hidden" name="dietas" value="{{a}}"> {% endfor %} {% endif %} {% if request.GET.orderBy %}
+            <input type="hidden" name="orderBy" value="{{request.GET.orderBy}}"> {% endif %}
         </form>
         <div style="padding-top: 1em; padding-bottom: 1em;" class="padding-list col-lg-2 col-md-3 col-sm-4">
             <div class="col-auto m-auto"> <button class="w-100 btn btn-warning btn-md" data-toggle="modal" data-target="#modalEstado" role="button" aria-disabled="true">Estado del producto</button></div>
@@ -100,13 +83,14 @@
                         <div class="modal-body">
                             <div style="padding-bottom: 10px;font-weight: bold;">Estado:</div>
 
-                                <span style="margin-left: 35px;"><span class="form-check-input">
+                            <span style="margin-left: 35px;"><span class="form-check-input">
                                     <input form="estado-form" type="radio" id="estadoA" name="estado" value="aceptado"> Aceptado
-                                </span></span><br><div style="height:1em"></div>
-                                <span style="margin-left: 35px;"><span class="form-check-input">
+                                </span></span><br>
+                            <div style="height:1em"></div>
+                            <span style="margin-left: 35px;"><span class="form-check-input">
                                     <input form="estado-form" type="radio" id="estadoP" name="estado" value="pendiente"> Pendiente
                                 </span></span>
-                                <br>
+                            <br>
                             <div style="height:1em"></div>
                             <br>
                         </div>
@@ -128,9 +112,9 @@
         {% for product in products %}
         <div class="col-xl-3 col-lg-4 col-md-6 col-12 d-flex product-card">
             <div style="width:100%;" class="product-card-inner">
-                <div class="row-fluid">
+                <div class="row justify-content-center">
                     <div class="d-flex" href="show/{{product.id}}">
-                        <a href="show/{{product.id}}"> <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde"  src="{{product.foto.url}}" alt=""></a>
+                        <a href="show/{{product.id}}"> <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde" src="{{product.foto.url}}" alt=""></a>
                     </div>
                 </div>
                 <div class="row-fluid text-center nombreProducto mt-3">
@@ -163,7 +147,7 @@
                         <span class="sr-only">Previous</span>
                     </a>
                 </li>
-                <li  class="page-item"><a id="pglink1" class="page-link" style="background-color: #519483 !important;" href="?page=1">1</a></li>
+                <li class="page-item"><a id="pglink1" class="page-link" style="background-color: #519483 !important;" href="?page=1">1</a></li>
                 <li class="page-item"><a id="pglink2" class="page-link" href="?page=2">2</a></li>
                 <li class="page-item"><a id="pglink3" class="page-link" href="?page=3">3</a></li>
                 <li class="page-item">
@@ -180,65 +164,63 @@
             let page = parseInt(getParameterByName("page"));
             let numPaginas = parseInt(document.getElementById("numPaginas").value);
             cambiaPaginacion();
-            function cambiaPaginacion(){
+
+            function cambiaPaginacion() {
                 let link1 = document.getElementById('pglink1');
                 let link2 = document.getElementById('pglink2');
                 let next = document.getElementById('pgnext');
                 let link3 = document.getElementById('pglink3');
                 let previous = document.getElementById('pgprevious');
-                if(page == numPaginas-1){
+                if (page == numPaginas - 1) {
                     link1.href = url(page);
-                    link1.innerText = page; 
-                    link2.href = url(page+1);
-                    link2.innerText = page+1; 
+                    link1.innerText = page;
+                    link2.href = url(page + 1);
+                    link2.innerText = page + 1;
                     link3.href = url(page);
-                    link3.innerText = "-"; 
-                    link3.style.backgroundColor ="gray";
-                    next.href = url(page+1);
-                    previous.href = url(page-1);
-                } 
-                else if(page == numPaginas){
+                    link3.innerText = "-";
+                    link3.style.backgroundColor = "gray";
+                    next.href = url(page + 1);
+                    previous.href = url(page - 1);
+                } else if (page == numPaginas) {
                     link1.href = url(page);
-                    link1.innerText = page; 
+                    link1.innerText = page;
                     link2.href = url(page);
-                    link2.innerText = "-"; 
-                    link2.style.backgroundColor ="gray";
+                    link2.innerText = "-";
+                    link2.style.backgroundColor = "gray";
                     link3.href = url(page);
-                    link3.innerText = "-"; 
-                    link3.style.backgroundColor ="gray";
+                    link3.innerText = "-";
+                    link3.style.backgroundColor = "gray";
                     next.href = url(page);
-                    next.style.backgroundColor ="gray";
-                    previous.href = url(page-1);
-                } 
-                else if(page > numPaginas){
+                    next.style.backgroundColor = "gray";
+                    previous.href = url(page - 1);
+                } else if (page > numPaginas) {
                     link1.href = url(page);
-                    link1.innerText = "-"; 
-                    link1.style.backgroundColor ="gray";
+                    link1.innerText = "-";
+                    link1.style.backgroundColor = "gray";
                     link2.href = url(page);
-                    link2.innerText = "-"; 
-                    link2.style.backgroundColor ="gray";
+                    link2.innerText = "-";
+                    link2.style.backgroundColor = "gray";
                     link3.href = url(page);
-                    link3.innerText = "-"; 
-                    link3.style.backgroundColor ="gray";
+                    link3.innerText = "-";
+                    link3.style.backgroundColor = "gray";
                     next.href = url(page);
-                    next.innerText = "-"; 
-                    next.style.backgroundColor ="gray";
-                    previous.href = url(page-1);
-                    previous.innerText = "-"; 
-                    previous.style.backgroundColor ="gray";
-                }     
-                else if(page){
+                    next.innerText = "-";
+                    next.style.backgroundColor = "gray";
+                    previous.href = url(page - 1);
+                    previous.innerText = "-";
+                    previous.style.backgroundColor = "gray";
+                } else if (page) {
                     link1.href = url(page);
-                    link1.innerText = page; 
-                    link2.href = url(page+1);
-                    link2.innerText = page+1; 
-                    link3.href = url(page+2);
-                    link3.innerText = page+2; 
-                    next.href = url(page+1);
-                    if(page==1){
+                    link1.innerText = page;
+                    link2.href = url(page + 1);
+                    link2.innerText = page + 1;
+                    link3.href = url(page + 2);
+                    link3.innerText = page + 2;
+                    next.href = url(page + 1);
+                    if (page == 1) {
                         previous.href = url(1);
-                    }else{
-                        previous.href = url(page-1);
+                    } else {
+                        previous.href = url(page - 1);
                     }
                 } else {
 
@@ -247,39 +229,41 @@
                     link3.href = url(3);
                     next.href = url(2);
                     previous.href = url(1);
-                    previous.style.backgroundColor="gray";
+                    previous.style.backgroundColor = "gray";
                 }
             }
-            function url(n){
+
+            function url(n) {
                 let href = location.href;
                 //3 casos:
-                if(href.includes('?')){
-                    if(href.includes('&page=')){ //crea paginacion con filtros previos
-                        return href.replace('&page='+page,'&page='+n)
+                if (href.includes('?')) {
+                    if (href.includes('&page=')) { //crea paginacion con filtros previos
+                        return href.replace('&page=' + page, '&page=' + n)
                     } else {
-                        if(href.includes('?page=')){ //ya has hecho paginacion sin filtros
-                            return href.replace('?page='+page,'?page='+n)
-                        } else{
-                            return href+'&page='+n //ya has hecho paginacion con filtros
+                        if (href.includes('?page=')) { //ya has hecho paginacion sin filtros
+                            return href.replace('?page=' + page, '?page=' + n)
+                        } else {
+                            return href + '&page=' + n //ya has hecho paginacion con filtros
                         }
                     }
                 } else { //crea paginacion sin filtros previos
-                    return href+"?page="+n;
+                    return href + "?page=" + n;
                 }
             }
+
             function getParameterByName(name) {
                 name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
                 var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
+                    results = regex.exec(location.search);
                 return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
             }
         </script>
         <!-- Script checkbox estado -->
         <script type="text/javascript">
             let href = location.href;
-            if(href.includes("aceptado")){ 
+            if (href.includes("aceptado")) {
                 document.getElementById("estadoA").checked = true;
-            }else if (href.includes("pendiente")){
+            } else if (href.includes("pendiente")) {
                 document.getElementById("estadoP").checked = true;
             }
         </script>
@@ -293,9 +277,9 @@
     />
 </a>
 <script>
-    document.getElementById("botonAdd").style.left = window.innerWidth-100 +"px";
-    window.onresize = ()=>{
-        document.getElementById("botonAdd").style.left = window.innerWidth-100 +"px";
+    document.getElementById("botonAdd").style.left = window.innerWidth - 100 + "px";
+    window.onresize = () => {
+        document.getElementById("botonAdd").style.left = window.innerWidth - 100 + "px";
     }
 </script>
 
