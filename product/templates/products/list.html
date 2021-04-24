@@ -140,7 +140,10 @@
                 </div>
                 <div class="row-fluid  text-center descripcion">
                     {% for dieta in product.dietas.all %}
-                    <div style="display:inline-block;"> {{dieta.nombre}}&nbsp;</div>
+                    <div style="display:inline-block;"> 
+                        <br>
+                        <img class="nada" src="/static/{{dieta.logo}}" title="{{dieta.nombre}}" alt="{{dieta.nombre}}" width="35" height="35"/>
+                    </div>
                     {% endfor %}
                 </div>
                 <div class="row-fluid nombreProducto mt-3">
