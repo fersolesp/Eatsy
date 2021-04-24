@@ -71,7 +71,7 @@
 
         <div class="col-lg-5 mb-5">
             <div class="product-card-inner">
-                
+
                 <div class="row justify-content-center">
                     <div class="col-auto mb-5 nombreProducto">{{product.titulo}}</div>
                 </div>
@@ -80,30 +80,28 @@
                         <img class="product-img" style="width: 100%; max-height: 600px" src="{{product.foto.url}}" alt="">
                     </div>
                 </div>
-                <div style="margin: 20%;" class="row justify-content-center mt-3">
+                <div style="margin-bottom: 5%;" class="row justify-content-center mt-2">
                     <input hidden="true" id="valoracion_media" value="{{valoracion_media}}" />
                     <form class="rate-form" action="" method="POST" id="{{product.id}}">
                         {% csrf_token %}
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="first"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="second"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="third"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="fourth"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="fifth"></button>
                     </form>
                     <br/>
-                    <div class="mt-2" id="msjrating"></div>
                 </div>
+                <div class="mt-2" id="msjrating" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 <div class="row  justify-content-center">
-                        {% if user.is_superuser %}
-                        <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> 
-                        {% endif %} 
+                    {% if user.is_superuser %}
+                    <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
 
                     <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
                         <form method="POST" class="formAddLista" action="">
                             {% csrf_token %}
                             <input type="hidden" value="{{product.id}}" name="productId" id="productId">
                             <a href="#" class = "buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
-                        
                         </form>
                     </div>
                 </div>
@@ -314,7 +312,7 @@
                     </div>
                     <div class="row mt-5 justify-content-center">
                         {% if product.estado != 'Pendiente' %}
-                        <div class="col-auto m-auto">  
+                        <div class="col-auto m-auto">
                             <div class="col-12"> <a id="addUbicacion" name="addUbicacion" class="btn btn-warning btn-lg" role="button" aria-disabled="true">Añadir Ubicación</a></div>
                         </div>
                         {% endif %}
@@ -443,12 +441,11 @@ $.ajax({
 
 
 <a id="botonAdd" style="left:0px !important" class="botonAdd" href="/product/create" role="button">
-    <img style="box-shadow:5px 5px 4px black; border-radius: 50%;"  height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
+    <img style="box-shadow:5px 5px 4px black; border-radius: 50%;" height="50px" width="50px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
     />
 </a>
 <script>
-    document.getElementById("botonAdd").style.left = window.innerWidth-100 +"px";
-
+    document.getElementById("botonAdd").style.left = window.innerWidth - 100 + "px";
 </script>
 
 {% endblock %}
