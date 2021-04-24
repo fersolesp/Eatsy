@@ -1,0 +1,120 @@
+{% extends 'products/base.html' %}}
+{% block titulo %}Nueva receta{% endblock %}
+{% block head %}
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+
+{% block contenido %}
+<main class="container-fluid">
+    <div id="colMap" class="col-sm-7  col-10"></div>
+    <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Crear una nueva receta</h3>
+    <div class="row justify-content-center">
+        <div class="product-card-review-create col-sm-8  col-11">
+            <form onsubmit="return validateImage()" name="formCreate" enctype="multipart/form-data" method="POST"
+                class="post-form" action="/recipe/create">{% csrf_token %}
+                <div class="form-group">
+                    <label style="color:red; align-content: center;">*Solo estos campos son obligatorios.</label>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-2"><label>Imagen <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <label style="cursor: pointer;" class="btn btn-warning col-md-3"
+                            for="id_imagen">Seleccionar archivo</label>
+                        <div>{{ form.imagen }}</div>
+                        <div class = "col-md-5 text-center" id="Archivo">Ninguna imagen seleccionada</div>
+                        <div class="col-12" style="color: red;">{{ form.errors.imagen.as_text}}</div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <img id="foto" alt="" class="col-sm-10 col-md-8 col-lg-6">
+                        <div style="color: red;">
+                            {{form.imagen.errors.as_text}}
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-12"><label>Nombre <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.nombre.as_text}}</div>
+                        <div class="col-12">{{ form.nombre}}</div>
+                        
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Descripción <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.descripcion.as_text}}</div>
+                        <div class="col-sm-12">{{ form.descripcion}}</div>
+                        
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Ingredientes de la receta (Selecciona varios pulsando Ctrl): <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div clas="col-sm-12" style="color: red;">{{ form.errors.productos.as_text}}</div>
+                        <div class="col-sm-12">{{form.productos}}</div>
+                        
+                        
+                    </div>
+                    <br />
+                    <div id="enseñaerror" class="row">
+
+                    </div>
+                    <div class="row mt-5 mb-5">
+                        
+                        <div class="col-auto m-auto" style="justify-content: center;">
+                            <a class="btn btn-danger" onclick="mostrarAlerta()">Cancelar</a>
+                            <button type="submit" class="save btn btn-warning">Guardar</button>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+
+                
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+
+    function mostrarAlerta() {
+        var retVal = confirm("¿Seguro que quieres cancelar la receta?");
+        if (retVal == true) {
+            window.location.href = "/product/list"
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    document.getElementById('id_imagen').onchange = function () {
+
+        document.getElementById("Archivo").innerText = document.getElementById('id_imagen').files[0].name;
+        previewFile();
+    }
+    function previewFile() {
+        var preview = document.querySelector('#foto');
+        var file    = document.querySelector('#id_imagen').files[0];
+        var reader  = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+        }
+    }
+
+    function validateImage() {
+        var z = document.getElementById("id_imagen").files[0];
+        if (!z) {
+            alert("Elige una foto");
+            return false;
+        }  
+    }
+    
+</script>
+{% endblock %}

@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
     <!-- Bootstrap CSS -->
+    <style>
+        @media (max-width: 450px) {
+            .product-card-inner {
+                padding: 0.5em !important ;
+            }
+        }
+    </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -34,10 +41,9 @@
     </div>
 
     <div class="container">
-        <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Registro de usuario</h3>
-        <div class="row">
-            <div class="col-3"></div>
-            <div class="col-6">
+        <h3 class="text-center mt-5 mb-3 nombreProducto">Registro de usuario</h3>
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-lg-8">
                 <form onsubmit="return verificar_pass()" name="formCheckIn" enctype="multipart/form-data" method="POST" action="/authentication/signup">{% csrf_token %}
                     <div class="product-card-inner">
                         <label class="mt-2 text-center w-100" style="color:red;">*Solo estos campos son obligatorios.</label>
@@ -136,7 +142,6 @@
             </div>
         </div>
     </div>
-
     <div id="footer-main" class="mt-5">
         <div class="container">
             <footer>
@@ -147,7 +152,6 @@
             </footer>
         </div>
     </div>
-
     </body>
 
  

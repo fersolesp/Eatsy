@@ -1,34 +1,65 @@
 {% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %}
+{% block head %}
+<style>
 
+    @media (max-width: 575px) {
+        .nombreRecetaNormal{
+        display: none;
+        }
+        
+        .nombreRecetaMovil{
+        display: block;
+        }
+    }
+</style>
+{% endblock %}
 <script>
     function change_to_tab_1() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
         let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
 
         pest_1.style.display = "inherit";
         pest_2.style.display = "none";
         pest_3.style.display = "none";
+        pest_4.style.display = "none";
     }
 
     function change_to_tab_2() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
         let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
 
         pest_1.style.display = "none";
         pest_2.style.display = "inherit";
         pest_3.style.display = "none";
+        pest_4.style.display = "none";
     }
 
     function change_to_tab_3() {
         let pest_1 = document.getElementById("p-1");
         let pest_2 = document.getElementById("p-2");
         let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
 
         pest_1.style.display = "none";
         pest_2.style.display = "none";
         pest_3.style.display = "inherit";
+        pest_4.style.display = "none";
+    }
+    change_to_tab_4()
+    function change_to_tab_4() {
+        let pest_1 = document.getElementById("p-1");
+        let pest_2 = document.getElementById("p-2");
+        let pest_3 = document.getElementById("p-3");
+        let pest_4 = document.getElementById("p-4");
+
+        pest_1.style.display = "none";
+        pest_2.style.display = "none";
+        pest_3.style.display = "none";
+        pest_4.style.display = "inherit";
     }
 </script>
 <script src="{% static 'js/rating.js' %}" defer></script>
@@ -67,10 +98,10 @@
                     <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
 
                     <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
-                        <form method="POST" id="formAddLista" action="/action/form">
-                            <input type="hidden" value="3" name="id" id="id">
-                            <a href="#" onclick="document.getElementById('formAddLista').submit();">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
-
+                        <form method="POST" class="formAddLista" action="">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{product.id}}" name="productId" id="productId">
+                            <a href="#" class = "buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
                         </form>
                     </div>
                 </div>
@@ -97,15 +128,18 @@
                 </div>
             </div>
             <div class="row" id="collapseproducts">
-                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_1()">
-                    <span class="m-auto opProducto boton-show-inner">Descripción</span>
+                <div class="col-md-3 col-sm-6 d-flex botonProducto" onclick="change_to_tab_1()">
+                    <span class="m-auto  opProducto boton-show-inner">Descripcion</span>
                 </div>
-                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_2()">
+                <div class="col-md-3 col-sm-6  d-flex botonProducto" onclick="change_to_tab_2()">
                     <span class="m-auto opProducto boton-show-inner">Comentarios</span>
 
                 </div>
-                <div class="col-sm-4 d-flex botonProducto" onclick="change_to_tab_3()">
+                <div class="col-md-3 col-sm-6 mt-md-0 mt-sm-2 d-flex botonProducto" onclick="change_to_tab_3()">
                     <span class="m-auto opProducto boton-show-inner">Ubicaciones</span>
+                </div>
+                <div class="col-md-3 col-sm-6 mt-md-0 mt-sm-2 d-flex botonProducto" onclick="change_to_tab_4()">
+                    <span class="m-auto opProducto boton-show-inner text-center">Recetas</span>
                 </div>
             </div>
             <script>
@@ -114,7 +148,7 @@
                 menuShow()
 
                 function menuShow() {
-                    if (window.innerWidth < 573) {
+                    if (window.innerWidth < 653) {
                         menucolapsar.style.display = "block";
                         collapseproducts.classList.add("collapse");
                     } else {
@@ -286,11 +320,95 @@
                     {% include 'products/createMap.html' %}
                 </div>
             </div>
+
+            <!-- RECETAS -->
+            <div  id="p-4">
+                <div class="container-fluid">
+                    {% if recetas %}
+                    <div class="row mb-3">
+                        <div class="scrolli">
+                            {% for receta in recetas %}
+                            <div class="product-card-comment mb-2">
+                                <div class="row titulito">
+                                    <div class="col-sm-12 text-center">
+                                        
+                                    </div>  
+                                </div>
+                                <div class="row justify-content-center">
+                                        <img style="border-radius: 50px; max-height: 250px;" src="{{receta.imagen.url}}" class="col-sm-4"></img> 
+                                        <div class="col-sm-4 nombreRecetaNormal col-md-6 ">
+                                            <div style="height: 100%; vertical-align: center; display: table; " >
+                                                    <div style="display: table-cell; vertical-align: middle;">
+                                                      <div class="text-center">
+                                                            <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
+                                                      </div>
+
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="row nombreRecetaMovil justify-content-center">
+                                            <a class="enlaceRecetas " href="/recipe/show/{{receta.id}}">{{receta.nombre}}</a>
+                                        </div>
+                                        
+                                            <div class=" nombreRecetaNormal text-center ">
+                                                <div style="height: 100%; vertical-align: center; display: table; " >
+                                                    <div style="display: table-cell; vertical-align: middle;">
+                                                    <div >
+                                                        <a class="enlaceOjo text-center" href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></a></i>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                <div class="row justify-content-center">
+                                    <br class="nombreRecetaMovil">
+                                        <a class="nombreRecetaMovil enlaceOjo " href="/recipe/show/{{receta.id}}"><i class="fa fa-eye" style="font-size:44px"></i></a> </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
+<script type="text/javascript">
+const formAddShoppingList = document.querySelector(".buttonAddList");
+formAddShoppingList.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log("PRE AJAX");
+            console.log(document.getElementById("productId").value);
+$.ajax({
+                type: "POST",
+                url: "/product/show/shoppingList/add",
+                data: {
+                    "csrfmiddlewaretoken": csrf[0].value,
+                    "productId": document.getElementById("productId").value
+                },
+                success: function(response) {
+                    console.log(response);
+                    document.getElementById("msjrating").display = "block";
+                    if (response["msj"] === "El producto se ha añadido correctamente a la lista de la compra") {
+                        document.getElementById("msjrating").classList.add("msjError");
+                    } else {
+                        document.getElementById("msjrating").classList.add("msj");
+                    }
+                    document.getElementById("msjrating").innerHTML = response["msj"];
+                    setTimeout(() => {
+                        document.getElementById("msjrating").style.display = "none";
+                        if (response["msj"] === "El producto se ha añadido correctamente a la lista de la compra") {
+                            document.getElementById("msjrating").classList.remove("msjError");
+                        } else {
+                            document.getElementById("msjrating").classList.remove("msj");
+                        }
+                    }, 3000);
+                }
+            });
+        });
+</script>
 <script type="text/javascript">
     if (document.getElementById("msjreporte")) {
         setTimeout(() => {

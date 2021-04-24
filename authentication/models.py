@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 class Dieta(models.Model):
     nombre = models.CharField(max_length=50, null=None)
+    logo = models.CharField(max_length=100)
 
     def __str__(self):
 

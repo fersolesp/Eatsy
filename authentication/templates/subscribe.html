@@ -10,10 +10,10 @@
 <div class="container">
 
     <div class="row justify-content-center">
-        <div class=" mt-5 mb-3nombreProductoGrande"> Información de pago </div>
+        <div class="nombreProducto ponfondo"> Información de pago </div>
     </div>
     <div class="row justify-content-center">
-        <div class="mt-2" style="color: rgb(173, 35, 35); margin-bottom: 1%;">Debe completar la información de pago para acceder a la web</div>
+        <div class="ponfondo" class="mt-2" style="color: rgb(173, 35, 35); margin-bottom: 1%;">Debe completar la información de pago para acceder a la web</div>
     </div>
     <div class="modal fade" style="text-align:center;" id="loading" tabindex="-1" role="dialog" aria-labelledby="modalLoading" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -23,7 +23,7 @@
                     </h5>
                 </div>
                 <div class="modal-body" style="text-align:center;">
-                    <img src="{% static 'img/loader-2_food.gif' %}">
+                    <img class="col-12" src="{% static 'img/loader-2_food.gif' %}">
                     <div class="descripcion">Espera, esto puede tardar un poco.</div>
                 </div>
             </div>
@@ -85,7 +85,6 @@
 
     // selecting loading div
     const loader = document.querySelector("#loading");
-
     // showing loading
     function displayLoading() {
         $(document).ready(function() {
