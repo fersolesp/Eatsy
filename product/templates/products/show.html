@@ -78,20 +78,21 @@
                         <img class="product-img" style="width: 100%; max-height: 600px" src="{{product.foto.url}}" alt="">
                     </div>
                 </div>
-                <div style="margin: 20%;" class="row justify-content-center mt-3">
+                <div style="margin-bottom: 5%;" class="row justify-content-center mt-2">
                     <input hidden="true" id="valoracion_media" value="{{valoracion_media}}" />
                     <form class="rate-form" action="" method="POST" id="{{product.id}}">
                         {% csrf_token %}
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="first"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="second"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="third"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="fourth"></button>
-                        <button type="submit" class="fa fa-star fa-3x my-btn" id="fifth"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="first"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="second"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="third"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="fourth"></button>
+                        <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="fifth"></button>
                     </form>
                     <br/>
-                    <div class="mt-2" id="msjrating"></div>
+                    <div class="mt-2" id="msjrating" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                     <div class="mt-2" id="msjlistaCompra" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 </div>
+                <div class="mt-2" id="msjrating" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 <div class="row  justify-content-center">
                     {% if user.is_superuser %}
                     <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
@@ -101,7 +102,6 @@
                             {% csrf_token %}
                             <input type="hidden" value="{{product.id}}" name="productId" id="productId">
                             <a href="#" class="buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
-
                         </form>
                     </div>
                 </div>

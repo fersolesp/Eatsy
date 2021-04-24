@@ -525,3 +525,36 @@ a {
 .li-dark {
   background-color: #92cea8;
 }
+
+.d-flex-responsive{
+  display: flex;
+}
+
+@media (max-width: 600px) {
+  .d-flex-responsive{
+    display: inline;
+  }
+
+  .d-flex-responsive.shopping-list{
+    display: inherit;      
+  }
+}
+
+.shopping-list-cards{
+  padding-left: 10em;
+  padding-right: 10em;
+}
+
+@media (max-width: 1200px) {
+  .shopping-list-cards{
+    padding-left: 8em;
+    padding-right: 8em;
+  }
+}
+
+@media (max-width: 1000px) {
+  .shopping-list-cards{
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+}
