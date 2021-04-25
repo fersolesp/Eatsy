@@ -7,17 +7,12 @@
     <meta name="description" content="Página orientada a dar más información sobre como contactarnos, así como donde encontrarnos."></meta>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
-    type="text/javascript" charset="utf-8"></script>
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
-    type="text/javascript" charset="utf-8"></script>
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"
-    type="text/javascript" charset="utf-8"></script>
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
-    type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
 
-    <link rel="stylesheet" type="text/css"
-    href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
 
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
     <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
@@ -27,26 +22,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
     <style>
         @media (max-width: 676px) {
-          
-          .bloques{
-    
-            background-image: url("{% static 'estilo/fondocard.png' %}" );
-          }
+            .bloques {
+                background-image: url("{% static 'estilo/fondocard.png' %}");
+            }
         }
-
+        
         @media (max-width: 1035px) {
-          #barprincipal{
-            display: none;
-          }
-          #menuMovil{
-            display: block;
-          }
-          #bloqueFooter {
-            display: none;
-          }
-          #footerMovil{
-            display: block;
-          }
+            #barprincipal {
+                display: none;
+            }
+            #menuMovil {
+                display: block;
+            }
+            #bloqueFooter {
+                display: none;
+            }
+            #footerMovil {
+                display: block;
+            }
         }
     </style>
 </head>
@@ -58,16 +51,12 @@
         </b-navbar-brand>
         <div class="topnav-right">
             {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
-                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a>
-            {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
-                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a>
-            {% else %}
-                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
-                <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a>
-            {% endif %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a> {% endif %}
         </div>
         <script type="text/javascript">
-      
         </script>
     </div>
 
@@ -78,20 +67,17 @@
                 <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
             </b-navbar-brand>
         </div>
-        <ul  class="nav navbar-nav mt-2">
+        <ul class="nav navbar-nav mt-2">
             <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
                 Menú <b class="caret"></b>
             </a>
             <div style="background-color: #343a40" class="dropdown-menu ">
                 <div class="topnav-right">
                     {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/product/list">Accede a la aplicación</a>
-                    {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/create-subscription">Subscribirse</a>
-                    {% else %}
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/create-subscription">Subscribirse</a> {% else %}
                     <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/signup">Registrarse</a>&nbsp;
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/login">Iniciar sesión</a>
-                    {% endif %}
+                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/login">Iniciar sesión</a> {% endif %}
                 </div>
             </div>
         </ul>
@@ -110,19 +96,19 @@
                         <img class="comida" src="{% static 'img/frutaCorreoTransparent.png' %}"></img>
                     </div>
                     <div id="bodyblock1" class="bodyblock col-md-5">
-                        Si tiene algún tipo de duda o sugerencia con respecto a la aplicación web y desea ponerse en contacto con nosotros, puede mandar un correo a la siguiente dirección: <br><br> 
+                        Si tiene algún tipo de duda o sugerencia con respecto a la aplicación web y desea ponerse en contacto con nosotros, puede mandar un correo a la siguiente dirección: <br><br>
                         <p style="text-align: center;"><b>"eatsy2021@gmail.com"</b></p>
                     </div>
                 </div>
             </div>
-        </div>        
-  
-        <div id="bloque2 " class="mb-5">  
+        </div>
+
+        <div id="bloque2 " class="mb-5">
             <div class="container">
                 <div class="row justify-content-center ">
                     <div id="aboutUssubtitle" class="col-12 ">
                         ¿Dónde nos ubicamos?
-                    </div> 
+                    </div>
                 </div>
                 <br>
                 <br>
@@ -132,65 +118,77 @@
                     <!-- cambiando el tamaño de columna de colMap cambias el tamaño es por tema responsive-->
                     <div style="width: 640px; height: 480px" id="mapContainer"></div>
                 </div>
-            
+
                 <script type="text/javascript">
-                  let mapContainer = document.getElementById("mapContainer");
-                  let colMap = getComputedStyle(document.getElementById("colMap"));
-            
-                
-                  mapContainer.style.width = colMap.width;
-                  mapContainer.style.height = window.innerHeight*0.49+"px";
-                  window.onresize=()=>{
+                    let mapContainer = document.getElementById("mapContainer");
+                    let colMap = getComputedStyle(document.getElementById("colMap"));
+
+
                     mapContainer.style.width = colMap.width;
-                    mapContainer.style.height = window.innerHeight*0.49+"px";
-                  }
-            
-                  var platform = new H.service.Platform({
-                    'apikey': "gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4"
-                  });
-            
-                  var defaultLayers2 = platform.createDefaultLayers();
-                  var maptypes = platform.createDefaultLayers();
-                  var map2 = new H.Map(
-                    document.getElementById('mapContainer'),
-                    defaultLayers2.vector.normal.map,
-                    {
-                      zoom: 20,
-                      center: { lng: -5.98693, lat:37.35835 } 
+                    mapContainer.style.height = window.innerHeight * 0.49 + "px";
+                    window.onresize = () => {
+                        mapContainer.style.width = colMap.width;
+                        mapContainer.style.height = window.innerHeight * 0.49 + "px";
+                    }
+
+                    var platform = new H.service.Platform({
+                        'apikey': "gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4"
                     });
-            
+
+                    var defaultLayers2 = platform.createDefaultLayers();
+                    var maptypes = platform.createDefaultLayers();
+                    var map2 = new H.Map(
+                        document.getElementById('mapContainer'),
+                        defaultLayers2.vector.normal.map, {
+                            zoom: 20,
+                            center: {
+                                lng: -5.98693,
+                                lat: 37.35835
+                            }
+                        });
+
                     var svgMarkup = devuelveMarca();
                     var mapEvents2 = new H.mapevents.MapEvents(map2);
                     var ui2 = H.ui.UI.createDefault(map2, defaultLayers2);
-            
-            
+
+
                     var behavior = new H.mapevents.Behavior(mapEvents2);
-            
+
                     var group2 = new H.map.Group();
-            
-                      map2.addObject(group2);
-            
-                      group2.addEventListener('tap', function (evt) {
-                        var bubble =  new H.ui.InfoBubble(evt.target.getGeometry(), {
-                          content: evt.target.getData()
+
+                    map2.addObject(group2);
+
+                    group2.addEventListener('tap', function(evt) {
+                        var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+                            content: evt.target.getData()
                         });
                         ui2.addBubble(bubble);
-                      }, false);
-                        // El codigo que pongas aqui en formato html es el que ves en cuando pulsas en el iconito.
-                        addMarkerToGroup(group2, {lat:37.35835, lng:-5.98693},
-                          '<div style="color:#75cfb8"><strong> ETSII'+
-                          '</strong></div><div ><strong> Universidad de sevilla</strong> </div>');
-                        map2.setZoom(15);
-                        map2.setCenter({lat:coordenada2, lng:coordenada1}); 
-                        function addMarkerToGroup(group2, coordinate, html) {
-            
-                          var icon = new H.map.Icon(svgMarkup)
-                          var marker = new H.map.Marker(coordinate, {icon: icon});
-                          marker.setData(html);
-                          group2.addObject(marker);
-                          }
-                    function devuelveMarca(){
-                    let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37pt" height="46pt" viewBox="0 0 37 46" version="1.1">
+                    }, false);
+                    // El codigo que pongas aqui en formato html es el que ves en cuando pulsas en el iconito.
+                    addMarkerToGroup(group2, {
+                            lat: 37.35835,
+                            lng: -5.98693
+                        },
+                        '<div style="color:#75cfb8"><strong> ETSII' +
+                        '</strong></div><div ><strong> Universidad de sevilla</strong> </div>');
+                    map2.setZoom(15);
+                    map2.setCenter({
+                        lat: coordenada2,
+                        lng: coordenada1
+                    });
+
+                    function addMarkerToGroup(group2, coordinate, html) {
+
+                        var icon = new H.map.Icon(svgMarkup)
+                        var marker = new H.map.Marker(coordinate, {
+                            icon: icon
+                        });
+                        marker.setData(html);
+                        group2.addObject(marker);
+                    }
+
+                    function devuelveMarca() {
+                        let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37pt" height="46pt" viewBox="0 0 37 46" version="1.1">
                     <defs>
                     <filter id="alpha" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%">
                     <feColorMatrix type="matrix" in="SourceGraphic" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
@@ -242,7 +240,7 @@
                     <use xlink:href="#surface23" mask="url(#mask0)"/>
                     </g>
                     </svg>`;
-                    return svg;
+                        return svg;
                     }
                 </script>
             </div>
@@ -259,13 +257,13 @@
                         <div>
                             <div class="row">
                                 <div id="botonesFooterLeft" class="col">
-                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/aboutUs/"><u>About Us</u></a>
+                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/aboutUs/"><u>Sobre nosotros</u></a>
                                 </div>
                                 <div id="botonesFooterCenter" class="col">
-                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/contactUs/"><u>Contact Us</u></a>
+                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/contactUs/"><u>Contáctanos</u></a>
                                 </div>
                                 <div id="botonesFooterRight" class="col">
-                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/privacyPolicy/"><u>Privacy</u></a>
+                                    <a style="height: 50px; color: black; font-size: 1.25vw;" href="/privacyPolicy/"><u>Políticas de Privacidad</u></a>
                                 </div>
                             </div>
                         </div>
@@ -284,16 +282,16 @@
                         <div class="container text-center">
                             <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
                         </div>
-    
-                        <ul  class="nav navbar-nav mt-2">
+
+                        <ul class="nav navbar-nav mt-2">
                             <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
                                 Footer <b class="caret"></b>
                             </a>
                             <div style="background-color: #343a40" class="dropdown-menu col-12">
                                 <div class="topnav-right">
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/aboutUs/">About Us</a>
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/contactUs/">Contact Us</a>
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/privacyPolacy/">Privacy</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/aboutUs/">Sobre nosotros</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/contactUs/">Contáctanos</a>
+                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/privacyPolacy/">Políticas de privacidad</a>
                                 </div>
                             </div>
                         </ul>
@@ -301,7 +299,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

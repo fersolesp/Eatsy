@@ -176,7 +176,6 @@ def createProduct(request):
         return render(request,'products/create.html', {'form':form})
     if request.method=='POST':
         form=CreateProductForm(request.POST, request.FILES)
-        print(form.errors)
         if form.is_valid():
             if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=="":
                 form.errors.nombreComercio = "El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva"
@@ -230,7 +229,6 @@ def reviewProduct(request, productId):
 
     elif request.method == 'POST':
         form = ReviewProductForm(request.POST, request.FILES)
-        print('Errores: ', form.errors)
         if form.is_valid():
 
             # # Comprobamos en el caso de que sea ubicacion de mapa que el nombre no sea vacío
@@ -344,15 +342,11 @@ def reviewReport(request, reporteId):
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def addProductToShoppingList(request):
-    print("ENTRA AL MÑETODO")
     if request.method == 'POST':
-        print("ENTRA AL FORM")
         idProd = request.POST.get('productId')
-        print(idProd)
         producto = get_object_or_404(Producto.objects.filter(pk=idProd))        
         listaCompra = ListaDeCompra.objects.filter(perfil=get_object_or_404(Perfil, user=request.user))
         if listaCompra.exists():
-            print("EXISTE LISTA")
             lista = listaCompra.get()
             if producto.listadecompra_set.filter(pk=lista.pk).exists():
                 return JsonResponse({'success':'false', 'msj': "No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma"}, safe=False)
