@@ -22,7 +22,7 @@ def showReceta(request, recetaId):
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def createReceta(request):
-    productos = Producto.objects.all().order_by('titulo')
+    productos = Producto.objects.filter(estado="Aceptado").order_by('titulo')
     formProducts=[]
     for product in productos:
         formProducts.append((product.id,product.titulo)) 
