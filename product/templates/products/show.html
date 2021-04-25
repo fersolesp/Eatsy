@@ -78,7 +78,7 @@
                         <img class="product-img" style="width: 100%; max-height: 600px" src="{{product.foto.url}}" alt="">
                     </div>
                 </div>
-                <div style="margin-bottom: 5%;" class="row justify-content-center mt-2">
+                <div style="margin-bottom: 5%; margin-left: auto;margin-right: auto;" class="row justify-content-center mt-2">
                     <input hidden="true" id="valoracion_media" value="{{valoracion_media}}" />
                     <form class="rate-form" action="" method="POST" id="{{product.id}}">
                         {% csrf_token %}
@@ -89,10 +89,9 @@
                         <button type="submit" class="fa fa-star my-btn" style="font-size:3vmax;" id="fifth"></button>
                     </form>
                     <br/>
-                    <div class="mt-2" id="msjrating" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
-                    <div class="mt-2" id="msjlistaCompra" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 </div>
                 <div class="mt-2" id="msjrating" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
+                <div class="mt-2" id="msjlistaCompra" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 <div class="row  justify-content-center">
                     {% if user.is_superuser %}
                     <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
@@ -172,11 +171,9 @@
                             </div>
                             <div class="row">
                                 {% for dieta in product.dietas.all %}
-                                <div style="padding:14px;"> 
+                                <div style="padding:14px;">
                                     &nbsp;&nbsp;&nbsp;
-                                    <img class="nada" src="/static/{{dieta.logo}}" title="{{dieta.nombre}}" alt="{{dieta.nombre}}" width="35" height="35"/>
-                                    &nbsp;{{dieta.nombre}}
-                                    &nbsp;&nbsp;
+                                    <img class="nada" src="/static/{{dieta.logo}}" title="{{dieta.nombre}}" alt="{{dieta.nombre}}" width="35" height="35" /> &nbsp;{{dieta.nombre}} &nbsp;&nbsp;
                                 </div>
                                 {% endfor %}
                             </div>
