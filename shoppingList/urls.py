@@ -4,5 +4,6 @@ from shoppingList import views
 
 app_name = 'shoppingList'
 urlpatterns = [
-    path('', views.show, name='show')
+    path('', views.show, name='show'),
+    path('empty', views.empty, name='empty'),
 ] 
