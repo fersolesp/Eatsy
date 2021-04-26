@@ -148,7 +148,7 @@ class EatsyApiTests(APITestCase):
             "nombre":"Galleta maría sin gluten",
             "descripcion":"Galletas maría sin gluten",
             "precio":2.45,
-            "dieta":"Gluten",
+            "dieta":"Sin gluten",
             "ubicaciones":3,
             "revision":"Aceptar",
         })
@@ -167,7 +167,7 @@ class EatsyApiTests(APITestCase):
             "nombre":"Crunchy Crumbs",
             "descripcion":"Crunchy Crumb: rebozado crujiente sin gluten",
             "precio":1.75,
-            "dieta":"Gluten",
+            "dieta":"Sin gluten",
             "ubicaciones":3,
             "revision":"Denegar",
         })
@@ -251,7 +251,7 @@ class EatsyApiTests(APITestCase):
                     "nombre":"Sopa do macaco",
                     "descripcion":"Sopa de cacao sin gluten",
                     "precio":2.12,
-                    "dieta":"Gluten",
+                    "dieta":"Sin gluten",
                     "ubicaciones":2,
                     "foto":foto,
                 }
@@ -269,7 +269,7 @@ class EatsyApiTests(APITestCase):
             data = {
                     "descripcion":"Sopa de cacao sin gluten",
                     "precio":2.12,
-                    "dieta":"Gluten",
+                    "dieta":"Sin gluten",
                     "ubicaciones":2,
                     "foto":foto,
                 }

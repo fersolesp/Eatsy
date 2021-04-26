@@ -18,10 +18,10 @@ class SignUpForm(forms.ModelForm):
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
         ('Vegetariano', 'Vegetariano'),
-        ('Gluten', 'Gluten'),
-        ('Lactosa', 'Lactosa'),
-        ('Marisco', 'Marisco'),
-        ('Frutos secos', 'Frutos secos'),
+        ('Sin gluten', 'Sin gluten'),
+        ('Sin lactosa', 'Sin lactosa'),
+        ('Sin marisco', 'Sin marisco'),
+        ('Sin frutos secos', 'Sin frutos secos'),
     )
     dieta = forms.MultipleChoiceField(label='Dieta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control'}))
     password_validator = RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', 'La contraseña debe contener entre 8 y 64 caracteres, tener una letra mayúscula, una minúscula, un dígito y un carácter especial')
@@ -59,10 +59,10 @@ class ProfileForm(forms.Form):
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
         ('Vegetariano', 'Vegetariano'),
-        ('Gluten', 'Gluten'),
-        ('Lactosa', 'Lactosa'),
-        ('Marisco', 'Marisco'),
-        ('Frutos secos', 'Frutos secos'),
+        ('Sin gluten', 'Sin gluten'),
+        ('Sin lactosa', 'Sin lactosa'),
+        ('Sin marisco', 'Sin marisco'),
+        ('Sin frutos secos', 'Sin frutos secos'),
     )
     dieta = forms.MultipleChoiceField(label='Dieta o intolerancias', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control'}))
     activada = forms.BooleanField(label='Cuenta ya activada', disabled=True, required=False)
