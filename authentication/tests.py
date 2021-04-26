@@ -20,23 +20,23 @@ class PerfilTestCase(BaseTestCase):
         super().tearDown()
 
     def test_create_perfil(self):
-        dietas = ["Vegano","Lactosa"]
+        dietas = ["Vegano","Sin lactosa"]
         perfil = create_perfil("prueba",dietas)
         self.assertEqual(str(perfil),"prueba")
         self.assertEqual(perfil.dietas.count(),2)
         dietas = [str(dieta) for dieta in perfil.dietas.all()]
         self.assertIn("Vegano",dietas)
-        self.assertIn("Lactosa",dietas)
+        self.assertIn("Sin lactosa",dietas)
 
     def test_update_perfil(self):
         dietas = ["Vegetariano"]
         perfil = create_perfil("prueba",dietas)
         self.assertEqual(perfil.dietas.count(),1)
-        perfil.dietas.add(Dieta.objects.get(nombre="Frutos secos"))
+        perfil.dietas.add(Dieta.objects.get(nombre="Sin frutos secos"))
         self.assertEqual(perfil.dietas.count(),2)
 
     def test_delete_perfil(self):
-        dietas = ["Vegano","Frutos secos"]
+        dietas = ["Vegano","Sin frutos secos"]
         perfil = create_perfil("prueba",dietas)
         perfil_pk = perfil.pk
         self.assertEqual(Perfil.objects.filter(pk=perfil_pk).count(), 1)

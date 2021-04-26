@@ -22,10 +22,10 @@ class CreateProductForm(forms.ModelForm):
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
         ('Vegetariano', 'Vegetariano'),
-        ('Gluten', 'Gluten'),
-        ('Lactosa', 'Lactosa'),
-        ('Marisco', 'Marisco'),
-        ('Frutos secos', 'Frutos secos'),
+        ('Sin gluten', 'Sin gluten'),
+        ('Sin lactosa', 'Sin lactosa'),
+        ('Sin marisco', 'Sin marisco'),
+        ('Sin frutos secos', 'Sin frutos secos'),
     )
 
     dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
@@ -120,10 +120,10 @@ class ReviewProductForm(forms.ModelForm):
     Dieta_Enum = (
         ('Vegano', 'Vegano'),
         ('Vegetariano', 'Vegetariano'),
-        ('Gluten', 'Gluten'),
-        ('Lactosa', 'Lactosa'),
-        ('Marisco', 'Marisco'),
-        ('Frutos secos', 'Frutos secos'),
+        ('Sin gluten', 'Sin gluten'),
+        ('Sin lactosa', 'Sin lactosa'),
+        ('Sin marisco', 'Sin marisco'),
+        ('Sin frutos secos', 'Sin frutos secos'),
     )
     dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
     ubicaciones = CustomMMCF2(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))

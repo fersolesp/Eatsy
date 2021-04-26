@@ -22,7 +22,7 @@ def create_product():
     producto.save()
     producto.dietas.add(Dieta.objects.get(nombre="Vegetariano"))
     producto.dietas.add(Dieta.objects.get(nombre="Vegano"))
-    producto.dietas.add(Dieta.objects.get(nombre="Lactosa"))
+    producto.dietas.add(Dieta.objects.get(nombre="Sin lactosa"))
     ubicacionProducto1 = UbicacionProducto(producto=producto, ubicacion=ub1, user=user, precio = 9)
     ubicacionProducto1.save()
     ubicacionProducto2 = UbicacionProducto(producto=producto, ubicacion=ub2, user=user, precio = 11)
@@ -106,7 +106,7 @@ class ProductoTestCase(BaseTestCase):
         dietas = [dieta.nombre for dieta in prod.dietas.all()]
         self.assertIn("Vegetariano",dietas)
         self.assertIn("Vegano",dietas)
-        self.assertIn("Lactosa",dietas)
+        self.assertIn("Sin lactosa",dietas)
         ubicaciones = UbicacionProducto.objects.filter(producto=prod)
         self.assertIn("Mercadona",str(ubicaciones))
 
