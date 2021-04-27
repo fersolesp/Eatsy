@@ -19,21 +19,7 @@
                 background-image: url("{% static 'estilo/fondocard.png' %}");
             }
         }
-        
-        @media (max-width: 1035px) {
-            #barprincipal {
-                display: none;
-            }
-            #menuMovil {
-                display: block;
-            }
-            #bloqueFooter {
-                display: none;
-            }
-            #footerMovil {
-                display: block;
-            }
-        }
+
     </style>
 </head>
 
@@ -61,16 +47,16 @@
             </b-navbar-brand>
         </div>
         <ul class="nav navbar-nav mt-2">
-            <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+            <a href="#"  style="background-color: #7F6000; color: white;" class="dropdown-toggle btn  botonNav" data-toggle="dropdown">
                 Menú <b class="caret"></b>
             </a>
-            <div style="background-color: #343a40" class="dropdown-menu ">
+            <div style="background-color: #7F6000" class="dropdown-menu ">
                 <div class="topnav-right">
                     {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/create-subscription">Subscribirse</a> {% else %}
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/signup">Registrarse</a>&nbsp;
-                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/authentication/login">Iniciar sesión</a> {% endif %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                  <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/signup">Registrarse</a>&nbsp;
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/login">Iniciar sesión</a> {% endif %}
                 </div>
             </div>
         </ul>
@@ -108,7 +94,7 @@
                 <div class="row justify-content-center ">
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFers.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Fernando Luis Sola Espinosa</h4>
@@ -117,7 +103,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaReyes.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Reyes Blasco Cuadrado</h4>
@@ -126,7 +112,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaMaria.jpeg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">María Marín Serrano</h4>
@@ -149,7 +135,7 @@
                 <div class="row justify-content-center ">
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFran.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Francisco José Perejón Barrios</h4>
@@ -158,7 +144,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaVane.png' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Vanessa Pradas Fernández</h4>
@@ -167,7 +153,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFer.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Fernando Romero Rioja</h4>
@@ -189,7 +175,7 @@
                 <div class="row justify-content-center ">
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div style=" " class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaPablo.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Pablo Cardenal Gamito</h4>
@@ -198,7 +184,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJose.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Jose María Cornac Fisas</h4>
@@ -207,7 +193,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJavi.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Javier García Cerrada</h4>
@@ -216,7 +202,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJuanfer.jpg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Juan Fernández Fernández</h4>
@@ -225,7 +211,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaEstefania.jpeg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Estefanía Ganfornina Triguero</h4>
@@ -234,7 +220,7 @@
                     </div>
 
                     <div class="col-md-6 col-lg-3 ">
-                        <div class="card text-center border-wrong ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
                             <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaSergio.jpeg' %} " />
                             <div class="card-body ">
                                 <h4 class="card-title ">Sergio Sánchez León</h4>
@@ -282,19 +268,19 @@
                         <div class="container text-center">
                             <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
                         </div>
-
-                        <ul class="nav navbar-nav mt-2">
-                            <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
-                                Footer <b class="caret"></b>
-                            </a>
-                            <div style="background-color: #343a40" class="dropdown-menu col-12">
-                                <div class="topnav-right">
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/aboutUs/">Sobre nosotros</a>
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/contactUs/">Contáctanos</a>
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="/privacyPolacy/">Políticas de privacidad</a>
+                        
+                            <ul class="nav col-12 navbar-nav mt-2">
+                                <a style="background-color: #7F6000" href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                                    Footer <b class="caret"></b>
+                                </a>
+                                <div style="background-color: #7F6000" class="dropdown-menu col-12">
+                                    <div class="topnav-left">
+                                        <a style="height: 50px;color:white; background-color: #7F6000;" class="btn col-12 " href="/aboutUs/">Sobre nosotros</a>
+                                        <a style="height: 50px;color:white; background-color: #7F6000;" class="btn col-12" href="/contactUs/">Contáctanos</a>
+                                        <a style="height: 50px;color:white; background-color: #7F6000;" class="btn col-12" href="/privacyPolicy/">Políticas de privacidad</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </ul>
+                            </ul>
                     </footer>
                 </div>
             </div>

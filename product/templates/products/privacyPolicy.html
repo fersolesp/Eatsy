@@ -1,4 +1,15 @@
-{% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de receta{% endblock %} {% block contenido %}
+{% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de receta{% endblock %} 
+{% block head %}
+<style>
+    @media (max-width: 580px) {
+        .container {
+            background-image: url("{% static 'estilo/fondocard.png' %}");
+        }
+    }
+</style>
+{% endblock %}
+{% block contenido %}
+
 <div class="container" style="margin-top: 2%;">
     <div class="row justify-content-center">
         <div class="col-sm-9 " style="text-align: justify;">

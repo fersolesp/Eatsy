@@ -25,6 +25,10 @@
 
 
         <div class="col-lg-5 mb-5">
+            <div id="meteHeight"></div>
+            <script type="text/javascript">
+            
+            </script>
             <div class="product-card-inner">
                 <div class="row justify-content-center">
                     <div class="col-auto mb-5 nombreProducto">Receta: {{receta.nombre}}</div>
@@ -60,6 +64,10 @@
                 let collapseproducts = document.getElementById("collapseproducts");
                 let menucolapsar = document.getElementById("menucolapsar");
                 menuShow()
+                let m = document.getElementById("meteHeight");
+                let heightCollapse = parseInt(getComputedStyle(collapseproducts).height.replace("px", ""));
+                m.style.height = (heightCollapse+16) + "px";
+            
 
                 function menuShow() {
                     if (window.innerWidth < 573) {

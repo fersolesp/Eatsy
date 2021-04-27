@@ -84,20 +84,20 @@
             </b-navbar-brand>
         </div>
         <ul class="nav navbar-nav mt-2">
-            <a href="#" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle btn btn-menu botonNav" data-toggle="dropdown">
                 Menú <b class="caret"></b>
             </a>
-            <div style="background-color: #343a40" class="dropdown-menu ">
+            <div style="background-color: #7F6000" class="dropdown-menu ">
                 {% if user.is_superuser %}
-                <a class="btn btn-dark col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
-                <a class="btn btn-dark col-12" href="/product/list" role="button">Lista de productos</a>
-                <a class="btn btn-dark dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a style="color: white"  class="btn btn-menus  col-12" href="/product/report/list" role="button">Revisar reportes</a> {% endif %}
+                <a style="color: white"  class="btn btn-menus col-12" href="/product/list" role="button">Lista de productos</a>
+                <a style="color: white; background-color: #5e4702;"  class="btn   dropdown show dropdown-toggle col-12" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Mi cuenta
                 </a>
-                <div style="background-color: #343a40;border: none;" class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
-                    <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Perfil</a>
-                    <a style="color: white" class="dropdown-item col-12 text-center" href="#">Mi Lista</a>
-                    <a style="color: white" class="dropdown-item col-12 text-center" href="#">Cerrar sesión</a>
+                <div style="background-color: #5e4702;border: none;" class="dropdown-menu col-12" aria-labelledby="dropdownMenuLink">
+                    <a style="color: white" class="dropdown-item col-12 text-center" href="/authentication/profile">Mi Perfil</a>
+                    <a style="color: white" class="dropdown-item col-12 text-center" href="/shoppingList/">Mi Lista</a>
+                    <a style="color: white" class="dropdown-item col-12 text-center" href="/authentication/logout">Cerrar sesión</a>
                 </div>
             </div>
         </ul>
@@ -146,19 +146,19 @@
                         <div class="container text-center">
                             <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
                         </div>
-
-                        <ul class="nav navbar-nav mt-2">
-                            <a href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
-                            Footer <b class="caret"></b>
-                        </a>
-                            <div style="background-color: #343a40;" class="dropdown-menu col-12">
-                                <div class="topnav-right">
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../aboutUs/">Sobre nosotros</a>
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../contactUs/">Contáctanos</a>
-                                    <a style="height: 50px;" class="btn btn-dark btn-lg col-12" href="../privacyPolacy/">Políticas de privacidad</a>
+                        
+                            <ul class="nav col-12 navbar-nav mt-2">
+                                <a style="background-color: #7F6000" href="#" id="desplegableFooter" class="dropdown-toggle btn btn-dark botonNav" data-toggle="dropdown">
+                                    Footer <b class="caret"></b>
+                                </a>
+                                <div style="background-color: #7F6000" class="dropdown-menu col-12">
+                                    <div class="topnav-left">
+                                        <a style="height: 50px;color:white; background-color: #7F6000;" class="btn col-12 " href="/aboutUs/">Sobre nosotros</a>
+                                        <a style="height: 50px;color:white; background-color: #7F6000;" class="btn col-12" href="/contactUs/">Contáctanos</a>
+                                        <a style="height: 50px;color:white; background-color: #7F6000;" class="btn col-12" href="/privacyPolicy/">Políticas de privacidad</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </ul>
+                            </ul>
                     </footer>
                 </div>
             </div>
