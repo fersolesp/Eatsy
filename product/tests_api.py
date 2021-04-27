@@ -1,11 +1,11 @@
 import json
 from urllib.parse import urlencode
 
+from authentication.models import Dieta, Perfil
+from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from rest_framework.test import APIClient, APITestCase
-from django.contrib.auth.models import User
-from authentication.models import Perfil
 
 # Create your tests here.
 
@@ -23,6 +23,9 @@ class EatsyApiTests(APITestCase):
         user_admin.save()
         perfil_admin= Perfil(user=user_admin, activeAccount=True)
         perfil_admin.save()
+
+        dieta = Dieta(nombre="Sin gluten")
+        dieta.save()
         super().setUp()
 
     def tearDown(self):
@@ -148,7 +151,7 @@ class EatsyApiTests(APITestCase):
             "nombre":"Galleta maría sin gluten",
             "descripcion":"Galletas maría sin gluten",
             "precio":2.45,
-            "dieta":"Sin gluten",
+            "dieta":1,
             "ubicaciones":3,
             "revision":"Aceptar",
         })
@@ -167,7 +170,7 @@ class EatsyApiTests(APITestCase):
             "nombre":"Crunchy Crumbs",
             "descripcion":"Crunchy Crumb: rebozado crujiente sin gluten",
             "precio":1.75,
-            "dieta":"Sin gluten",
+            "dieta":1,
             "ubicaciones":3,
             "revision":"Denegar",
         })
@@ -251,7 +254,7 @@ class EatsyApiTests(APITestCase):
                     "nombre":"Sopa do macaco",
                     "descripcion":"Sopa de cacao sin gluten",
                     "precio":2.12,
-                    "dieta":"Sin gluten",
+                    "dieta":1,
                     "ubicaciones":2,
                     "foto":foto,
                 }
@@ -269,7 +272,7 @@ class EatsyApiTests(APITestCase):
             data = {
                     "descripcion":"Sopa de cacao sin gluten",
                     "precio":2.12,
-                    "dieta":"Sin gluten",
+                    "dieta":1,
                     "ubicaciones":2,
                     "foto":foto,
                 }
