@@ -95,14 +95,15 @@
                 <div class="row  justify-content-center">
                     {% if user.is_superuser %}
                     <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
-
-                    <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
-                        <form method="POST" class="formAddLista" action="">
-                            {% csrf_token %}
-                            <input type="hidden" value="{{product.id}}" name="productId" id="productId">
-                            <a href="#" class="buttonAddList">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
-                        </form>
-                    </div>
+                    {% if product.estado != 'Pendiente' %}
+                        <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
+                            <form method="POST" class="formAddLista" action="">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{product.id}}" name="productId" id="productId">
+                                <a href="#" class="enlaceRecetas">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
