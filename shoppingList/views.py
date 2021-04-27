@@ -26,6 +26,8 @@ def removeProduct(request, productId):
     try:
         lista  = ListaDeCompra.objects.get(perfil=request.user.perfil)
         lista.productos.remove(productId)
+    except:
+        pass
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
