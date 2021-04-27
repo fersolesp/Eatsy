@@ -18,3 +18,14 @@ def show(request):
         return render(request, 'shoppingList/show.html', { 'shoppingList': lista })
     except ListaDeCompra.DoesNotExist:
         return render(request, 'shoppingList/show.html', { 'shoppingList': None })
+
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
+def empty(request):
+    try:
+        lista  = ListaDeCompra.objects.get(perfil=request.user.perfil)
+        lista.productos.clear()
+        lista.save()
+    except:
+        pass
+    return redirect('shoppingList:show')
