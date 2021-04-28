@@ -26,16 +26,18 @@ def removeProduct(request, productId):
     try:
         lista  = ListaDeCompra.objects.get(perfil=request.user.perfil)
         lista.productos.remove(productId)
+        if lista.productos.exists()!=True:
+            lista.delete()
     except:
         pass
+    return redirect('shoppingList:show')
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def empty(request):
     try:
         lista  = ListaDeCompra.objects.get(perfil=request.user.perfil)
-        lista.productos.clear()
-        lista.save()
+        lista.delete()
     except:
         pass
     return redirect('shoppingList:show')

@@ -106,10 +106,12 @@
         hideLoading();
         let displayError = document.getElementById('card-element-errors');
         if (event.error != "") {
-            displayError.textContent = event.error.message;
+            displayError.innerHTML = event.error.message;
             displayError.style.display = inline;
+            hideLoading();
         } else {
             displayError.textContent = '';
+            hideLoading();
         }
     }
 

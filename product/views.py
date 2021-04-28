@@ -214,7 +214,7 @@ def reviewProduct(request, productId):
             'nombre': producto.titulo,
             'descripcion': producto.descripcion,
             'precio': producto.precioMedio,
-            'dieta': [dieta.nombre for dieta in producto.dietas.all()],
+            'dieta': producto.dietas.all(),
             'ubicaciones': producto.ubicaciones.all()
         }
         form = ReviewProductForm(initial=data)

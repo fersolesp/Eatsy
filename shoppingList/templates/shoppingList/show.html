@@ -7,8 +7,7 @@
         <div class="col nombreProducto text-center">Lista de la compra</div>
         <div class="col text-center descripcion">
             {% if shoppingList %}
-            <spam class="btn btn-outline-danger">Eliminar lista completa</spam>
-            {% endif %}
+            <a href="/shoppingList/empty" class="btn btn-outline-danger">Eliminar lista completa</a> {% endif %}
         </div>
     </div>
 
@@ -28,7 +27,7 @@
                     </a>
                 </div>
                 <div class="col d-flex justify-content-center">
-                    <i class="fas fa-trash-alt enlaceOjo align-self-center"></i>
+                    <a href="/shoppingList/remove/{{product.id}}" class="fas fa-trash-alt enlaceOjo align-self-center"></a>
                 </div>
             </div>
             {% endfor %} {% else %}
