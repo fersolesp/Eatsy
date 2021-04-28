@@ -1,4 +1,6 @@
 {% extends 'products/base.html' %}{% load static %} {% block titulo %}Detalles de producto{% endblock %} {% block contenido %} {% block head %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
 <style>
     @media (max-width: 575px) {
         .nombreRecetaNormal {
@@ -94,15 +96,14 @@
                 <div class="mt-2" id="msjlistaCompra" style=" width: max-content;margin: auto;margin-bottom: 5%;"></div>
                 <div class="row  justify-content-center">
                     {% if user.is_superuser %}
-                    <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %}
-                    {% if product.estado != 'Pendiente' %}
-                        <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
-                            <form method="POST" class="formAddLista" action="">
-                                {% csrf_token %}
-                                <input type="hidden" value="{{product.id}}" name="productId" id="productId">
-                                <a href="#" class="enlaceRecetas">¡Añadelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
-                            </form>
-                        </div>
+                    <a href="/product/review/{{product.id}}" class="btn btn-success btn-lg col-sm-3 col-10" role="button" aria-disabled="true">Editar</a> {% endif %} {% if product.estado != 'Pendiente' %}
+                    <div class="col-sm-9 col-12 text-sm-right text-center mt-sm-0 mt-3">
+                        <form method="POST" class="formAddLista" action="">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{product.id}}" name="productId" id="productId">
+                            <a href="#" class="enlaceRecetas">¡Añádelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
+                        </form>
+                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -260,7 +261,16 @@
                                 <div class="row justify-content-center titulito"> {{aportacion.user}}: </div>
                                 <div class="row justify-content-center titulito"> {{aportacion.titulo}} </div>
                                 <div class="row justify-content-center"> {{aportacion.mensaje}}</div>
-                                <div class="row justify-content-center"> {{aportacion.fecha}} </div>
+                                <div>
+                                    {% if request.user.perfil == aportacion.user %}
+                                    <form action="/product/remove/{{aportacion.id}}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link float-right">
+                                            <i class="fas fa-trash-alt enlaceOjo align-self-center"></i>
+                                        </button></form>
+                                    {% endif %}
+                                    <div class="row justify-content-center"> {{aportacion.fecha}} </div>
+                                </div>
                             </div>
                             {% endfor %}
                         </div>
