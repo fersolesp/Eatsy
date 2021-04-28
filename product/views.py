@@ -33,21 +33,6 @@ def  user_active_account(user):
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
-def get_product_or_404(request, productId):
-
-    """
-    Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
-    devuelve error 404.
-    """
-
-    product = get_object_or_404(Producto, pk=productId)
-    if product.estado == 'Pendiente' and not request.user.is_superuser:
-        raise Http404()
-    return product
-
-
-@login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def showProduct(request, productId):
     product = get_object_or_404(Producto, pk=productId)
     valoracion=Valoracion.objects.filter(producto=product).aggregate(Avg('puntuacion'))["puntuacion__avg"]
@@ -296,12 +281,13 @@ def rateProduct(request, productId):
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
+    product_id = comment.producto.id
     if comment.user.user.pk == request.user.pk:
         comment.delete()
     else:
         raise Http404
 
-    return render(request, 'products/show.html')
+    return redirect('product:show', product_id)
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def listReports(request):
