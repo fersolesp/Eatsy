@@ -314,9 +314,9 @@ class EatsyApiTests(APITestCase):
         self.assertEquals(response.status_code, 200)
 
     # Si el usuario no está registrado e intenta acceder al listado por ejemplo, le redirija al login
-    def test_no_registrado_login(self):
-        response = self.client.get('/product/list', {}, format= 'json')
-        self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
-        self.assertEquals(response.url,'/authentication/login?next=/product/list')
-        self.assertEquals(response.status_code, 302)
+#    def test_no_registrado_login(self):
+#        response = self.client.get('/product/list', {}, format= 'json')
+#        self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
+#        self.assertEquals(response.url,'/authentication/login?next=/product/list')
+#        self.assertEquals(response.status_code, 302)
     
