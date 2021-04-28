@@ -558,3 +558,155 @@ a {
     padding-right: 3em;
   }
 }
+
+.form-check-input {
+  visibility: hidden;
+}
+
+.form-check-label {
+  padding-left: 4%;
+  padding-top: 2%;
+}
+
+/*VEGANOS*/
+input#id_dietas_0::after {
+  visibility: visible;
+  background-image: url('../img/dieta_vegano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 0.2;
+  cursor: pointer;
+}
+input#id_dietas_0:checked::after {
+  visibility: visible;
+  background-image: url('../img/dieta_vegano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 1;
+}
+
+/*VEGETARIANOS*/
+input#id_dietas_1::after {
+  visibility: visible;
+  background-image: url('../img/dieta_vegetariano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 0.2;
+  cursor: pointer;
+}
+input#id_dietas_1:checked::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_vegetariano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 1;
+}
+
+/*SIN GLUTEN*/
+input#id_dietas_2::after {
+  visibility: visible;
+  background-image: url('../img/dieta_gluten.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 0.2;
+  cursor: pointer;
+}
+input#id_dietas_2:checked::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_gluten.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 1;
+}
+
+/*LACTOSA*/
+input#id_dietas_3::after {
+  visibility: visible;
+  background-image: url('../img/dieta_lactosa.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 0.2;
+  cursor: pointer;
+}
+input#id_dietas_3:checked::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_lactosa.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 1;
+}
+
+/*MARISCO*/
+input#id_dietas_4::after {
+  visibility: visible;
+  background-image: url('../img/dieta_marisco.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 0.2;
+  cursor: pointer;
+}
+input#id_dietas_4:checked::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_marisco.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 1;
+}
+
+/*FRUTOS SECOS*/
+input#id_dietas_5::after {
+  visibility: visible;
+  background-image: url('../img/dieta_frutos_secos.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 0.2;
+  cursor: pointer;
+}
+input#id_dietas_5:checked::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_frutos_secos.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  content:"";
+  opacity: 1;
+}
