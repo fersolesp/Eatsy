@@ -106,7 +106,7 @@
 
                     <!-- Comentarios -->
                     {% if receta.productos %} {% for producto in receta.productos.all %}
-
+                    {% if producto.estado == "Aceptado" %}
                     <div class="product-card-comment mb-2">
                         <div class="row titulito">
                             <div class="col-sm-12 text-center">
@@ -145,6 +145,7 @@
                             <br class="nombreRecetaMovil">
                             <a class="nombreRecetaMovil enlaceOjo " href="/product/show/{{producto.id}}"><i class="fa fa-eye" style="font-size:44px"></i></a> </div>
                     </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
             </div>
