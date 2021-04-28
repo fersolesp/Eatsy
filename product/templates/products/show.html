@@ -101,7 +101,7 @@
                         <form method="POST" class="formAddLista" action="">
                             {% csrf_token %}
                             <input type="hidden" value="{{product.id}}" name="productId" id="productId">
-                            <a href="#" class="enlaceRecetas">¡Añádelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
+                            <a href="#" id="buttonAddList" class="enlaceRecetas">¡Añádelo a tu lista!<img style="width: 50px; height: 50px;" src="{% static 'img/botonlista.png' %}"></a>
                         </form>
                     </div>
                     {% endif %}
@@ -400,7 +400,7 @@
 
 
 <script type="text/javascript">
-    const formAddShoppingList = document.querySelector(".buttonAddList");
+    const formAddShoppingList = document.querySelector("#buttonAddList");
     formAddShoppingList.addEventListener("click", (e) => {
         e.preventDefault();
         $.ajax({
