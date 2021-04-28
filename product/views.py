@@ -1,8 +1,8 @@
 from datetime import datetime
-from shoppingList.models import ListaDeCompra
+
 from authentication.models import Perfil
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -10,12 +10,14 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Avg
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from recipe.models import Receta
+from shoppingList.models import ListaDeCompra
 
 from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
 from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
                             UbicacionProducto, Valoracion)
-from recipe.models import Receta
+
 
 def aboutUs(request):
      return render(request, 'products/aboutUs.html')
@@ -147,6 +149,11 @@ def listProduct(request):
         # FILTRAR
         for dieta in searchProductForm.cleaned_data['dietas']:
             product_list = product_list.filter(dietas__id = dieta.id)
+
+        # UBICACIÓN
+        for ubicacion in searchProductForm.cleaned_data['ubicaciones']:
+            product_list = product_list.filter(ubicaciones__id = ubicacion.id)
+        print(searchProductForm.cleaned_data)
 
         # ORDENAR
         orderBy = searchProductForm.cleaned_data['orderBy']

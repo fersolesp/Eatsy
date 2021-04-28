@@ -1,7 +1,8 @@
-from authentication.models import Perfil, Dieta
+from authentication.models import Dieta, Perfil
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+
 
 class Ubicacion(models.Model):
     nombre = models.CharField(max_length=200, null=None)
@@ -43,8 +44,7 @@ class Producto(models.Model):
         Ubicacion, through="UbicacionProducto")
 
     class Meta:
-
-        "Por defecto se ordena por id descendiente (más nuevos primero)"
+        # Por defecto se ordena por id descendiente (más nuevos primero)
         ordering = ['-id']
 
     def __str__(self):
