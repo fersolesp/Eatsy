@@ -118,8 +118,8 @@ class ReviewProductForm(forms.ModelForm):
     ubicaciones = CustomMMCF2(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
     
     Revision_Enum = (
-        ('Aceptar', 'Aceptar'),
-        ('Denegar', 'Denegar'),
+        ('Aceptar', 'Guardar'),
+        ('Denegar', 'Eliminar'),
     )
     revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum, widget = forms.RadioSelect)
 

@@ -14,7 +14,7 @@
     <main class="container">
         <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Revisar producto</h3>
         <div class="row justify-content-center">
-            <div class="product-card-review-create col-12 ">
+            <div class="product-card-review-create product-card-inner col-12 ">
                 <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/review/{{product_id}}">{% csrf_token %}
                     <div class="form-group" style="margin-left: 2%;">
                         <br/>
