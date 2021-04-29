@@ -1,10 +1,12 @@
 import json
+from typing import List
 from urllib.parse import urlencode
 
 from authentication.models import Dieta, Perfil
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
+from django.urls import reverse
 from rest_framework.test import APIClient, APITestCase
 
 # Create your tests here.
@@ -33,7 +35,7 @@ class EatsyApiTests(APITestCase):
         # call_command("flush", interactive=False)
 
 
-    def test_accessing_admin(self):
+    # def test_accessing_admin(self):
         data = {}
         self.client.login(username="admin", password="eatsyAdminPasswordJQSA!=1")
         response = self.client.get('/admin/product/producto/', data, format= 'json')
@@ -313,10 +315,73 @@ class EatsyApiTests(APITestCase):
         response = self.client.get('/authentication/profile', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
 
-    # Si el usuario no está registrado e intenta acceder al listado por ejemplo, le redirija al login
-#    def test_no_registrado_login(self):
-#        response = self.client.get('/product/list', {}, format= 'json')
-#        self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
-#        self.assertEquals(response.url,'/authentication/login?next=/product/list')
-#        self.assertEquals(response.status_code, 302)
+    #Si el usuario no está registrado e intenta acceder al listado por ejemplo, le redirija al login
+    def test_no_registrado_login(self):
+       response = self.client.get('/product/list', {}, format= 'json')
+       self.client.get('/authentication/login?next=/product/list', {}, format= 'json')
+       self.assertEquals(response.url,'/authentication/login?next=/product/list')
+       self.assertEquals(response.status_code, 302)
+
+    #Tests lista de la compra
+
+    def test_acceso_lista_compra(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/shoppingList/', {}, format= 'json')
+        self.assertEquals(response.status_code, 200)
     
+    def test_delete_element_from_lista_compra(self):
+        self.client.login(username='john', password='johnpassword')
+        self.client.post('/shoppingList/empty')
+        response = self.client.get('/shoppingList/', {}, format= 'json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_elements_from_lista_compra(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/product/show/24', {}, format= 'json')
+        self.client.post('/shoppingList/remove/24')
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_lista_compra(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/product/show/24', {}, format= 'json')
+        self.client.post('#')
+
+        self.assertEqual(response.status_code, 200)
+
+    #Tests recetas
+
+    def test_acceso_recetas(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/recipe/show/1', {}, format= 'json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_crear_receta(self):
+        self.client.login(username='john', password='johnpassword')
+        self.client.get('/product/show/1', {}, format= 'json')
+        with open("static/img/logo.png", 'rb') as f:
+            foto = SimpleUploadedFile("logo.png", f.read(),content_type="image/png")
+
+            data = {
+                    "imagen":foto,
+                    "nombre":"Sopa do macaco",
+                    "descripcion":"Sopa de cacao sin gluten",
+                    "id":1,
+                }
+
+        response = self.client.post('/recipe/create', data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_acceso_aboutus(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/aboutUs/', {}, format= 'json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_acceso_aboutus(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/contactUs/', {}, format= 'json')
+        self.assertEqual(response.status_code, 200)
+
+    def test_acceso_aboutus(self):
+        self.client.login(username='john', password='johnpassword')
+        response = self.client.get('/privacyPolicy/', {}, format= 'json')
+        self.assertEqual(response.status_code, 200)
