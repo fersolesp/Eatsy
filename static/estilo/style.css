@@ -455,12 +455,12 @@ a {
     display: none;
   }
   #menuMovil {
-      display: block;
+    display: block;
   }
   #bloqueFooter {
-      text-align: center;
-      display: grid;
-      justify-items: center;
+    text-align: center;
+    display: grid;
+    justify-items: center;
   }
 
   #menuNormal {
