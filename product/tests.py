@@ -161,7 +161,7 @@ class ValoracionTestCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
-    
+
     def test_create_valoracion(self):
         create_valoracion()
         prod = Producto.objects.get(titulo="Tofu")

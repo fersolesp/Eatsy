@@ -95,7 +95,7 @@ class Valoracion(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.producto.titulo + ': ' +str(self.puntuacion)
 

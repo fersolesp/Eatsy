@@ -23,10 +23,10 @@ class SignUpForm(forms.ModelForm):
         ('Sin marisco', 'Sin marisco'),
         ('Sin frutos secos', 'Sin frutos secos'),
     )
-    dieta = forms.MultipleChoiceField(label='Dieta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control'}))
+    dieta = forms.MultipleChoiceField(label='Dieta o intolerancias', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control'}))
     password_validator = RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', 'La contraseña debe contener entre 8 y 64 caracteres, tener una letra mayúscula, una minúscula, un dígito y un carácter especial')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class' : 'form-control'}), validators=[password_validator], strip=False)
-    v_password = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={'class' : 'form-control'}), validators=[password_validator], strip=False)    
+    v_password = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={'class' : 'form-control'}), validators=[password_validator], strip=False)
     def clean(self):
         clean_data = super(SignUpForm, self).clean()
         password = clean_data.get('password')
@@ -34,7 +34,6 @@ class SignUpForm(forms.ModelForm):
         if password != v_password:
             self.add_error('v_password', 'La contraseña y su confirmación no coinciden')
         return clean_data
-    
     class Meta:
         model = User
         fields = ['username', 'nombre', 'apellidos']

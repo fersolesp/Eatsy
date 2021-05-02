@@ -51,13 +51,13 @@ class SeleniumTests(StaticLiveServerTestCase):
     def test_receta_e_ingredientes(self):
         self.driver.get(f'{self.live_server_url}/')
         self.iniciar_sesion("Usuario1","eatsyUsuario1PasswordJQSA!=")
-        self.driver.get(f'{self.live_server_url}/product/show/32') 
+        self.driver.get(f'{self.live_server_url}/product/show/32')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
-        assert len(elements) > 0 
+        assert len(elements) > 0
         self.driver.get(f'{self.live_server_url}/recipe/show/6')
         elements = self.driver.find_elements(By.XPATH, "//div[2]/div/div")
         assert len(elements) > 0
-        self.driver.get(f'{self.live_server_url}/product/show/13') 
+        self.driver.get(f'{self.live_server_url}/product/show/13')
         elements = self.driver.find_elements(By.CSS_SELECTOR, ".nombreProducto")
         assert len(elements) > 0
 
