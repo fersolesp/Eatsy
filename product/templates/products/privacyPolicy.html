@@ -1,0 +1,148 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="Página orientada a dar más información a los usuarios sobre la política de privacidad usada por la aplicación Eatsy"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+    <style>
+        @media (max-width: 676px) {
+            .bloques {
+                background-image: url("{% static 'estilo/fondocard.png' %}");
+            }
+        }
+    </style>
+</head>
+
+<body>   
+
+    <div id="barprincipal" class="navbar">
+        <b-navbar-brand href="/" style="margin-right: 0px !important;">
+            <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+        </b-navbar-brand>
+        <div class="topnav-right">
+            {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a> {% endif %}
+        </div>
+        <script type="text/javascript">
+        </script>
+    </div>
+
+    <!-- MENU PARA EL MOVIL -->
+    <div id="menuMovil" class="collapse navbar navbar-collapse navbar-ex1-collapse ">
+        <div class="row justify-content-center">
+            <b-navbar-brand href="/">
+                <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            </b-navbar-brand>
+        </div>
+        <ul class="nav navbar-nav mt-2">
+            <a href="#"  style="background-color: #7F6000; color: white;" class="dropdown-toggle btn  botonNav" data-toggle="dropdown">
+                Menú <b class="caret"></b>
+            </a>
+            <div style="background-color: #7F6000" class="dropdown-menu ">
+                <div class="topnav-right">
+                    {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                  <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/signup">Registrarse</a>&nbsp;
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/login">Iniciar sesión</a> {% endif %}
+                </div>
+            </div>
+        </ul>
+    </div>
+
+    <div class="bloques">
+        <div class="container" style="margin-top: 2%;">
+            <div class="row justify-content-center">
+                <div class="titleblock col-12 mb-5">
+                    Políticas de privacidad
+                </div>
+                <div class="col-sm-9 " style="text-align: justify;">
+                    <p>El presente contrato describe los términos y condiciones aplicables al uso del contenido, productos y/o servicios del sitio web Eatsy del cual es titular ISPP - Grupo 6 de la ETSII de la Universidad de Sevilla. Para hacer uso del contenido,
+                        productos y/o servicios del sitio web el usuario deberá sujetarse a los presentes términos y condiciones:</p>
+                    <br/>
+                    <p><b>Objeto</b><br/> El objeto es regular el acceso y utilización del contenido y/o servicios puestos a disposición del público en la presente página web. El titular del servicio se reserva el derecho a realizar modificaciones del mismo en cualquier
+                        momento y sin previo aviso, bajo discreción de los usuarios. <br/>El sitio web está dirigido para personas residentes en España y cumple con la legislación establecida en dicho país, quedando bajo responsabilidad del usuario el acceso
+                        desde otro país. <br/>La administración del sitio web puede ejercerse por terceros, es decir, personas distintas al titular, sin afectar esto los presentes términos y condiciones.
+                    </p>
+                    <p><b>Política de privacidad y protección de datos</b><br/> Conforme a lo establecido en la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD), el titular se compromete a tomar
+                        las medidas necesarias que garanticen la seguridad de los datos personales de los usuarios, evitando que se haga un uso indebido de las informaciones que el usuario proporcione en el presente sitio web. <br/>Los datos personales que se
+                        solicitan y serán almacenados en el sistema para poder ofrecer los servicios del mismo de forma correcta y personalizar su experiencia de uso en base a ellos son: nombre y apellidos del usuario, su correo electrónico, la dieta que sigue
+                        o las intolerancias alimenticias que tiene. Los datos de la tarjeta bancaria para el cobro de suscripciones no se almacenarán en el sistema pues se delega esta función en el sistema Stripe, y se emplearán únicamente para esta función de
+                        cobro de las mensualidades del servicio.<br/> Bajo ninguna circunstancia los datos de los usuarios arriba mencionados serán aportados a terceras partes sin el consentimiento explícito de los mismos.</p>
+                    <p><b>Notificación de fallos de seguridad a los usuarios</b><br/> En el caso de darse un fallo de seguridad en el sistema que pueda poner en riesgo la integridad y confidencialidad de los datos del cliente, se usará el correo proporcionado en
+                        el registro para proporcionar el correspondiente aviso sobre la falla y pasos a seguir, tales como sugerir el cambio de contraseña de su cuenta.</p>
+                    <p><b>Derecho al olvido:</b><br/> Si el usuario desea la eliminación o anonimización de sus datos, éste puede solicitar la misma a través del envío de un correo electrónico a nuestro correo de soporte “eatsy2021@gmail.com” especificando el asunto
+                        como “Eliminación o anonimización de datos” y proporcionando la información necesaria para procesar la petición, como el nombre de usuario y motivo de la petición (si lo considera pertinente). Es de suma importancia que el correo con el
+                        que se establece el contacto sea el mismo con el que el usuario se encuentra registrado en la aplicación ya que se realizará una verificación entre el correo y el nombre de usuario especificado en el cuerpo del mensaje.</p>
+                    <p> <b>Derecho a la portabilidad de los datos:</b><br/> Si el usuario desea migrar los datos almacenados en nuestras bases de datos, debe ponerse en contacto a través del envío de un correo electrónico a nuestro correo de soporte “eatsy2021@gmail.com”
+                        especificando el asunto como “Portabilidad de datos” e indicando en el cuerpo del mensaje el usuario correspondiente, así como cualquier otra información que considere importante. Es de suma importancia que el correo con el que se establece
+                        el contacto sea el mismo con el que el usuario se encuentra registrado en la aplicación ya que se realizará una verificación entre el correo y el nombre de usuario especificado en el cuerpo del mensaje. </p>
+                    <p><b>Requisitos para el uso del servicio</b><br/> Para usar esta página web y/o recibir sus servicios, el usuario debe tener al menos 13 años de edad y poseer la autoridad legal, el derecho y la libertad para participar en estos Términos como
+                        un acuerdo vinculante. No se permite utilizar esta página web y/o recibir servicios si hacerlo está prohibido en el país del usuario o en virtud de cualquier ley o regulación aplicable al caso. <br/>El usuario se compromete a proporcionar
+                        información verídica en todo momento, sobre todo en lo que concierne a su identidad y datos personales.</p>
+                    <p><b>Términos comerciales de la suscripción y prueba gratuita</b><br/> El acceso al sitio web es libre y gratuito, pero se establece como precio único de 1,99 euros mensuales la tarifa de suscripción para poder acceder al uso y servicios provistos
+                        por la aplicación, guardando el derecho a modificarlo en cualquier momento sin previa notificación a los usuarios afectados y dada la opción de la rescisión del contrato. Con la contratación del servicio de suscripción mensual se bonificará
+                        a los nuevos usuarios con una prueba mensual gratuita, de aplicación automática y de un sólo uso, al ir vinculado a la tarjeta bancaria introducida por el usuario. Los usuarios podrán cancelar la suscripción al servicio en cualquier momento
+                        que lo deseen mediante el botón dedicado a ello en su perfil de usuario. <br/>La gestión de las suscripciones y los cobros asociados, así como de la aplicación de la prueba gratuita se encuentra automatizada mediante el sistema Stripe,
+                        por lo que no nos responsabilizamos de problemas generados por el mismo o por su mal uso por parte de los usuarios. <br/>La suscripción al sistema proporcionará a los usuarios las funcionalidades siguientes: ver y acceder a los productos
+                        y recetas registrados en el sistema, registrar nuevos productos, recetas, comentar y valorar productos y disponer de una lista de la compra individual.</p>
+                    <p> <b>Garantía de veracidad de la información de los productos</b><br/> Todos los productos registrados en el servicio son propuestos por usuarios y revisados, antes de ser publicados, por un administrador que verifica la veracidad de la solicitud
+                        y de los datos del producto sugerido. Aún así, Eatsy no se hace responsable de las consecuencias derivadas de algún fallo en la identificación de las intolerancias registradas para cada producto, quedando en manos del usuario final, la
+                        verificación de que, efectivamente, el alimento es adecuado para su condición alimenticia. </p>
+                    <p><b>Derecho a suspensión de cuentas Eatsy</b><br/> Se reserva el derecho a la suspensión total o temporal de la cuenta de aquellos usuarios que violen de forma intencionada o repetitiva alguno de los términos y condiciones aquí recogidos o
+                        de la ley o regulación aplicable. También será posible su suspensión en caso de comportamientos o uso inadecuados de cara al servicio ofrecido.</p>
+                    <p> <b>Normativa aplicable</b><br/> Estos términos, derechos y recursos aquí recogidos, y todos y cada uno de los reclamos relacionados y servicios prestados, se rigen, interpretan y aplican exclusivamente bajo conformidad de las leyes y normativas
+                        de España, sin respeto a sus principios de conflicto de leyes. Todos los reclamos y disputas se presentarán y serán decididos exclusivamente por un tribunal de jurisdicción competente ubicado en la ciudad de Sevilla.</p>
+                    <p><b>Atención al cliente e información de contacto</b><br/> En caso de querer contactar con un administrador del sistema para cualquier consulta o sugerencia se dispone la dirección de correo electrónico eatsy2021@gmail.com.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="bloqueFooter" class="mt-5">
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
+                        <div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-2 mb-2" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/aboutUs/"><u>Sobre nosotros</u></a>
+                                </div>
+                                <div class="col-sm-2 mb-2" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/contactUs/"><u>Contáctanos</u></a>
+                                </div>
+                                <div class="col-sm-3" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/privacyPolicy/"><u>Políticas de privacidad</u></a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

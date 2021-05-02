@@ -102,12 +102,6 @@ def logout_view(request):
     return redirect("/")
 
 @login_required(login_url='/authentication/login')
-def showProfile(request):
-    usuario = request.user
-    perfil = Perfil.objects.filter(user=usuario)
-    return render(request, 'perfil.html', {'usuario': usuario, 'perfil': perfil})
-
-@login_required(login_url='/authentication/login')
 def myProfile(request):
     user = request.user
     perfil = get_object_or_404(Perfil, user=user)
@@ -222,33 +216,6 @@ def createSubscription(request):
             return render(request, 'subscribe.html')
         else:
             return redirect("product:list")
-
-
-
-# def retrySubscription(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body.decode('utf-8'))
-#         try:
-
-#             stripe.PaymentMethod.attach(
-#                 data['paymentMethodId'],
-#                 customer=data['customerId'],
-#             )
-#             # Set the default payment method on the customer
-#             stripe.Customer.modify(
-#                 data['customerId'],
-#                 invoice_settings={
-#                     'default_payment_method': data['paymentMethodId'],
-#                 },
-#             )
-
-#             invoice = stripe.Invoice.retrieve(
-#                 data['invoiceId'],
-#                 expand=['payment_intent'],
-#             )
-#             return JsonResponse(invoice)
-#         except Exception as e:
-#             return JsonResponse({"error": str(e)}, status=200)
 
 @login_required(login_url='/authentication/login')
 def cancelSubscription(request):

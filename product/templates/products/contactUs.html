@@ -1,0 +1,268 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="Página orientada a dar más información sobre como contactarnos, así como donde encontrarnos."></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+    <style>
+        @media (max-width: 676px) {
+            .bloques {
+                background-image: url("{% static 'estilo/fondocard.png' %}");
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="barprincipal" class="navbar">
+        <b-navbar-brand href="/" style="margin-right: 0px !important;">
+            <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+        </b-navbar-brand>
+        <div class="topnav-right">
+            {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a> {% endif %}
+        </div>
+        <script type="text/javascript">
+        </script>
+    </div>
+
+    <!-- MENU PARA EL MOVIL -->
+    <div id="menuMovil" class="collapse navbar navbar-collapse navbar-ex1-collapse ">
+        <div class="row justify-content-center">
+            <b-navbar-brand href="/">
+                <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            </b-navbar-brand>
+        </div>
+        <ul class="nav navbar-nav mt-2">
+            <a href="#"  style="background-color: #7F6000; color: white;" class="dropdown-toggle btn  botonNav" data-toggle="dropdown">
+                Menú <b class="caret"></b>
+            </a>
+            <div style="background-color: #7F6000" class="dropdown-menu ">
+                <div class="topnav-right">
+                    {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                  <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/signup">Registrarse</a>&nbsp;
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/login">Iniciar sesión</a> {% endif %}
+                </div>
+            </div>
+        </ul>
+    </div>
+
+    <div class="bloques">
+        <div id="bloque1" class="mt-5 mb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="titleblock col-12">
+                        ¡Contáctanos!
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-6">
+                        <img class="comida" src="{% static 'img/frutaCorreoTransparent.png' %}"></img>
+                    </div>
+                    <div id="bodyblock1" class="bodyblock col-md-5">
+                        Si tiene algún tipo de duda o sugerencia con respecto a la aplicación web y desea ponerse en contacto con nosotros, puede mandar un correo a la siguiente dirección: <br><br>
+                        <p style="text-align: center;"><b>"eatsy2021@gmail.com"</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bloque2 " class="mb-5">
+            <div class="container">
+                <div class="row justify-content-center ">
+                    <div id="aboutUssubtitle" class="col-12 ">
+                        ¿Dónde nos ubicamos?
+                    </div>
+                </div>
+                <br>
+                <br>
+                <!-- copiar esto dentro de block container -->
+                <div id="colMap" class="col-md-12"></div>
+                <div class="row justify-content-center product-card-inner">
+                    <!-- cambiando el tamaño de columna de colMap cambias el tamaño es por tema responsive-->
+                    <div style="width: 640px; height: 480px" id="mapContainer"></div>
+                </div>
+
+                <script type="text/javascript">
+                    let mapContainer = document.getElementById("mapContainer");
+                    let colMap = getComputedStyle(document.getElementById("colMap"));
+
+
+                    mapContainer.style.width = colMap.width;
+                    mapContainer.style.height = window.innerHeight * 0.49 + "px";
+                    window.onresize = () => {
+                        mapContainer.style.width = colMap.width;
+                        mapContainer.style.height = window.innerHeight * 0.49 + "px";
+                    }
+
+                    var platform = new H.service.Platform({
+                        'apikey': "gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4"
+                    });
+
+                    var defaultLayers2 = platform.createDefaultLayers();
+                    var maptypes = platform.createDefaultLayers();
+                    var map2 = new H.Map(
+                        document.getElementById('mapContainer'),
+                        defaultLayers2.vector.normal.map, {
+                            zoom: 20,
+                            center: {
+                                lng: -5.98693,
+                                lat: 37.35835
+                            }
+                        });
+
+                    var svgMarkup = devuelveMarca();
+                    var mapEvents2 = new H.mapevents.MapEvents(map2);
+                    var ui2 = H.ui.UI.createDefault(map2, defaultLayers2);
+
+
+                    var behavior = new H.mapevents.Behavior(mapEvents2);
+
+                    var group2 = new H.map.Group();
+
+                    map2.addObject(group2);
+
+                    group2.addEventListener('tap', function(evt) {
+                        var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+                            content: evt.target.getData()
+                        });
+                        ui2.addBubble(bubble);
+                    }, false);
+                    // El codigo que pongas aqui en formato html es el que ves en cuando pulsas en el iconito.
+                    addMarkerToGroup(group2, {
+                            lat: 37.35835,
+                            lng: -5.98693
+                        },
+                        '<div style="color:#75cfb8"><strong> ETSII' +
+                        '</strong></div><div ><strong> Universidad de sevilla</strong> </div>');
+                    map2.setZoom(15);
+                    map2.setCenter({
+                        lat: coordenada2,
+                        lng: coordenada1
+                    });
+
+                    function addMarkerToGroup(group2, coordinate, html) {
+
+                        var icon = new H.map.Icon(svgMarkup)
+                        var marker = new H.map.Marker(coordinate, {
+                            icon: icon
+                        });
+                        marker.setData(html);
+                        group2.addObject(marker);
+                    }
+
+                    function devuelveMarca() {
+                        let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37pt" height="46pt" viewBox="0 0 37 46" version="1.1">
+                    <defs>
+                    <filter id="alpha" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%">
+                    <feColorMatrix type="matrix" in="SourceGraphic" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+                    </filter>
+                    <image id="image21" width="37" height="46" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAuCAYAAACvWdDAAAAABmJLR0QA/wD/AP+gvaeTAAACJklEQVRYhe3UwUsUURwH8O97b2an2XVdB4ZN3WS1tVqCJNaLRAdBiASPQgUFXSJaCfESHfIkRR06BR4CIchDyEKCEVT0D3RYyj1kSCRJbtumrpTu7jj7fh3KU2vs7NpBeJ/bzPz4ve/78eYBiqIoirI/+KRkU01NdrdhRIVlNfukZPX04XsZqhIM2odKpXN3XHcEGxtnXltWaC/7V6UND4tuw4hOaFrfM9Ns33kvYjHjumEcvq9po0+FSA9ynj0uxPMBTbt8MxAIe52Y8FLMlpctx3GGjhFd6pDSH9b171NC2K3r64kHUp6NEV19AhwsAqIZaLsFHL3gum/vzsysyHy+UvPmvYRKOk7LSaJ4iuh0EmiPum7bG8CYBE7cAyKPgVAFYACwBYgFwFwDdCqXPU3KU6g+Im2eyLcG6FeIjoSBaBngEcB4VKV+FMi95DwrFhedCq/9+Ho66KeI9PeAAfyexBJgZv88V5MCrIyUkfGurl1rGg41TRSMc27VWp8isscZ6+gvFA78t1BznOcHiT7GgU0DkLvVCYD8QOU8Y/kXRJ/6bbvoZR1Pf9/Xzs6tuUKhuA2EhhizPwCBanUtgHubsaV3jE3/NM1Xs7ncDy/r1HXjTvj9rQvl8sVNorFq38cY+9LL2LUbPT3zk+n0ttf+dYVKJhJ6byYTXyEa+Ez017RNxr6VQqHZh6urnibUUKgd/7qpHc6pkd6KoiiKoiiKoij7zy8d0rLw3DkMKgAAAABJRU5ErkJggg=="/>
+                    <mask id="mask0">
+                    <g filter="url(#alpha)">
+                    <use xlink:href="#image21"/>
+                    </g>
+                    </mask>
+                    <clipPath id="clip2">
+                    <path d="M 0 0 L 36.5 0 L 36.5 46 L 0 46 Z M 0 0 "/>
+                    </clipPath>
+                    <image id="image13" width="37" height="46" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAuCAYAAACvWdDAAAAABmJLR0QA/wD/AP+gvaeTAAAAgElEQVRYhe3UsQ2AIBRF0Q8S44Bu4CRM4izsYFzC1kIlAVujFmB+5z0JDcXlVYgAAPAvRivk+r6ReW7u93aa4mFtrmk9Il+ZfW9lWTpZV3c9ZttiCqFqlNUapYlRpRhVilGlnGZsePkkxw8dtR+9Tclk7x+96H3SegMAAAAAUO0EPJ8iDwp8WYEAAAAASUVORK5CYII="/>
+                    <mask id="mask1">
+                    <g filter="url(#alpha)">
+                    <use xlink:href="#image13"/>
+                    </g>
+                    </mask>
+                    <clipPath id="clip3">
+                    <rect width="37" height="46"/>
+                    </clipPath>
+                    <g id="surface15" clip-path="url(#clip3)">
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 18.246094 12.199219 L 24.558594 12.199219 L 24.558594 22.484375 L 18.246094 22.484375 Z M 18.246094 12.199219 "/>
+                    </g>
+                    <clipPath id="clip1">
+                    <rect width="37" height="46"/>
+                    </clipPath>
+                    <g id="surface23" clip-path="url(#clip1)">
+                    <g clip-path="url(#clip2)" clip-rule="nonzero">
+                    <use xlink:href="#surface15" mask="url(#mask1)"/>
+                    </g>
+                    </g>
+                    </defs>
+                    <g id="surface3">
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,47.45098%,47.45098%);fill-opacity:1;" d="M 18.261719 0 C 28.320312 0 36.488281 7.925781 36.488281 17.710938 C 36.488281 26.574219 26.179688 40.136719 18.332031 46 C 8.214844 38.035156 0.0117188 26.707031 0.0117188 17.710938 C 0.0117188 7.925781 8.183594 0 18.261719 0 Z M 27.125 17.34375 C 27.125 12.585938 23.152344 8.730469 18.25 8.730469 C 13.351562 8.730469 9.382812 12.585938 9.382812 17.34375 C 9.382812 22.097656 13.351562 25.953125 18.25 25.953125 C 23.148438 25.953125 27.121094 22.097656 27.121094 17.34375 Z M 27.125 17.34375 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(81.568627%,90.196078%,31.764706%);fill-opacity:1;" d="M 24.039062 13.992188 C 23.753906 13.722656 23.367188 13.582031 22.972656 13.605469 C 22.972656 13.578125 22.972656 13.554688 22.972656 13.527344 C 22.972656 12.792969 22.261719 12.199219 21.382812 12.199219 C 20.503906 12.199219 19.804688 12.792969 19.804688 13.527344 C 19.804688 13.554688 19.804688 13.578125 19.804688 13.605469 C 19.40625 13.578125 19.019531 13.722656 18.734375 13.992188 C 18.164062 14.546875 18.207031 15.480469 18.824219 16.085938 C 18.886719 16.144531 18.957031 16.199219 19.027344 16.25 C 19.066406 16.277344 19.082031 16.335938 19.050781 16.378906 C 18.921875 16.570312 18.855469 16.792969 18.855469 17.019531 C 18.855469 17.753906 19.566406 18.347656 20.445312 18.347656 C 20.761719 18.351562 21.066406 18.269531 21.339844 18.117188 C 21.371094 18.097656 21.414062 18.097656 21.441406 18.117188 C 21.710938 18.269531 22.023438 18.351562 22.335938 18.347656 C 23.214844 18.347656 23.925781 17.753906 23.925781 17.019531 C 23.925781 16.789062 23.855469 16.5625 23.722656 16.375 C 23.695312 16.332031 23.707031 16.273438 23.75 16.246094 C 23.820312 16.195312 23.882812 16.140625 23.949219 16.078125 C 24.566406 15.480469 24.605469 14.546875 24.039062 13.992188 Z M 24.039062 13.992188 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(8.627451%,85.098039%,43.137255%);fill-opacity:1;" d="M 21.875 18.101562 L 21.875 13.984375 C 21.875 13.371094 20.898438 13.371094 20.898438 13.984375 L 20.898438 18.101562 C 20.898438 18.710938 21.875 18.714844 21.875 18.101562 Z M 21.875 18.101562 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(8.627451%,85.098039%,43.137255%);fill-opacity:1;" d="M 21.632812 15.800781 L 20.078125 14.765625 C 19.554688 14.425781 19.066406 15.246094 19.582031 15.585938 L 21.140625 16.621094 C 21.664062 16.96875 22.15625 16.144531 21.632812 15.804688 Z M 21.632812 15.800781 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(8.627451%,85.098039%,43.137255%);fill-opacity:1;" d="M 21.632812 16.621094 L 23.195312 15.582031 C 23.710938 15.242188 23.222656 14.421875 22.703125 14.765625 L 21.140625 15.800781 C 20.628906 16.148438 21.113281 16.964844 21.632812 16.621094 Z M 21.632812 16.621094 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,25.490196%,41.176471%);fill-opacity:1;" d="M 19.890625 17.066406 C 19.890625 18.277344 18.878906 19.261719 17.632812 19.261719 C 16.378906 19.261719 15.363281 18.277344 15.363281 17.066406 C 15.363281 15.851562 16.378906 14.867188 17.632812 14.867188 C 18.878906 14.867188 19.890625 15.851562 19.890625 17.066406 Z M 19.890625 17.066406 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,86.666667%,27.843137%);fill-opacity:1;" d="M 17.539062 18.039062 L 17.609375 17.96875 C 17.707031 17.875 17.707031 17.722656 17.609375 17.625 L 13.503906 13.644531 C 13.40625 13.550781 13.25 13.550781 13.152344 13.644531 L 13.078125 13.707031 C 11.878906 14.910156 11.894531 16.824219 13.113281 18.007812 C 14.339844 19.195312 16.308594 19.214844 17.550781 18.046875 Z M 17.539062 18.039062 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,61.568627%,12.941176%);fill-opacity:1;" d="M 16.777344 17.78125 L 15.6875 16.722656 L 15.6875 18.226562 C 16.082031 18.164062 16.457031 18.015625 16.777344 17.78125 Z M 16.777344 17.78125 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,61.568627%,12.941176%);fill-opacity:1;" d="M 12.871094 15.527344 L 14.410156 15.527344 L 13.316406 14.460938 C 13.082031 14.773438 12.929688 15.144531 12.871094 15.527344 Z M 12.871094 15.527344 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,61.568627%,12.941176%);fill-opacity:1;" d="M 13.335938 17.300781 L 14.425781 16.238281 L 12.875 16.238281 C 12.9375 16.625 13.097656 16.984375 13.335938 17.300781 Z M 13.335938 17.300781 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,61.568627%,12.941176%);fill-opacity:1;" d="M 14.953125 18.230469 L 14.953125 16.734375 L 13.859375 17.796875 C 14.179688 18.027344 14.554688 18.175781 14.953125 18.230469 Z M 14.953125 18.230469 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(92.156863%,88.235294%,86.27451%);fill-opacity:1;" d="M 14.476562 20.730469 L 22.023438 20.730469 L 22.023438 21.996094 C 22.023438 22.265625 21.796875 22.484375 21.519531 22.484375 L 14.984375 22.484375 C 14.703125 22.484375 14.476562 22.265625 14.476562 21.996094 Z M 14.476562 20.730469 "/>
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(96.078431%,94.117647%,92.156863%);fill-opacity:1;" d="M 12.601562 17.28125 L 23.894531 17.28125 C 24.261719 17.28125 24.558594 17.570312 24.558594 17.929688 C 24.558594 19.699219 23.078125 21.136719 21.253906 21.136719 L 15.246094 21.136719 C 13.421875 21.136719 11.941406 19.699219 11.941406 17.929688 C 11.941406 17.570312 12.238281 17.28125 12.601562 17.28125 Z M 12.601562 17.28125 "/>
+                    <use xlink:href="#surface23" mask="url(#mask0)"/>
+                    </g>
+                    </svg>`;
+                        return svg;
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div id="bloqueFooter" class="mt-5">
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
+                        <div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-2 mb-2" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/aboutUs/"><u>Sobre nosotros</u></a>
+                                </div>
+                                <div class="col-sm-2 mb-2" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/contactUs/"><u>Contáctanos</u></a>
+                                </div>
+                                <div class="col-sm-3" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/privacyPolicy/"><u>Políticas de privacidad</u></a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+</body>
+
+</html>

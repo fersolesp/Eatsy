@@ -1,24 +1,25 @@
 body {
-  background-image: url("fondito.png");
+  background-image: url("fondito2.jpg");
   background-size: 100%;
 }
 
-.carousel-control-prev, .carousel-control-next, .carousel-indicators { 
-  filter: invert(1); 
+.carousel-control-prev,
+.carousel-control-next,
+.carousel-indicators {
+  filter: invert(1);
 }
 
 .navbar {
   display: flex;
-  background-color: #A1C448;
+  background-color: #a1c448;
 }
 
 .botonNav {
-  background-color: #7F6000;
+  background-color: #7f6000;
   color: white;
   border-radius: 10px;
   border: 2px #291f00;
 }
-
 
 .page-content {
   padding: 5em;
@@ -28,19 +29,29 @@ body {
 .nombreProducto {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.4em;
-  color: #7F6000;
+  color: #7f6000;
+}
+
+.nombreProductovw {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 2vw;
+  color: #7f6000;
 }
 
 .nombreProductoPeque {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.2em;
-  color: #7F6000;
+  color: #7f6000;
 }
 
-.nombreProductoCreateReview {
+.nombreProductoGrande {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 2em;
-  color: #7F6000;
+  color: #7f6000;
+}
+
+.coll {
+  background-color: #a1c448;
 }
 
 #nombreTarjeta::placeholder {
@@ -50,7 +61,7 @@ body {
 .nombreProductoShow {
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1.25em;
-  color: #7F6000;
+  color: #7f6000;
 }
 
 .descripcion {
@@ -76,6 +87,15 @@ hr {
   width: 100%;
 }
 
+.btn-menus {
+  background-color: #7f6000 ;
+}
+
+.fotos_aboutus{
+  background-color: transparent; 
+  border:none;
+}
+
 .botonAdd {
   position: sticky;
   bottom: 50px;
@@ -84,9 +104,23 @@ hr {
 
 a {
   font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
-  color: aliceblue;
-  font-size: 0.7em;
+  font-size: 0.95em;
   font-weight: bold;
+}
+
+.enlaceRecetas {
+  font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+  color: #7f6000;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.nombreRecetaNormal {
+  display: block;
+}
+
+.nombreRecetaMovil {
+  display: none;
 }
 
 .botonAdd a {
@@ -121,23 +155,20 @@ a {
   grid-template-rows: auto 3fr auto;
   align-items: center;
   padding: 2em;
-  border: 2px solid #A1C448;
+  border: 2px solid #a1c448;
   border-radius: 0.5em;
 }
-
-
 
 .titulito {
   font-weight: bold;
 }
-
 
 .product-card-comment {
   display: grid;
   grid-template-rows: auto 1fr auto;
   align-items: center;
   padding: 1em;
-  border: 2px solid #A1C448;
+  border: 2px solid #a1c448;
   border-radius: 0.5em;
   background-color: #f3ffd4;
   font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
@@ -145,14 +176,14 @@ a {
 }
 
 .btn-warning {
-  background-color: #FFDD47;
+  background-color: #ffdd47;
 }
 
 .product-card-descripcion {
   display: grid;
   padding: 1em;
   grid-template-rows: auto 1fr auto;
-  border: 2px solid #A1C448;
+  border: 2px solid #a1c448;
   border-radius: 0.5em;
   background-color: #f3ffd4;
   font-family: "Oxygen", Verdana, Geneva, Tahoma, sans-serif;
@@ -166,15 +197,15 @@ a {
   padding: 0.7em;
   border-radius: 0.5em;
   border: 1px solid;
-  border-color: #A1C448;
+  border-color: #a1c448;
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1em;
   color: black;
-  transition: background-color 0.5s, color 0.5s; 
+  transition: background-color 0.5s, color 0.5s;
 }
 
-.boton-show-inner:hover{
-  background-color: #A1C448;
+.boton-show-inner:hover {
+  background-color: #a1c448;
   color: white;
 }
 
@@ -210,19 +241,27 @@ a {
   width: 100%;
 }
 
-#name::placeholder{
+#name::placeholder {
   color: #75cfb8;
 }
 
 .modal-header {
-  background-color: #A1C448;
+  background-color: #a1c448;
   color: black;
   font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .header {
   padding-bottom: 10px;
-  background-color: #A1C448;
+  background-color: #a1c448;
+}
+
+.modal-content {
+  border-radius: 10px;
+}
+
+.modal-header {
+  border-radius: 10px;
 }
 
 .imgheader {
@@ -253,8 +292,8 @@ a {
 
 .titleblock {
   font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: #7F6000;
-  font-size: 5vw;
+  color: #7f6000;
+  font-size: 300%;
   text-align: center;
 }
 
@@ -263,6 +302,20 @@ a {
   font-family: "Oxygen", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 1.3rem;
   color: #533e00;
+}
+
+#aboutUstitle {
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7f6000;
+  font-size: 250%;
+  text-align: center;
+}
+
+#aboutUssubtitle {
+  font-family: "Abril Fatface", Brush Script MT, 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #7f6000;
+  font-size: 200%;
+  text-align: center;
 }
 
 #bodyblock1 {
@@ -361,6 +414,12 @@ a {
   margin: auto;
 }
 
+@media (max-width: 1142px) {
+  .scrolli {
+    width: 100%;
+  }
+}
+
 .padding-list {
   padding-left: 2em;
 }
@@ -380,37 +439,77 @@ a {
 
 .active {}
 
-@media (max-width: 450px) {
-    #menuMovil {
-        display: block;
-    }
-    .product-img-list {
-        max-width: 90% !important;
-    }
-    #menuNormal {
-        display: none;
-    }
-    .page-content {
-        padding: 2em;
-        padding-top: 1em;
-    }
-    .product-card {
-        padding: 0em;
-        padding-bottom: 1em;
-    }
-    .padding-list-container {
-        padding: 2em;
-    }
-    .padding-list {
-        padding-left: 1em;
-    }
-    .product-card-inner {
-        padding: 0em;
-        padding-bottom: 1em;
-        padding-top: 1em;
-        background-image: url("fondocard.png");
-    }
+@media (max-width: 1142px) {
+  .nombreProductovw {
+    font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 4.5vw;
+    color: #7f6000;
+  }
+}
 
+@media (max-width: 650px) {
+  #menuMovil {
+    display: block;
+  }
+
+  #barprincipal {
+    display: none;
+  }
+
+  #menuMovil {
+    display: block;
+  }
+
+  #bloqueFooter {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+
+  #menuNormal {
+    display: none;
+  }
+}
+
+@media (max-width: 450px) {
+  .ponfondo {
+    background-image: url("fondocard.png");
+  }
+
+  .nombreProductovw {
+    font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10vw;
+    color: #7f6000;
+  }
+
+  .product-img-list {
+    max-width: 90%;
+  }
+
+  .page-content {
+    padding: 2em;
+    padding-top: 1em;
+  }
+
+  .product-card {
+    padding: 0em;
+    padding-bottom: 1em;
+  }
+
+  .padding-list-container {
+    padding: 2em;
+  }
+
+  .padding-list {
+    padding-left: 1em;
+  }
+
+  .product-card-inner {
+    padding: 0em;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    background-image: url("fondocard.png");
+  }
 }
 
 .tituloReporte {
@@ -429,4 +528,184 @@ a {
 
 .li-dark {
   background-color: #92cea8;
+}
+
+.d-flex-responsive{
+  display: flex;
+}
+
+@media (max-width: 600px) {
+  .d-flex-responsive {
+    display: inline;
+  }
+
+  .d-flex-responsive.shopping-list {
+    display: inherit;
+  }
+}
+
+.shopping-list-cards {
+  padding-left: 10em;
+  padding-right: 10em;
+}
+
+@media (max-width: 1200px) {
+  .shopping-list-cards{
+    padding-left: 8em;
+    padding-right: 8em;
+  }
+}
+
+@media (max-width: 1000px) {
+  .shopping-list-cards{
+    padding-left: 3em;
+    padding-right: 3em;
+  }
+}
+
+.modal-body#filter .form-check-input {
+  visibility: hidden;
+}
+
+.modal-body#filter .form-check-label {
+  padding-left: 4%;
+  padding-top: 1.6%;
+}
+
+/*VEGANOS*/
+input#id_dietas_0::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_vegano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+input#id_dietas_0:checked::after {
+  visibility: visible;
+  opacity: 1;
+  background-image: url('../img/dieta_vegano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+/*VEGETARIANOS*/
+input#id_dietas_1::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_vegetariano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+input#id_dietas_1:checked::after {
+  visibility: visible;
+  opacity: 1;
+  background-image: url('../img/dieta_vegetariano.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+/*SIN GLUTEN*/
+input#id_dietas_2::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_gluten.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+input#id_dietas_2:checked::after {
+  visibility: visible;
+  opacity: 1;
+  background-image: url('../img/dieta_gluten.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+/*LACTOSA*/
+input#id_dietas_3::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_lactosa.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+input#id_dietas_3:checked::after {
+  visibility: visible;
+  opacity: 1;
+  background-image: url('../img/dieta_lactosa.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+/*MARISCO*/
+input#id_dietas_4::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_marisco.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+input#id_dietas_4:checked::after {
+  visibility: visible;
+  opacity: 1;
+  background-image: url('../img/dieta_marisco.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+/*FRUTOS SECOS*/
+input#id_dietas_5::after {
+  visibility: visible;
+  opacity: 0.2;
+  background-image: url('../img/dieta_frutos_secos.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
+}
+
+input#id_dietas_5:checked::after {
+  visibility: visible;
+  opacity: 1;
+  background-image: url('../img/dieta_frutos_secos.png');
+  background-size: 30px 30px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content:"";
 }

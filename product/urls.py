@@ -11,4 +11,8 @@ urlpatterns = [
     path('remove/<int:commentId>', views.removeComment, name='remove'),
     path('show/<int:productId>/rate', views.rateProduct, name='rate'),
     path('report/action/<int:reporteId>', views.reviewReport, name='review'),
+    path('aboutUs/', views.aboutUs, name='aboutUs'),
+    path('contactUs/', views.contactUs, name='contactUs'),
+    path('privacyPolicy/', views.privacyPolicy, name='privacyPolicy'),
+    path('show/shoppingList/add', views.addProductToShoppingList, name='addToShoppingList'),
 ] 

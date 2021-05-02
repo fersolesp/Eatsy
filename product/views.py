@@ -2,7 +2,7 @@ from datetime import datetime
 
 from authentication.models import Perfil
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -10,6 +10,8 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import Avg
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from recipe.models import Receta
+from shoppingList.models import ListaDeCompra
 
 from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
@@ -17,25 +19,19 @@ from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
                             UbicacionProducto, Valoracion)
 
 
+def aboutUs(request):
+     return render(request, 'products/aboutUs.html')
+
+def contactUs(request):
+     return render(request, 'products/contactUs.html')
+
+def privacyPolicy(request):
+     return render(request, 'products/privacyPolicy.html')
+
 def  user_active_account(user):
     if user:
         return user.perfil.activeAccount
     return False
-
-@login_required(login_url='/authentication/login')
-@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
-def get_product_or_404(request, productId):
-
-    """
-    Si el producto no existe o está pendiente de revisión (y el usuario no es superuser),
-    devuelve error 404.
-    """
-
-    product = get_object_or_404(Producto, pk=productId)
-    if product.estado == 'Pendiente' and not request.user.is_superuser:
-        raise Http404()
-    return product
-
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
@@ -45,6 +41,7 @@ def showProduct(request, productId):
     precio_medio=UbicacionProducto.objects.filter(producto=product).aggregate(Avg('precio'))["precio__avg"]
     valoracion_media=int(round(valoracion,0)) if valoracion!=None else 0
     aportaciones = Aportacion.objects.filter(producto=product)
+    recetas= Receta.objects.filter(productos__in=[product]).distinct()
     if request.method == 'GET':
         form = ReporteForm()
         formComment= CommentForm()
@@ -53,7 +50,7 @@ def showProduct(request, productId):
         if product.estado=='Pendiente' and request.user.is_superuser:
             return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio})
         elif product.estado=='Aceptado':
-            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+            return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas ,'formUbicacion' :formUbicacion})
 
         else:
             messages.error(
@@ -72,7 +69,7 @@ def showProduct(request, productId):
                 reporte.save()
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio, 'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas, 'formUbicacion' :formUbicacion})
 
         if 'commentButton' in request.POST:
             form = ReporteForm()
@@ -86,7 +83,7 @@ def showProduct(request, productId):
                 comentario.save()
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones,'recetas':recetas ,'formUbicacion' :formUbicacion})
         if 'addingUbication' in request.POST:
             form = ReporteForm()
             formComment= CommentForm()
@@ -109,7 +106,7 @@ def showProduct(request, productId):
 
                 return redirect('product:show', product.id)
             else:
-                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'formUbicacion' :formUbicacion})
+                return render(request, 'products/show.html', {'product': product,'valoracion_media':valoracion_media,'precio_medio':precio_medio,'form':form,'formComment':formComment,'aportaciones':aportaciones, 'recetas':recetas, 'formUbicacion' :formUbicacion})
 
 @login_required(login_url='/authentication/login')
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
@@ -138,11 +135,16 @@ def listProduct(request):
         for dieta in searchProductForm.cleaned_data['dietas']:
             product_list = product_list.filter(dietas__id = dieta.id)
 
+        # UBICACIÓN
+        for ubicacion in searchProductForm.cleaned_data['ubicaciones']:
+            product_list = product_list.filter(ubicaciones__id = ubicacion.id)
+        print(searchProductForm.cleaned_data)
+
         # ORDENAR
         orderBy = searchProductForm.cleaned_data['orderBy']
         if orderBy:
             product_list = product_list.order_by(orderBy)
-    
+
     page = request.GET.get('page')
     paginator = Paginator(product_list, 12)
 
@@ -166,7 +168,6 @@ def createProduct(request):
         return render(request,'products/create.html', {'form':form})
     if request.method=='POST':
         form=CreateProductForm(request.POST, request.FILES)
-        print(form.errors)
         if form.is_valid():
             if form.cleaned_data['ubicaciones'] == None and form.cleaned_data['nombreComercio']=="":
                 form.errors.nombreComercio = "El campo Nombre del Comercio no puede estar vacío si añade una ubicación nueva"
@@ -213,14 +214,13 @@ def reviewProduct(request, productId):
             'nombre': producto.titulo,
             'descripcion': producto.descripcion,
             'precio': producto.precioMedio,
-            'dieta': [dieta.nombre for dieta in producto.dietas.all()],
+            'dieta': producto.dietas.all(),
             'ubicaciones': producto.ubicaciones.all()
         }
         form = ReviewProductForm(initial=data)
 
     elif request.method == 'POST':
         form = ReviewProductForm(request.POST, request.FILES)
-        print('Errores: ', form.errors)
         if form.is_valid():
 
             # # Comprobamos en el caso de que sea ubicacion de mapa que el nombre no sea vacío
@@ -288,12 +288,13 @@ def rateProduct(request, productId):
 @user_passes_test(user_active_account, login_url='/authentication/create-subscription')
 def removeComment (request, commentId):
     comment = get_object_or_404(Aportacion, pk=commentId)
+    product_id = comment.producto.id
     if comment.user.user.pk == request.user.pk:
         comment.delete()
     else:
         raise Http404
 
-    return render(request, 'products/show.html')
+    return redirect('product:show', product_id)
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/authentication/login') # Nuevo Log In
 def listReports(request):
@@ -330,4 +331,24 @@ def reviewReport(request, reporteId):
             reporte.save()
 
         return redirect("/product/report/list")
-  
+
+@login_required(login_url='/authentication/login')
+@user_passes_test(user_active_account, login_url='/authentication/create-subscription')
+def addProductToShoppingList(request):
+    if request.method == 'POST':
+        idProd = request.POST.get('productId')
+        producto = get_object_or_404(Producto.objects.filter(pk=idProd))
+        listaCompra = ListaDeCompra.objects.filter(perfil=get_object_or_404(Perfil, user=request.user))
+        if listaCompra.exists():
+            lista = listaCompra.get()
+            if producto.listadecompra_set.filter(pk=lista.pk).exists():
+                return JsonResponse({'success':'false', 'msj': "No se puede añadir a la lista de la compra porque el producto ya se encuentra en la misma"}, safe=False)
+            else:
+                listaCompra.get().productos.add(producto)
+                return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)
+            
+        else:
+            lista = ListaDeCompra(perfil=get_object_or_404(Perfil, user=request.user))
+            lista.save()
+            lista.productos.add(producto)
+            return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)

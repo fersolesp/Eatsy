@@ -13,17 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-from Eatsy import views
 from django.conf.urls.static import static
-from Eatsy import settings
+from django.contrib import admin
+from django.urls import include, path
+
+from Eatsy import settings, views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('product/', include('product.urls')),
     path('authentication/', include('authentication.urls')),
+    path('recipe/', include('recipe.urls')),
+    path('shoppingList/', include('shoppingList.urls')),
     path('', views.principalScreen),
+    path('aboutUs/', views.aboutUs),
+    path('contactUs/', views.contactUs),
+    path('privacyPolicy/', views.privacyPolicy),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler400 = "Eatsy.views.errorBadRequestView"

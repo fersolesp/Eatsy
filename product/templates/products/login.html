@@ -15,11 +15,10 @@
 {% block contenido %}
 
 
-<div class="container-fluid">
-    <div class="header row justify-content-center">
-        <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></img>
-        </a>
-    </div>
+<div id="barprincipal" class="navbar">
+    <b-navbar-brand href="/" style="margin-right: 0px !important;">
+      <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+    </b-navbar-brand>
 </div>
 <div>
     <div class="container">

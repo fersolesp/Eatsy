@@ -1,0 +1,269 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta name="description" content="Página principalmente enfocada a hablar con más detalle de nuestro proyecto y nuestro equipo de darrollo."></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link type="text/css" rel="stylesheet" href="{% static 'estilo/style.css' %}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+    <style>
+        @media (max-width: 676px) {
+            .bloques {
+                background-image: url("{% static 'estilo/fondocard.png' %}");
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="barprincipal" class="navbar">
+        <b-navbar-brand href="/" style="margin-right: 0px !important;">
+            <a href="/"><img id="menuNormal" class="imgheader" src="{% static 'img/logoheader.png' %}" style="display: inline;"></a>
+        </b-navbar-brand>
+        <div class="topnav-right">
+            {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/signup">Registrarse</a>&nbsp;
+            <a style="height: 50px;" class="btn btn-warning btn-lg" href="/authentication/login">Iniciar sesión</a> {% endif %}
+        </div>
+        <script type="text/javascript">
+        </script>
+    </div>
+
+    <!-- MENU PARA EL MOVIL -->
+    <div id="menuMovil" class="collapse navbar navbar-collapse navbar-ex1-collapse ">
+        <div class="row justify-content-center">
+            <b-navbar-brand href="/">
+                <a href="/"><img class="imgheader" src="{% static 'img/logoheader.png' %}"></a>
+            </b-navbar-brand>
+        </div>
+        <ul class="nav navbar-nav mt-2">
+            <a href="#"  style="background-color: #7F6000; color: white;" class="dropdown-toggle btn  botonNav" data-toggle="dropdown">
+                Menú <b class="caret"></b>
+            </a>
+            <div style="background-color: #7F6000" class="dropdown-menu ">
+                <div class="topnav-right">
+                    {% if request.user.is_authenticated == True and request.user.perfil.activeAccount == True %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/product/list">Accede a la aplicación</a> {% elif request.user.is_authenticated == True and request.user.perfil.activeAccount == False %}
+                  <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/create-subscription">Subscribirse</a> {% else %}
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/signup">Registrarse</a>&nbsp;
+                    <a style="height: 50px; color: white;" class="btn col-12" href="/authentication/login">Iniciar sesión</a> {% endif %}
+                </div>
+            </div>
+        </ul>
+    </div>
+
+    <div class="bloques">
+        <div id="bloque1" class="mt-5 mb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="titleblock col-12">
+                        ¡Nuestro proyecto!
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-6">
+                        <img class="comida" src="{% static 'img/tenedor.png' %}"></img>
+                    </div>
+                    <div id="bodyblock1" class="bodyblock col-md-5">
+                        Eatsy nace a raíz de un proyecto estudiantil para la Universidad de Sevilla y, tras un estudio exhaustivo del mercado, creemos que dichas personas no tienen recursos suficientes para encontrar buenos productos adaptados a sus necesidades.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bloque2 " class="mb-5">
+            <div class="container ">
+                <div class="row justify-content-center ">
+                    <div id="aboutUstitle" class="col-12 ">
+                        ¿Quiénes somos?
+                    </div>
+                    <div id="aboutUssubtitle" class="col-12 text-center mt-3 mb-2">
+                        Jefe de proyecto y coordinadoras
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFers.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Fernando Luis Sola Espinosa</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaReyes.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Reyes Blasco Cuadrado</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaMaria.jpeg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">María Marín Serrano</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="bloque3 " class="mb-5">
+            <div class="container ">
+                <div class="row justify-content-center ">
+                    <div id="aboutUssubtitle" class="col-12 text-center mb-2">
+                        FrontEnd
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFran.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Francisco José Perejón Barrios</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaVane.png' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Vanessa Pradas Fernández</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaFer.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Fernando Romero Rioja</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="bloque4 " class="mb-5">
+            <div class="container ">
+                <div class="row justify-content-center ">
+                    <div id="aboutUssubtitle" class="col-12  text-center mb-2">
+                        BackEnd
+                    </div>
+                </div>
+                <div class="row justify-content-center ">
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div style=" " class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaPablo.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Pablo Cardenal Gamito</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJose.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Jose María Cornac Fisas</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJavi.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Javier García Cerrada</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaJuanfer.jpg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Juan Fernández Fernández</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaEstefania.jpeg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Estefanía Ganfornina Triguero</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 ">
+                        <div class="card fotos_aboutus text-center border-wrong ">
+                            <img class="card-img-top mx-auto d-block rounded " src="{% static 'img/blancaSergio.jpeg' %} " />
+                            <div class="card-body ">
+                                <h4 class="card-title ">Sergio Sánchez León</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="bloqueFooter" class="mt-5">
+            <div class="container">
+                <div id="footer-main">
+                    <footer id="footer">
+                        <img class="imgfooter col-lg-3 col-md-4 col-sm-6 col-10" src="{% static 'img/footer.png' %}">
+                        <div class="container text-center">
+                            <p class="text-muted mb-0 py-2">© 2021 Eatsy All rights reserved.</p>
+                        </div>
+                        <div>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-2 mb-2" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/aboutUs/"><u>Sobre nosotros</u></a>
+                                </div>
+                                <div class="col-sm-2 mb-2" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/contactUs/"><u>Contáctanos</u></a>
+                                </div>
+                                <div class="col-sm-3" style="padding: 0%; text-align: center;">
+                                    <a style="font-size: 1rem; color: #7F6000;" href="/privacyPolicy/"><u>Políticas de privacidad</u></a>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js " integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo " crossorigin="anonymous "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js " integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1 " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js " integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM " crossorigin="anonymous "></script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+{% extends 'products/base.html' %} {% block titulo %}Productos{% endblock %} {% block head %}
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" /> {% endblock %} {% block contenido %}
+
+<div class="padding-list-container container-fluid page-content">
+    <div class="row justify-content-center pl-5 pr-5 d-flex-responsive">
+        <div class="col"></div>
+        <div class="col nombreProducto text-center">Lista de la compra</div>
+        <div class="col text-center descripcion">
+            {% if shoppingList %}
+            <a href="/shoppingList/empty" class="btn btn-outline-danger">Eliminar lista completa</a> {% endif %}
+        </div>
+    </div>
+
+    <!-- Productos en la lista -->
+    <div class="row justify-content-center mt-3 shopping-list-cards">
+        <div class="col-12">
+            {% if shoppingList %} {% for product in shoppingList.productos.all %}
+            <div class="row-12 d-flex-responsive mt-3 mb-3 product-card-descripcion p-3 shopping-list">
+                <div class="col" style="height: 5em;">
+                    <a href="/product/show/{{product.id}}">
+                        <img style="max-height: 5em; width: auto;" class="m-auto product-img-list borde product-card-inner p-1" src="{{product.foto.url}}" alt="">
+                    </a>
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <a class="align-self-center descripcion" href="/product/show/{{product.id}}">
+                        <span class="enlaceRecetas ">{{product.titulo}}</span>
+                    </a>
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <a href="/shoppingList/remove/{{product.id}}" class="fas fa-trash-alt enlaceOjo align-self-center"></a>
+                </div>
+            </div>
+            {% endfor %} {% else %}
+            <div class="col d-flex justify-content-center">
+                <span class="align-self-center descripcion">Añada algún producto a la lista de la compra</span>
+            </div>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

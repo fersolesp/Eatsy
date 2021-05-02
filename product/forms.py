@@ -1,5 +1,6 @@
 from enum import Enum
 
+from authentication.models import Dieta
 from django import forms
 from django.core.validators import FileExtensionValidator
 
@@ -19,16 +20,8 @@ class CreateProductForm(forms.ModelForm):
     nombre = forms.CharField(label='Nombre',error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     descripcion = forms.CharField(label='Descripción',error_messages={'required':'Este campo no puede estar vacío'}, widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 100%', 'blank':'False'}))
     precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, max_value=99.99, widget=forms.NumberInput(attrs={'class':'form-control'}))
-    Dieta_Enum = (
-        ('Vegano', 'Vegano'),
-        ('Vegetariano', 'Vegetariano'),
-        ('Gluten', 'Gluten'),
-        ('Lactosa', 'Lactosa'),
-        ('Marisco', 'Marisco'),
-        ('Frutos secos', 'Frutos secos'),
-    )
 
-    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
+    dieta = forms.ModelMultipleChoiceField(label='Etiqueta', queryset=Dieta.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
 
     ubicaciones = CustomMMCF(queryset=Ubicacion.objects.all(), required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     class Meta:
@@ -59,7 +52,7 @@ class ReporteForm(forms.ModelForm):
         widgets = {
             'comentarios': forms.Textarea(attrs={'class': 'form-control'})
         }
-    
+
     causa = forms.ModelChoiceField(
         queryset = CausaReporte.objects.all(),
         widget = forms.RadioSelect
@@ -78,13 +71,15 @@ class CommentForm(forms.ModelForm):
 class SearchProductForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['titulo', 'dietas']
+        fields = ['titulo', 'dietas', 'ubicaciones']
         labels = {
-            'titulo': 'Nombre del producto'
+            'titulo': 'Nombre del producto',
+            'ubicaciones': 'Ubicación'
         }
         widgets = {
             'dietas': forms.CheckboxSelectMultiple(attrs={"form":"filtros-form", 'class': 'form-check'}),
-            'titulo': forms.TextInput(attrs={"class":"w-100 h-100 form-control border border-dark", "placeholder":"Buscar"})
+            'titulo': forms.TextInput(attrs={"class":"w-100 h-100 form-control border border-dark", "placeholder":"Buscar"}),
+            'ubicaciones': forms.SelectMultiple(attrs={"form":"filtros-form", "class":"w-100 h-100 form-control border border-dark"})
         }
 
     class OrderBy(Enum):
@@ -111,26 +106,20 @@ class SearchProductForm(forms.ModelForm):
         
         self.fields['titulo'].required = False
         self.fields['dietas'].required = False
+        self.fields['ubicaciones'].required = False
 
 class ReviewProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
     nombre = forms.CharField(label='Nombre',error_messages={'required':'Este campo no puede estar vacío'}, widget=forms.TextInput(attrs={'class' : 'form-control'}) )
     descripcion = forms.CharField(label='Descripción',error_messages={'required':'Este campo no puede estar vacío'}, widget= forms.Textarea(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, widget=forms.NumberInput(attrs={'class':'form-control'}))
-    Dieta_Enum = (
-        ('Vegano', 'Vegano'),
-        ('Vegetariano', 'Vegetariano'),
-        ('Gluten', 'Gluten'),
-        ('Lactosa', 'Lactosa'),
-        ('Marisco', 'Marisco'),
-        ('Frutos secos', 'Frutos secos'),
-    )
-    dieta = forms.MultipleChoiceField(label='Etiqueta', choices=Dieta_Enum, widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
+
+    dieta = forms.ModelMultipleChoiceField(label='Etiqueta', queryset=Dieta.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
     ubicaciones = CustomMMCF2(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
     
     Revision_Enum = (
-        ('Aceptar', 'Aceptar'),
-        ('Denegar', 'Denegar'),
+        ('Aceptar', 'Guardar'),
+        ('Denegar', 'Eliminar'),
     )
     revision = forms.ChoiceField(label='Revisar', choices=Revision_Enum, widget = forms.RadioSelect)
 
