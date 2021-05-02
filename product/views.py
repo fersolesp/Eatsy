@@ -144,7 +144,7 @@ def listProduct(request):
         orderBy = searchProductForm.cleaned_data['orderBy']
         if orderBy:
             product_list = product_list.order_by(orderBy)
-    
+
     page = request.GET.get('page')
     paginator = Paginator(product_list, 12)
 
@@ -337,7 +337,7 @@ def reviewReport(request, reporteId):
 def addProductToShoppingList(request):
     if request.method == 'POST':
         idProd = request.POST.get('productId')
-        producto = get_object_or_404(Producto.objects.filter(pk=idProd))        
+        producto = get_object_or_404(Producto.objects.filter(pk=idProd))
         listaCompra = ListaDeCompra.objects.filter(perfil=get_object_or_404(Perfil, user=request.user))
         if listaCompra.exists():
             lista = listaCompra.get()
@@ -351,4 +351,4 @@ def addProductToShoppingList(request):
             lista = ListaDeCompra(perfil=get_object_or_404(Perfil, user=request.user))
             lista.save()
             lista.productos.add(producto)
-            return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)               
+            return JsonResponse({'success':'true', 'msj': "El producto se ha añadido correctamente a la lista de la compra"}, safe=False)

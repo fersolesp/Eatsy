@@ -1,11 +1,9 @@
 import json
-from typing import List
 from urllib.parse import urlencode
 from authentication.models import Dieta, Perfil
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
-from django.urls import reverse
 from rest_framework.test import APIClient, APITestCase
 
 # Create your tests here.
@@ -305,7 +303,7 @@ class EatsyApiTests(APITestCase):
         self.client.login(username='john', password='johnpassword')
         response = self.client.get('/shoppingList/', {}, format= 'json')
         self.assertEquals(response.status_code, 200)
-    
+
     def test_delete_element_from_lista_compra(self):
         self.client.login(username='john', password='johnpassword')
         self.client.post('/shoppingList/empty')

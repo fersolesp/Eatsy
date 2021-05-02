@@ -116,9 +116,9 @@
         <div class="col-xl-3 col-lg-4 col-md-6 col-12 d-flex product-card">
             <div style="width:100%;" class="product-card-inner">
                 <div class="row justify-content-center fotosparatamanno">
-                    <div  class="col-12 text-center" href="show/{{product.id}}" style="height: 100%; vertical-align: center; display: table; align-items: center;">
+                    <div class="col-12 text-center" href="show/{{product.id}}" style="height: 100%; vertical-align: center; display: table; align-items: center;">
                         <div style="display: table-cell; vertical-align: middle;">
-                            <a  href="show/{{product.id}}"> <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde" src="{{product.foto.url}}" alt=""></a>
+                            <a href="show/{{product.id}}"> <img style="width: inherit; max-width: 100%;" class="m-auto product-img-list borde" src="{{product.foto.url}}" alt=""></a>
                         </div>
                     </div>
                 </div>
@@ -129,9 +129,9 @@
                 </div>
                 <div class="row-fluid  text-center descripcion">
                     {% for dieta in product.dietas.all %}
-                    <div style="display:inline-block;"> 
+                    <div style="display:inline-block;">
                         <br>
-                        <img class="nada" src="/static/{{dieta.logo}}" title="{{dieta.nombre}}" alt="{{dieta.nombre}}" width="35" height="35"/>
+                        <img class="nada" src="/static/{{dieta.logo}}" title="{{dieta.nombre}}" alt="{{dieta.nombre}}" width="35" height="35" />
                     </div>
                     {% endfor %}
                 </div>
@@ -144,33 +144,29 @@
         </div>
         {% endfor %}
     </div>
-        <script type="text/javascript">
-            let fotos = document.querySelectorAll(".fotosparatamanno");
+    <script type="text/javascript">
+        let fotos = document.querySelectorAll(".fotosparatamanno");
 
-            let maxtam = parseInt(getIntPixeles(fotos[0]));
-            if(maxtam > 50){
-                calculaTam(fotos);
-            } else {
-                window.onload = () => {
-                     calculaTam(fotos);
+        let maxtam = parseInt(getIntPixeles(fotos[0]));
+        window.onload = () => {
+            calculaTam(fotos);
+        }
 
+        function calculaTam(arr) {
+            arr.forEach(f => {
+                if (getIntPixeles(f) > maxtam) {
+                    maxtam = getIntPixeles(f);
                 }
-            }
-            function calculaTam(arr){
-                arr.forEach(f => {
-                    if(getIntPixeles(f) > maxtam){
-                        maxtam = getIntPixeles(f);
-                    }
-                });
-                arr.forEach(f => {
-                    f.style.height = maxtam + "px"
-                });
-            }
+            });
+            arr.forEach(f => {
+                f.style.height = maxtam + "px"
+            });
+        }
 
-            function getIntPixeles(foto) {
-                return parseInt(getComputedStyle(foto).height.replace("px",""));
-            }
-        </script>
+        function getIntPixeles(foto) {
+            return parseInt(getComputedStyle(foto).height.replace("px", ""));
+        }
+    </script>
     <div class="row justify-content-center">
         <!-- Paginacion -->
         <nav aria-label="Page navigation example">
@@ -316,7 +312,16 @@
         document.getElementById("botonAdd").style.left = window.innerWidth - 100 + "px";
     }
 </script>
-
+<script type="text/javascript">
+    let esfirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    if (esfirefox) {
+        filtros = document.querySelectorAll(".modal-body#filter .form-check-input");
+        filtros.forEach(el => {
+            el.style.visibility = "visible";
+            el.style.marginTop = "11px";
+        });
+    }
+</script>
 
 
 

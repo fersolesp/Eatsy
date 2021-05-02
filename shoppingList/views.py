@@ -1,8 +1,5 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import get_object_or_404, redirect, render
-from product.models import Producto
-from recipe.models import Receta
-
 from shoppingList.models import ListaDeCompra
 
 

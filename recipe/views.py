@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from recipe.models import Receta
 from django.contrib.auth.decorators import user_passes_test, login_required
 from recipe.forms import CreateRecipeForm
@@ -25,7 +25,7 @@ def createReceta(request):
     productos = Producto.objects.filter(estado="Aceptado").order_by('titulo')
     formProducts=[]
     for product in productos:
-        formProducts.append((product.id,product.titulo)) 
+        formProducts.append((product.id,product.titulo))
     form = CreateRecipeForm(formProducts)
     if request.method=='GET':
         return render(request,'recipes/create.html', {'form':form})
