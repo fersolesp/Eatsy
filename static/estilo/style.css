@@ -565,15 +565,12 @@ a {
 
 .modal-body#filter .form-check-input {
   visibility: hidden;
+  -moz-appearance:initial;
 }
 
 .modal-body#filter .form-check-label {
   padding-left: 4%;
   padding-top: 1.6%;
-}
-
-input[type=checkbox] {
-  -moz-appearance:initial;
 }
 
 /*VEGANOS*/
