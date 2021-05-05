@@ -386,6 +386,7 @@
                     <div class="col-auto m-auto" style="width: max-content;">
                         <form action="/recipe/create" method="GET">
                             {% csrf_token %}
+                            <input type="hidden" value="{{product.id}}" name="productId" id="productId">
                             <button type="submit" class="btn btn-warning btn-lg">Añadir Receta</button>
                         </form>{% endif %}
                     </div>
