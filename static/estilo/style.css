@@ -572,6 +572,10 @@ a {
   padding-top: 1.6%;
 }
 
+input[type=checkbox] {
+  -moz-appearance:initial;
+}
+
 /*VEGANOS*/
 input#id_dietas_0::after {
   visibility: visible;
