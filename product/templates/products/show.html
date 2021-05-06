@@ -195,6 +195,73 @@
                                 <div class="titulito"> &nbsp;&nbsp;&nbsp;Precio medio: {{ precio_medio|floatformat:2 }}€</div>
                             </div>
                         </div>
+                        <!-- INFORMACIÓN NUTRICIONAL -->
+                        <div class="row mt-3 mb-3 product-card-descripcion">
+                            <div class="row mb-2">
+                                &nbsp;&nbsp;&nbsp;
+                                <div class="titulito">Información nutricional:</div>&nbsp;
+                            </div>
+                            <div class="row mb-4">
+                                <div>
+                                    &nbsp;&nbsp;&nbsp;Calorías: 
+                                    {% if product.calorias != None %}
+                                    {{ product.calorias }} kcal
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;Grasas: 
+                                    {% if product.grasas != None %}
+                                    {{ product.grasas }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de las cuales saturadas: 
+                                    {% if product.grasas_saturadas != None %}
+                                    {{ product.grasas_saturadas }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;Hidratos de carbono: 
+                                    {% if product.hidratos != None %}
+                                    {{ product.hidratos }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de los cuales azúcares: 
+                                    {% if product.azucares != None %}
+                                    {{ product.azucares }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;Fibra: 
+                                    {% if product.fibra != None %}
+                                    {{ product.fibra }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;Proteinas: 
+                                    {% if product.proteinas != None %}
+                                    {{ product.proteinas }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;Sal: 
+                                    {% if product.sal != None %}
+                                    {{ product.sal }} g.
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
                         <!-- MODAL REPORTAR -->
                         <div class="row mt-5 mb-5">
 

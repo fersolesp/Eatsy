@@ -138,7 +138,6 @@ def listProduct(request):
         # UBICACIÓN
         for ubicacion in searchProductForm.cleaned_data['ubicaciones']:
             product_list = product_list.filter(ubicaciones__id = ubicacion.id)
-        print(searchProductForm.cleaned_data)
 
         # ORDENAR
         orderBy = searchProductForm.cleaned_data['orderBy']
@@ -179,8 +178,20 @@ def createProduct(request):
             precio = form.cleaned_data["precio"]
             dieta = form.cleaned_data['dieta']
             ubicacion = form.cleaned_data['ubicaciones']
+
+            # Valores nutricionales
+            calorias = form.cleaned_data['calorias']
+            grasas = form.cleaned_data['grasas']
+            grasas_saturadas = form.cleaned_data['grasas_saturadas']
+            hidratos = form.cleaned_data['hidratos']
+            azucares = form.cleaned_data['azucares']
+            fibra = form.cleaned_data['fibra']
+            proteinas = form.cleaned_data['proteinas']
+            sal = form.cleaned_data['sal']
             
-            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, user=request.user))
+            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",
+                calorias = calorias, grasas = grasas, grasas_saturadas=grasas_saturadas, hidratos=hidratos, azucares=azucares,
+                fibra=fibra, proteinas=proteinas, sal=sal, user = get_object_or_404(Perfil, user=request.user))
             producto.save()
 
             for d in dieta:
@@ -215,7 +226,15 @@ def reviewProduct(request, productId):
             'descripcion': producto.descripcion,
             'precio': producto.precioMedio,
             'dieta': producto.dietas.all(),
-            'ubicaciones': producto.ubicaciones.all()
+            'ubicaciones': producto.ubicaciones.all(),
+            'calorias': producto.calorias,
+            'grasas': producto.grasas,
+            'grasas_saturadas': producto.grasas_saturadas,
+            'hidratos': producto.hidratos,
+            'azucares': producto.azucares,
+            'fibra': producto.fibra,
+            'proteinas': producto.proteinas,
+            'sal': producto.sal
         }
         form = ReviewProductForm(initial=data)
 
@@ -259,6 +278,17 @@ def reviewProduct(request, productId):
                     producto.dietas.add(get_object_or_404(Dieta, nombre=dieta))
 
                 producto.estado = 'Aceptado'
+
+                # Valores nutricionales
+                producto.calorias = form.cleaned_data['calorias']
+                producto.grasas = form.cleaned_data['grasas']
+                producto.grasas_saturadas = form.cleaned_data['grasas_saturadas']
+                producto.hidratos = form.cleaned_data['hidratos']
+                producto.azucares = form.cleaned_data['azucares']
+                producto.fibra = form.cleaned_data['fibra']
+                producto.proteinas = form.cleaned_data['proteinas']
+                producto.sal = form.cleaned_data['sal']
+
                 producto.save()
                 return redirect('product:show', producto.id)
 
