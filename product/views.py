@@ -16,7 +16,7 @@ from shoppingList.models import ListaDeCompra
 from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
 from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
-                            UbicacionProducto, Valoracion)
+                            UbicacionProducto, Valoracion, Categoria)
 
 
 def aboutUs(request):
@@ -178,6 +178,7 @@ def createProduct(request):
             precio = form.cleaned_data["precio"]
             dieta = form.cleaned_data['dieta']
             ubicacion = form.cleaned_data['ubicaciones']
+            categoria = form.cleaned_data['categoria']
 
             # Valores nutricionales
             calorias = form.cleaned_data['calorias']
@@ -196,6 +197,9 @@ def createProduct(request):
 
             for d in dieta:
                 producto.dietas.add(get_object_or_404(Dieta, nombre=d))
+
+            for c in categoria:
+                producto.categorias.add(get_object_or_404(Categoria, nombre=c))
 
             # Por cada pequemercado crear tabla intermedia
             if(form.cleaned_data['nombreComercio']!='' and form.cleaned_data['lat']!='' and form.cleaned_data['lon']!=''):
@@ -227,6 +231,7 @@ def reviewProduct(request, productId):
             'precio': producto.precioMedio,
             'dieta': producto.dietas.all(),
             'ubicaciones': producto.ubicaciones.all(),
+            'categoria': producto.categorias.all(),
             'calorias': producto.calorias,
             'grasas': producto.grasas,
             'grasas_saturadas': producto.grasas_saturadas,
@@ -276,6 +281,10 @@ def reviewProduct(request, productId):
                 producto.dietas.clear()
                 for dieta in form.cleaned_data['dieta']:
                     producto.dietas.add(get_object_or_404(Dieta, nombre=dieta))
+
+                producto.categorias.clear()
+                for categoria in form.cleaned_data['categoria']:
+                    producto.categorias.add(get_object_or_404(Categoria, nombre=categoria))
 
                 producto.estado = 'Aceptado'
 

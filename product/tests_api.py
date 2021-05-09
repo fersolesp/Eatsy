@@ -148,6 +148,7 @@ class EatsyApiTests(APITestCase):
             "descripcion":"Galletas maría sin gluten",
             "precio":2.45,
             "dieta":1,
+            "categoria":1,
             "ubicaciones":3,
             "revision":"Aceptar",
         })
@@ -165,6 +166,7 @@ class EatsyApiTests(APITestCase):
             "descripcion":"Crunchy Crumb: rebozado crujiente sin gluten",
             "precio":1.75,
             "dieta":1,
+            "categoria":1,
             "ubicaciones":3,
             "revision":"Denegar",
         })
@@ -232,6 +234,7 @@ class EatsyApiTests(APITestCase):
                     "descripcion":"Sopa de cacao sin gluten",
                     "precio":2.12,
                     "dieta":1,
+                    "categoria":1,
                     "ubicaciones":2,
                     "foto":foto,
                 }

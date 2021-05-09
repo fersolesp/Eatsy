@@ -199,67 +199,34 @@
                         <div class="row mt-3 mb-3 product-card-descripcion">
                             <div class="row mb-2">
                                 &nbsp;&nbsp;&nbsp;
-                                <div class="titulito">Información nutricional:</div>&nbsp;
+                                <div class="titulito">Información nutricional por 100 g:</div>&nbsp;
                             </div>
                             <div class="row mb-4">
                                 <div>
-                                    &nbsp;&nbsp;&nbsp;Calorías: 
-                                    {% if product.calorias != None %}
-                                    {{ product.calorias }} kcal
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;Grasas: 
-                                    {% if product.grasas != None %}
-                                    {{ product.grasas }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de las cuales saturadas: 
-                                    {% if product.grasas_saturadas != None %}
-                                    {{ product.grasas_saturadas }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;Hidratos de carbono: 
-                                    {% if product.hidratos != None %}
-                                    {{ product.hidratos }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de los cuales azúcares: 
-                                    {% if product.azucares != None %}
-                                    {{ product.azucares }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;Fibra: 
-                                    {% if product.fibra != None %}
-                                    {{ product.fibra }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;Proteinas: 
-                                    {% if product.proteinas != None %}
-                                    {{ product.proteinas }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
-                                    <br>
-                                    &nbsp;&nbsp;&nbsp;Sal: 
-                                    {% if product.sal != None %}
-                                    {{ product.sal }} g.
-                                    {% else %}
-                                        -
-                                    {% endif %}
+                                    &nbsp;&nbsp;&nbsp;Valor energético: {% if product.calorias != None %} {{ product.calorias }} kcal {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;Grasas: {% if product.grasas != None %} {{ product.grasas }} g. {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de las cuales saturadas: {% if product.grasas_saturadas != None %} {{ product.grasas_saturadas }} g. {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;Hidratos de carbono: {% if product.hidratos != None %} {{ product.hidratos }} g. {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de los cuales azúcares: {% if product.azucares != None %} {{ product.azucares }} g. {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;Fibra: {% if product.fibra != None %} {{ product.fibra }} g. {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;Proteinas: {% if product.proteinas != None %} {{ product.proteinas }} g. {% else %} - {% endif %}
+                                    <br> &nbsp;&nbsp;&nbsp;Sal: {% if product.sal != None %} {{ product.sal }} g. {% else %} - {% endif %}
                                     <br>
                                 </div>
+                            </div>
+                        </div>
+                        <!-- Categorías -->
+                        <div class="row mt-3 mb-3 product-card-descripcion">
+                            <div class="row mb-2">
+                                &nbsp;&nbsp;&nbsp;
+                                <div class="titulito">Categorías:</div>&nbsp;
+                            </div>
+                            <div class="row">
+                                {% for categoria in product.categorias.all %}
+                                <div style="padding:14px;">
+                                    &nbsp;&nbsp;&nbsp;{{categoria}}
+                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                         <!-- MODAL REPORTAR -->
