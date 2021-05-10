@@ -189,10 +189,11 @@ def createProduct(request):
             fibra = form.cleaned_data['fibra']
             proteinas = form.cleaned_data['proteinas']
             sal = form.cleaned_data['sal']
+            mayorEdad = form.cleaned_data['mayorEdad']
             
             producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",
                 calorias = calorias, grasas = grasas, grasas_saturadas=grasas_saturadas, hidratos=hidratos, azucares=azucares,
-                fibra=fibra, proteinas=proteinas, sal=sal, user = get_object_or_404(Perfil, user=request.user))
+                fibra=fibra, proteinas=proteinas, sal=sal, mayorEdad=mayorEdad, user = get_object_or_404(Perfil, user=request.user))
             producto.save()
 
             for d in dieta:
@@ -239,7 +240,8 @@ def reviewProduct(request, productId):
             'azucares': producto.azucares,
             'fibra': producto.fibra,
             'proteinas': producto.proteinas,
-            'sal': producto.sal
+            'sal': producto.sal,
+            'mayorEdad': producto.mayorEdad
         }
         form = ReviewProductForm(initial=data)
 
@@ -297,7 +299,8 @@ def reviewProduct(request, productId):
                 producto.fibra = form.cleaned_data['fibra']
                 producto.proteinas = form.cleaned_data['proteinas']
                 producto.sal = form.cleaned_data['sal']
-
+                #mayor de edad
+                producto.mayorEdad = form.cleaned_data['mayorEdad']
                 producto.save()
                 return redirect('product:show', producto.id)
 
