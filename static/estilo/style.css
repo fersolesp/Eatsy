@@ -471,11 +471,22 @@ a {
   }
 }
 
+.fotoMayorEdad {
+  position: absolute;
+  left: 15px;
+  top: 0px;
+  width: 50px;
+}
+
 @media (max-width: 450px) {
   .ponfondo {
     background-image: url("fondocard.png");
   }
-
+  .fotoMayorEdad{
+    width: 40px;
+    left: 12px;
+    top: 0px;
+  }
   .nombreProductovw {
     font-family: "Abril Fatface", Verdana, Geneva, Tahoma, sans-serif;
     font-size: 10vw;

@@ -37,7 +37,7 @@ class CreateProductForm(forms.ModelForm):
     fibra = forms.DecimalField(min_value=Decimal('0.00'), max_digits=5, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     proteinas = forms.DecimalField(min_value=Decimal('0.00'), max_digits=5, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     sal = forms.DecimalField(min_value=Decimal('0.00'), max_digits=5, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
-
+    mayorEdad = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class' : 'form-check-input'}))
     ubicaciones = CustomMMCF(queryset=Ubicacion.objects.all(), required=False, widget=forms.Select(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     class Meta:
         model = Ubicacion
@@ -153,7 +153,8 @@ class ReviewProductForm(forms.ModelForm):
     fibra = forms.DecimalField(min_value=Decimal('0.00'), max_digits=5, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     proteinas = forms.DecimalField(min_value=Decimal('0.00'), max_digits=5, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
     sal = forms.DecimalField(min_value=Decimal('0.00'), max_digits=5, decimal_places=2, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
-
+    mayorEdad = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class' : 'form-check-input', 'style' :"margin-top: 6px;"}))
+  
     ubicaciones = CustomMMCF2(queryset= Ubicacion.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
     
     Revision_Enum = (

@@ -102,6 +102,13 @@
                         <div class="col-sm-12" style="color: red;">{{ form.errors.sal.as_text}}</div>
                         <div class="col-sm-12">{{ form.sal }}</div>
                     </div>
+                    <div style="margin-top: 20px;" class=" form-check">
+                      <div class="col-sm-12" style="color: red;">{{ form.errors.mayorEdad.as_text}}</div>
+                      <span style="margin-top: 5px;">{{ form.mayorEdad }}</span>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        marca si este producto <strong><u>no</u></strong> es apropiado para menores de 18
+                      </label>
+                    </div>
                     <br />
                     <div class="row">
                         <label class="col-sm-2">Ubicación<span style="color:red;">*</span>:&nbsp;</label>

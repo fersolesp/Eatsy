@@ -58,6 +58,7 @@ class Producto(models.Model):
     fibra = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
     proteinas = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
     sal = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    mayorEdad = models.BooleanField(null=True, blank=True)
     
     class Meta:
         # Por defecto se ordena por id descendiente (más nuevos primero)
