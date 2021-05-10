@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from product.models import (Aportacion, CausaReporte,
                             Producto, Reporte, Ubicacion, UbicacionProducto,
-                            Valoracion)
+                            Valoracion,Categoria)
 
 class ProductoAdmin(admin.ModelAdmin):
     list_display = ['titulo', 'estado']
@@ -19,3 +19,4 @@ admin.site.register(CausaReporte)
 admin.site.register(Reporte, ReporteAdmin)
 admin.site.register(Valoracion)
 admin.site.register(Aportacion)
+admin.site.register(Categoria)

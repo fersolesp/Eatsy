@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import (FileExtensionValidator, MaxValueValidator,
                                     MinValueValidator)
 
-from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion
+from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion, Categoria
 
 
 class CustomMMCF(forms.ModelChoiceField):
@@ -26,6 +26,7 @@ class CreateProductForm(forms.ModelForm):
     precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, max_value=99.99, widget=forms.NumberInput(attrs={'class':'form-control'}))
 
     dieta = forms.ModelMultipleChoiceField(label='Etiqueta', queryset=Dieta.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
+    categoria = forms.ModelMultipleChoiceField(label='Categoría', queryset=Categoria.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
 
     # Valores nutricionales
     calorias = forms.IntegerField(min_value=0, max_value=1100, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
@@ -141,6 +142,7 @@ class ReviewProductForm(forms.ModelForm):
     precio = forms.DecimalField(label="Precio",max_digits=4, decimal_places=2, min_value=0.01, widget=forms.NumberInput(attrs={'class':'form-control'}))
 
     dieta = forms.ModelMultipleChoiceField(label='Etiqueta', queryset=Dieta.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 200px'}))
+    categoria = forms.ModelMultipleChoiceField(label='Categoría', queryset=Categoria.objects.all(), widget=forms.SelectMultiple(attrs={'class' : 'form-control', 'style':'width : 100%'}))
 
     # Valores nutricionales
     calorias = forms.IntegerField(min_value=0, max_value=1100, required=False, widget=forms.NumberInput(attrs={'class' : 'form-control', 'style':'width : 100%'}))
