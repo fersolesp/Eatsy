@@ -7,7 +7,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import (FileExtensionValidator, MaxValueValidator,
                                     MinValueValidator)
 
-from .models import Aportacion, CausaReporte, Producto, Reporte, Ubicacion, Categoria
+from .models import (Aportacion, Categoria, CausaReporte, Producto, Reporte,
+                     Ubicacion)
 
 
 class CustomMMCF(forms.ModelChoiceField):
@@ -98,15 +99,17 @@ class CommentForm(forms.ModelForm):
 class SearchProductForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['titulo', 'dietas', 'ubicaciones']
+        fields = ['titulo', 'dietas', 'ubicaciones', 'categorias']
         labels = {
             'titulo': 'Nombre del producto',
-            'ubicaciones': 'Ubicación'
+            'ubicaciones': 'Ubicación',
+            'categorias': 'Categorías'
         }
         widgets = {
             'dietas': forms.CheckboxSelectMultiple(attrs={"form":"filtros-form", 'class': 'form-check'}),
             'titulo': forms.TextInput(attrs={"class":"w-100 h-100 form-control border border-dark", "placeholder":"Buscar"}),
-            'ubicaciones': forms.SelectMultiple(attrs={"form":"filtros-form", "class":"w-100 h-100 form-control border border-dark"})
+            'ubicaciones': forms.SelectMultiple(attrs={"form":"filtros-form", "class":"w-100 h-100 form-control border"}),
+            'categorias': forms.SelectMultiple(attrs={"form":"filtros-form", "class":"w-100 h-100 form-control border"})
         }
 
     class OrderBy(Enum):
