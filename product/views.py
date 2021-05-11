@@ -15,8 +15,8 @@ from shoppingList.models import ListaDeCompra
 
 from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
-from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
-                            UbicacionProducto, Valoracion, Categoria)
+from product.models import (Aportacion, Categoria, Dieta, Producto, Reporte,
+                            Ubicacion, UbicacionProducto, Valoracion)
 
 
 def aboutUs(request):
@@ -134,6 +134,10 @@ def listProduct(request):
         # FILTRAR
         for dieta in searchProductForm.cleaned_data['dietas']:
             product_list = product_list.filter(dietas__id = dieta.id)
+
+        # CATEGORÍAS
+        for categoria in searchProductForm.cleaned_data['categorias']:
+            product_list = product_list.filter(categorias__id = categoria.id)
 
         # UBICACIÓN
         for ubicacion in searchProductForm.cleaned_data['ubicaciones']:
