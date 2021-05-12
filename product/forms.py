@@ -137,6 +137,7 @@ class SearchProductForm(forms.ModelForm):
         self.fields['titulo'].required = False
         self.fields['dietas'].required = False
         self.fields['ubicaciones'].required = False
+        self.fields['categorias'].required = False
 
 class ReviewProductForm(forms.ModelForm):
     foto= forms.ImageField(label="Imagen", required= False, widget=forms.FileInput(attrs={'hidden': 'True'}))
