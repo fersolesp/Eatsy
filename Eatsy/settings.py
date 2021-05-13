@@ -28,6 +28,8 @@ SECRET_KEY = 'dfq0^_-im(w^t17=8r*hcoxyzut!=(b7lg(jv6m0ql&f_^n_(@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_FAILURE_VIEW = 'myproject.path.to.friendly_csrf_failure_view'
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition
