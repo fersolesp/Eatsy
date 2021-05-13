@@ -212,7 +212,7 @@ class EatsyApiTests(APITestCase):
         data = urlencode({
             "revision":revision,
         })
-        response = self.client.post('/product/report/action/1', data, content_type= 'application/x-www-form-urlencoded')
+        response = self.client.post('/product/report/action/2', data, content_type= 'application/x-www-form-urlencoded')
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/report/list")
