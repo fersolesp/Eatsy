@@ -28,6 +28,10 @@ def createReceta(request):
         formProducts.append((product.id,product.titulo))
     form = CreateRecipeForm(formProducts)
     if request.method=='GET':
+        data = {
+            'productos':request.GET.get("productId"),
+            }
+        form = CreateRecipeForm(formProducts,initial=data)
         return render(request,'recipes/create.html', {'form':form})
     if request.method=='POST':
         form = CreateRecipeForm(formProducts,request.POST, request.FILES)

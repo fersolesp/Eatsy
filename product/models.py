@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from authentication.models import Dieta, Perfil
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -25,7 +27,11 @@ class Ubicacion(models.Model):
 
 #     def __str__(self):
 #         return self.nombre
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=50, null=None)
 
+    def __str__(self):
+        return self.nombre
 class Producto(models.Model):
     State_Enum = (("Pendiente", "Pendiente de Revisión"),
                   ("Aceptado", "Aceptado"))
@@ -42,7 +48,18 @@ class Producto(models.Model):
     user = models.ForeignKey(Perfil, on_delete=models.DO_NOTHING)
     ubicaciones = models.ManyToManyField(
         Ubicacion, through="UbicacionProducto")
-
+    categorias = models.ManyToManyField(Categoria)
+    # Valores nutricionales
+    calorias = models.PositiveIntegerField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(1100)])
+    grasas = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    grasas_saturadas = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    hidratos = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    azucares = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    fibra = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    proteinas = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    sal = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    mayorEdad = models.BooleanField(null=True, blank=True)
+    
     class Meta:
         # Por defecto se ordena por id descendiente (más nuevos primero)
         ordering = ['-id']

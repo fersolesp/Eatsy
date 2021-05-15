@@ -148,6 +148,7 @@ class EatsyApiTests(APITestCase):
             "descripcion":"Galletas maría sin gluten",
             "precio":2.45,
             "dieta":1,
+            "categoria":1,
             "ubicaciones":3,
             "revision":"Aceptar",
         })
@@ -165,6 +166,7 @@ class EatsyApiTests(APITestCase):
             "descripcion":"Crunchy Crumb: rebozado crujiente sin gluten",
             "precio":1.75,
             "dieta":1,
+            "categoria":1,
             "ubicaciones":3,
             "revision":"Denegar",
         })
@@ -210,7 +212,7 @@ class EatsyApiTests(APITestCase):
         data = urlencode({
             "revision":revision,
         })
-        response = self.client.post('/product/report/action/1', data, content_type= 'application/x-www-form-urlencoded')
+        response = self.client.post('/product/report/action/2', data, content_type= 'application/x-www-form-urlencoded')
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "/product/report/list")
@@ -232,6 +234,7 @@ class EatsyApiTests(APITestCase):
                     "descripcion":"Sopa de cacao sin gluten",
                     "precio":2.12,
                     "dieta":1,
+                    "categoria":1,
                     "ubicaciones":2,
                     "foto":foto,
                 }

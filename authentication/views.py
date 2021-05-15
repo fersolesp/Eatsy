@@ -120,7 +120,7 @@ def myProfile(request):
     data = {
             'nombre': user.first_name,
             'apellidos': user.last_name,
-            'dieta': [dieta.nombre for dieta in perfil.dietas.all()],
+            'dieta': perfil.dietas.all(),
             'activada': perfil.activeAccount
         }
     form = ProfileForm(initial=data)

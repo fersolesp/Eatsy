@@ -15,8 +15,8 @@ from shoppingList.models import ListaDeCompra
 
 from product.forms import (AddUbicationForm, CommentForm, CreateProductForm,
                            ReporteForm, ReviewProductForm, SearchProductForm)
-from product.models import (Aportacion, Dieta, Producto, Reporte, Ubicacion,
-                            UbicacionProducto, Valoracion)
+from product.models import (Aportacion, Categoria, Dieta, Producto, Reporte,
+                            Ubicacion, UbicacionProducto, Valoracion)
 
 
 def aboutUs(request):
@@ -135,10 +135,13 @@ def listProduct(request):
         for dieta in searchProductForm.cleaned_data['dietas']:
             product_list = product_list.filter(dietas__id = dieta.id)
 
+        # CATEGORÍAS
+        for categoria in searchProductForm.cleaned_data['categorias']:
+            product_list = product_list.filter(categorias__id = categoria.id)
+
         # UBICACIÓN
         for ubicacion in searchProductForm.cleaned_data['ubicaciones']:
             product_list = product_list.filter(ubicaciones__id = ubicacion.id)
-        print(searchProductForm.cleaned_data)
 
         # ORDENAR
         orderBy = searchProductForm.cleaned_data['orderBy']
@@ -179,12 +182,29 @@ def createProduct(request):
             precio = form.cleaned_data["precio"]
             dieta = form.cleaned_data['dieta']
             ubicacion = form.cleaned_data['ubicaciones']
+            categoria = form.cleaned_data['categoria']
+
+            # Valores nutricionales
+            calorias = form.cleaned_data['calorias']
+            grasas = form.cleaned_data['grasas']
+            grasas_saturadas = form.cleaned_data['grasas_saturadas']
+            hidratos = form.cleaned_data['hidratos']
+            azucares = form.cleaned_data['azucares']
+            fibra = form.cleaned_data['fibra']
+            proteinas = form.cleaned_data['proteinas']
+            sal = form.cleaned_data['sal']
+            mayorEdad = form.cleaned_data['mayorEdad']
             
-            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",user = get_object_or_404(Perfil, user=request.user))
+            producto = Producto(titulo = nombre, descripcion = descripcion, foto = path, precioMedio = precio, estado = "Pendiente",
+                calorias = calorias, grasas = grasas, grasas_saturadas=grasas_saturadas, hidratos=hidratos, azucares=azucares,
+                fibra=fibra, proteinas=proteinas, sal=sal, mayorEdad=mayorEdad, user = get_object_or_404(Perfil, user=request.user))
             producto.save()
 
             for d in dieta:
                 producto.dietas.add(get_object_or_404(Dieta, nombre=d))
+
+            for c in categoria:
+                producto.categorias.add(get_object_or_404(Categoria, nombre=c))
 
             # Por cada pequemercado crear tabla intermedia
             if(form.cleaned_data['nombreComercio']!='' and form.cleaned_data['lat']!='' and form.cleaned_data['lon']!=''):
@@ -215,7 +235,17 @@ def reviewProduct(request, productId):
             'descripcion': producto.descripcion,
             'precio': producto.precioMedio,
             'dieta': producto.dietas.all(),
-            'ubicaciones': producto.ubicaciones.all()
+            'ubicaciones': producto.ubicaciones.all(),
+            'categoria': producto.categorias.all(),
+            'calorias': producto.calorias,
+            'grasas': producto.grasas,
+            'grasas_saturadas': producto.grasas_saturadas,
+            'hidratos': producto.hidratos,
+            'azucares': producto.azucares,
+            'fibra': producto.fibra,
+            'proteinas': producto.proteinas,
+            'sal': producto.sal,
+            'mayorEdad': producto.mayorEdad
         }
         form = ReviewProductForm(initial=data)
 
@@ -258,7 +288,23 @@ def reviewProduct(request, productId):
                 for dieta in form.cleaned_data['dieta']:
                     producto.dietas.add(get_object_or_404(Dieta, nombre=dieta))
 
+                producto.categorias.clear()
+                for categoria in form.cleaned_data['categoria']:
+                    producto.categorias.add(get_object_or_404(Categoria, nombre=categoria))
+
                 producto.estado = 'Aceptado'
+
+                # Valores nutricionales
+                producto.calorias = form.cleaned_data['calorias']
+                producto.grasas = form.cleaned_data['grasas']
+                producto.grasas_saturadas = form.cleaned_data['grasas_saturadas']
+                producto.hidratos = form.cleaned_data['hidratos']
+                producto.azucares = form.cleaned_data['azucares']
+                producto.fibra = form.cleaned_data['fibra']
+                producto.proteinas = form.cleaned_data['proteinas']
+                producto.sal = form.cleaned_data['sal']
+                #mayor de edad
+                producto.mayorEdad = form.cleaned_data['mayorEdad']
                 producto.save()
                 return redirect('product:show', producto.id)
 

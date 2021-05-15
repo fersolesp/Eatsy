@@ -1,111 +1,165 @@
-{% extends 'products/base.html'%}
-{% block head %}
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
-    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-{% endblock %}
+{% extends 'products/base.html'%} {% block head %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" /> {% endblock %} {% block titulo %} Revisar {% endblock %} {% block contenido %}
+<main class="container">
+    <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Revisar producto</h3>
+    <div class="row justify-content-center">
+        <div class="product-card-review-create product-card-inner col-12 ">
+            <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/review/{{product_id}}">{% csrf_token %}
+                <div class="form-group" style="margin-left: 2%;">
+                    <br/>
+                    <div class="row justify-content-center mb-2">
+                        <label style="cursor: pointer;" class="col-sm-6 col-md-3  btn btn-warning" for="id_foto">Cambiar imagen</label>
+                        <div>{{ form.foto}}</div>
 
-{% block titulo %} Revisar {% endblock %}
-
-    {% block contenido %}
-    <main class="container">
-        <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Revisar producto</h3>
-        <div class="row justify-content-center">
-            <div class="product-card-review-create product-card-inner col-12 ">
-                <form enctype="multipart/form-data" method="POST" class="post-form" action="/product/review/{{product_id}}">{% csrf_token %}
-                    <div class="form-group" style="margin-left: 2%;">
-                        <br/>
-                        <div class="row justify-content-center mb-2">
-                            <label style="cursor: pointer;" class="col-sm-6 col-md-3  btn btn-warning" for="id_foto">Cambiar imagen</label>
-                            <div>{{ form.foto}}</div>
-                           
-                        </div>
-                        <div class="row justify-content-center">
-                            <img id="foto" src="{{producto.foto.url}}" alt="" class="col-sm-10 col-md-8 col-lg-6">
-                            <div style="color: red;">
-                                {{form.foto.errors.as_text}}
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <label class="col-sm-2">Nombre<span style="color:red;">*</span>:&nbsp;</label>
-                            <div class="col-sm-4">{{ form.nombre}}</div>
-                            <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <label class="col-sm-2">Descripción<span style="color:red;">*</span>:&nbsp;</label>
-                            <div class="col-sm-9">{{ form.descripcion}}</div>
-                            <div style="color: red; margin-left: 17% ;">{{ form.errors.descripcion.as_text}}</div>
-                        </div>
-                        <br/>
-                        <br/>
-                        <div class="row">
-                            <label class="col-sm-2">Precio<span style="color:red;">*</span>:&nbsp;</label>
-                            <div class="col-sm-4">{{ form.precio}}</div>
-                            <div style="color: red;">{{ form.errors.precio.as_text}}</div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <label class="col-sm-2">Etiqueta (Selecciona varios pulsando Ctrl)<span style="color:red;">*</span>:&nbsp;</label>
-                            <div class="col-sm-9">{{ form.dieta}}</div>
-                            <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
-                        </div>
-                        <br>
-                        <div class="row"> 
-                            <label class="col-sm-2">Ubicación<span style="color:red;">*</span>:&nbsp;</label>
-                            <div class="col-sm-4">{{form.ubicaciones}}</div>
-                        </div>
-
-                        <!-- Button trigger modal -->
-                        
                     </div>
-                    <!-- Modal -->
-
-                    <div class="form-group">
-
-                        <div class="row justify-content-center nombreProductoPeque">
-                           <strong> Resultado de la revisión:</strong>
-                        </div>
-                        <div class="row justify-content-center">
-                        
-                            {% for choice in form.revision%}
-                                <div class="col-6 text-center" >
-                                <span class=" form-check-input">{{ choice.tag }}</span></span>
-                                <label style="margin-top:3px" class="form-check-label">
-                                    {{ choice.choice_label }}</label>
-                                </div>
-
-                            </span>
-                            {% endfor %}
+                    <div class="row justify-content-center">
+                        <img id="foto" src="{{producto.foto.url}}" alt="" class="col-sm-10 col-md-8 col-lg-6">
+                        <div style="color: red;">
+                            {{form.foto.errors.as_text}}
                         </div>
                     </div>
-                    
+                    <br/>
+                    <div class="row">
+                        <label class="col-sm-2">Nombre<span style="color:red;">*</span>:&nbsp;</label>
+                        <div class="col-sm-4">{{ form.nombre}}</div>
+                        <div style="color: red;">{{ form.errors.nombre.as_text}}</div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <label class="col-sm-2">Descripción<span style="color:red;">*</span>:&nbsp;</label>
+                        <div class="col-sm-9">{{ form.descripcion}}</div>
+                        <div style="color: red; margin-left: 17% ;">{{ form.errors.descripcion.as_text}}</div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <label class="col-sm-2">Precio<span style="color:red;">*</span>:&nbsp;</label>
+                        <div class="col-sm-4">{{ form.precio}}</div>
+                        <div style="color: red;">{{ form.errors.precio.as_text}}</div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <label class="col-sm-2">Etiqueta (Selecciona varios pulsando Ctrl)<span style="color:red;">*</span>:&nbsp;</label>
+                        <div class="col-sm-9">{{ form.dieta}}</div>
+                        <div style="color: red;">{{ form.errors.dieta.as_text}}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="col-sm-2">Categoría (Selecciona varios pulsando Ctrl)<span style="color:red;">*</span>:&nbsp;</label>
+                        <div class="col-sm-9">{{ form.categoria}}</div>
+                        <div style="color: red;">{{ form.errors.categoria.as_text}}</div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12"><label>Valor energético (kcal/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.calorias.as_text}}</div>
+                        <div class="col-sm-12">{{ form.calorias }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Grasas (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.grasas.as_text}}</div>
+                        <div class="col-sm-12">{{ form.grasas }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Grasas saturadas (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.grasas_saturadas.as_text}}</div>
+                        <div class="col-sm-12">{{ form.grasas_saturadas }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Hidratos de carbono (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.hidratos.as_text}}</div>
+                        <div class="col-sm-12">{{ form.hidratos }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Azúcares (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.azucares.as_text}}</div>
+                        <div class="col-sm-12">{{ form.azucares }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Fibra (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.fibra.as_text}}</div>
+                        <div class="col-sm-12">{{ form.fibra }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Proteínas (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.proteinas.as_text}}</div>
+                        <div class="col-sm-12">{{ form.proteinas }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Sal (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.sal.as_text}}</div>
+                        <div class="col-sm-12">{{ form.sal }}</div>
+                    </div>
+                    <div style="margin-top: 20px;" class=" form-check">
+                      <div class="col-sm-12" style="color: red;">{{ form.errors.mayorEdad.as_text}}</div>
+                      <span style="margin-top: 5px;">{{ form.mayorEdad }}</span>
+                      <label class="form-check-label" for="flexCheckDefault">
+                        marca si este producto <strong><u>no</u></strong> es apropiado para menores de 18
+                      </label>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label class="col-sm-2">Ubicación<span style="color:red;">*</span>:&nbsp;</label>
+                        <div class="col-sm-4">{{form.ubicaciones}}</div>
+                    </div>
 
-            <div class="row justify-content-center" style="padding-bottom: 10px;">
-                <div class="col-auto m-auto" style="justify-content: center;">
-                    <a class="btn btn-danger" onclick="mostrarAlerta()" >Cancelar</a>
-                    
-                    <button type="submit" class="save btn btn-warning" >Guardar revisión</button>
+                    <!-- Button trigger modal -->
+
                 </div>
-            </div>
+                <!-- Modal -->
 
-                </form>
-            </div>
+                <div class="form-group">
+
+                    <div class="row justify-content-center nombreProductoPeque">
+                        <strong> Resultado de la revisión:</strong>
+                    </div>
+                    <div class="row justify-content-center">
+
+                        {% for choice in form.revision%}
+                        <div class="col-6 text-center">
+                            <span class=" form-check-input">{{ choice.tag }}</span></span>
+                            <label style="margin-top:3px" class="form-check-label">
+                                    {{ choice.choice_label }}</label>
+                        </div>
+
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+                <div class="row justify-content-center" style="padding-bottom: 10px;">
+                    <div class="col-auto m-auto" style="justify-content: center;">
+                        <a class="btn btn-danger" onclick="mostrarAlerta()">Cancelar</a>
+
+                        <button type="submit" class="save btn btn-warning">Guardar revisión</button>
+                    </div>
+                </div>
+
+            </form>
         </div>
-    </main>
+    </div>
+</main>
 
 
 <script type="text/javascript">
+    document.getElementById('id_foto').onchange = function() {
 
-    document.getElementById('id_foto').onchange = function () {
-
-    previewFile()
+        previewFile()
     }
-    
+
     var svgMarkup = devuelveMarca()
     var platform = new H.service.Platform({
         'apikey': 'gWXf5JkHbWMy_dHGJ_JRIONnBqfx1slZj3YYfxqCCW4'
@@ -120,10 +174,12 @@
     var map = new H.Map(
 
         document.getElementById('mapContainer'),
-        defaultLayers.vector.normal.map,
-        {
+        defaultLayers.vector.normal.map, {
             zoom: 13,
-            center: { lng: -3.7032700, lat: 40.4166400 } //ejemplo para marcar ubicacion
+            center: {
+                lng: -3.7032700,
+                lat: 40.4166400
+            } //ejemplo para marcar ubicacion
         });
 
 
@@ -135,7 +191,7 @@
 
 
     var lastmarker = "es";
-    map.addEventListener('tap', function (evt) {
+    map.addEventListener('tap', function(evt) {
         if (lastmarker != "es") {
             map.removeObject(lastmarker)
         }
@@ -157,7 +213,9 @@
         document.getElementById("id_lat").value = position["lat"]
         document.getElementById("id_lon").value = position["lng"]
         var icon = new H.map.Icon(svgMarkup)
-        var marker = new H.map.Marker(position, { icon: icon })
+        var marker = new H.map.Marker(position, {
+            icon: icon
+        })
         map.addObject(marker)
         lastmarker = marker
     });
@@ -188,21 +246,23 @@
 
     // Instantiate the default behavior, providing the mapEvents object:
     var behavior = new H.mapevents.Behavior(mapEvents);
-    function mostrarAlerta(){
-                        var retVal = confirm("¿Seguro que quieres cancelar la revisión? No se guardará ningún cambio.");
-                        if( retVal == true ) {
-                            window.location.href = "/product/list"
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
+
+    function mostrarAlerta() {
+        var retVal = confirm("¿Seguro que quieres cancelar la revisión? No se guardará ningún cambio.");
+        if (retVal == true) {
+            window.location.href = "/product/list"
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function previewFile() {
         var preview = document.querySelector('#foto');
-        var file    = document.querySelector('#id_foto').files[0];
-        var reader  = new FileReader();
+        var file = document.querySelector('#id_foto').files[0];
+        var reader = new FileReader();
 
-        reader.onloadend = function () {
+        reader.onloadend = function() {
             preview.src = reader.result;
         }
 
@@ -268,8 +328,5 @@
         </svg>`;
         return svg;
     }
-
-
-
 </script>
-    {% endblock %}
+{% endblock %}

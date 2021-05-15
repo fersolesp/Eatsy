@@ -1,30 +1,23 @@
-{% extends 'products/base.html' %}}
-{% block titulo %}Añadir producto{% endblock %}
-{% block head %}
+{% extends 'products/base.html' %}} {% block titulo %}Añadir producto{% endblock %} {% block head %}
 <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-{% endblock %}
-
-{% block contenido %}
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" /> {% endblock %} {% block contenido %}
 <main class="container-fluid">
     <div id="colMap" class="col-sm-7  col-10"></div>
     <h3 class="text-center mt-5 mb-3 nombreProductoGrande">Añadir producto</h3>
     <div class="row justify-content-center">
         <div class="product-card-review-create col-sm-8  col-11">
-            <form onsubmit="return validateUbicaciones()" name="formCreate" enctype="multipart/form-data" method="POST"
-                class="post-form" action="/product/create">{% csrf_token %}
+            <form onsubmit="return validateUbicaciones()" name="formCreate" enctype="multipart/form-data" method="POST" class="post-form" action="/product/create">{% csrf_token %}
                 <div class="form-group">
                     <label style="color:red; align-content: center;">*Solo estos campos son obligatorios.</label>
                     <br />
                     <div class="row">
                         <div class="col-md-2"><label>Imagen <span style="color:red;">*</span>:&nbsp;</label></div>
-                        <label style="cursor: pointer;" class="btn btn-warning col-md-3"
-                            for="id_foto">Seleccionar archivo</label>
+                        <label style="cursor: pointer;" class="btn btn-warning col-md-3" for="id_foto">Seleccionar archivo</label>
                         <div>{{ form.foto }}</div>
-                        <div class = "col-md-5 text-center" id="Archivo">Ninguna imagen seleccionada</div>
+                        <div class="col-md-5 text-center" id="Archivo">Ninguna imagen seleccionada</div>
                         <div class="col-12" style="color: red;">{{ form.errors.foto.as_text}}</div>
                     </div>
                     <div class="row justify-content-center">
@@ -38,14 +31,14 @@
                         <div class="col-12"><label>Nombre <span style="color:red;">*</span>:&nbsp;</label></div>
                         <div class="col-sm-12" style="color: red;">{{ form.errors.nombre.as_text}}</div>
                         <div class="col-12">{{ form.nombre}}</div>
-                        
+
                     </div>
                     <br />
                     <div class="row">
                         <div class="col-sm-12"><label>Descripción <span style="color:red;">*</span>:&nbsp;</label></div>
                         <div class="col-sm-12" style="color: red;">{{ form.errors.descripcion.as_text}}</div>
                         <div class="col-sm-12">{{ form.descripcion}}</div>
-                        
+
                     </div>
                     <br />
                     <div class="row">
@@ -58,19 +51,81 @@
                         <div class="col-sm-12"><label>Etiqueta (Selecciona varios pulsando Ctrl) <span style="color:red;">*</span>:&nbsp;</label></div>
                         <div clas="col-sm-12" style="color: red;">{{ form.errors.dieta.as_text}}</div>
                         <div class="col-sm-12">{{form.dieta}}</div>
-                        
+
                     </div>
                     <br />
                     <div class="row">
-                        <div  class="col-12"><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
-                        <div class= "col-sm-10">{{form.ubicaciones}}</div>
+                        <div class="col-sm-12"><label>Categoría (Selecciona varios pulsando Ctrl) <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div clas="col-sm-12" style="color: red;">{{ form.errors.categoria.as_text}}</div>
+                        <div class="col-sm-12">{{form.categoria}}</div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Valor energético (kcal/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.calorias.as_text}}</div>
+                        <div class="col-sm-12">{{ form.calorias }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Grasas (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.grasas.as_text}}</div>
+                        <div class="col-sm-12">{{ form.grasas }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Grasas saturadas (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.grasas_saturadas.as_text}}</div>
+                        <div class="col-sm-12">{{ form.grasas_saturadas }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Hidratos de carbono (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.hidratos.as_text}}</div>
+                        <div class="col-sm-12">{{ form.hidratos }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Azúcares (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.azucares.as_text}}</div>
+                        <div class="col-sm-12">{{ form.azucares }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Fibra (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.fibra.as_text}}</div>
+                        <div class="col-sm-12">{{ form.fibra }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Proteínas (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.proteinas.as_text}}</div>
+                        <div class="col-sm-12">{{ form.proteinas }}</div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-12"><label>Sal (g/100 gr.):&nbsp;</label></div>
+                        <div class="col-sm-12" style="color: red;">{{ form.errors.sal.as_text}}</div>
+                        <div class="col-sm-12">{{ form.sal }}</div>
+                    </div>
+                    <div style="margin-top: 20px;" class=" form-check">
+                      <div class="col-sm-12" style="color: red;">{{ form.errors.mayorEdad.as_text}}</div>
+                      {{ form.mayorEdad }}
+                      <label class="form-check-label" for="flexCheckDefault">
+                        marca si este producto <strong><u>no</u></strong> es apropiado para menores de 18
+                      </label>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-12"><label>Ubicaciones <span style="color:red;">*</span>:&nbsp;</label></div>
+                        <div class="col-sm-10">{{form.ubicaciones}}</div>
                         <div class="col-sm-2" style="margin-top: 0.5%;">
                             <a onclick="mostrarMapa()" id="link">
-                                <img height="30px" width="30px"
-                                    src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+" />
+                                <img height="30px" width="30px" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMnB0IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgd2lkdGg9IjUxMnB0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im01MTIgMjU2YzAgMTQxLjM4NjcxOS0xMTQuNjEzMjgxIDI1Ni0yNTYgMjU2cy0yNTYtMTE0LjYxMzI4MS0yNTYtMjU2IDExNC42MTMyODEtMjU2IDI1Ni0yNTYgMjU2IDExNC42MTMyODEgMjU2IDI1NnptMCAwIiBmaWxsPSIjZmZkNDYwIi8+PHBhdGggZD0ibTIzMC41NjY0MDYgMjMwLjU2NjQwNi0xNjkuNTY2NDA2IDUwLjg2NzE4OCAyMjguMzk4NDM4IDIyOC4zOTg0MzdjMTE0LjY3MTg3NC0xNC45NDE0MDYgMjA1LjQ5MjE4Ny0xMDUuNzYxNzE5IDIyMC40MzM1OTMtMjIwLjQzMzU5M2wtMjI4LjM5ODQzNy0yMjguMzk4NDM4em0wIDAiIGZpbGw9IiNmZmJlMTEiLz48cGF0aCBkPSJtMjMwLjU2NjQwNiA2MXYxNjkuNTY2NDA2aC0xNjkuNTY2NDA2djUwLjg2NzE4OGgxNjkuNTY2NDA2djE2OS41NjY0MDZoMjUuNDMzNTk0bDguNDc2NTYyLTE5NS04LjQ3NjU2Mi0xOTV6bTAgMCIgZmlsbD0iIzQ0NjA4MCIvPjxwYXRoIGQ9Im0yODEuNDMzNTk0IDIzMC41NjY0MDZ2LTE2OS41NjY0MDZoLTI1LjQzMzU5NHYzOTBoMjUuNDMzNTk0di0xNjkuNTY2NDA2aDE2OS41NjY0MDZ2LTUwLjg2NzE4OHptMCAwIiBmaWxsPSIjMzI0ODYwIi8+PC9zdmc+"
+                                />
                             </a>
-                            
-                        </div> 
+
+                        </div>
                     </div>
                     <div style="color: red;">{{ form.errors.nombreComercio}}</div>
                     <div id="enseñaerror" class="row">
@@ -79,70 +134,73 @@
 
                     <!-- Button trigger modal -->
 
-                <!-- Modal -->
+                    <!-- Modal -->
                     <div class="mt-2" style="display:block;" id="displayer">
-                            <div class="row">
-                                <div class="col-12"><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna
+                        <div class="row">
+                            <div class="col-12"><label>Nombre del comercio <span style="color:red;">*</span> (Si no ha seleccionado ninguna
                                         opción):&nbsp;</label></div>
-                            </div>
-                            {{form.nombreComercio}}
-                            {{form.lat}}
-                            {{form.lon}}
-                            <label for="supermercado">¿La nueva ubicación es un supermercado?</label><span style="color:red;">*</span>:<br>
-                            <span class="col-sm-3"><input checked type="radio" id="Si" name="supermercado"  value="si">
+                        </div>
+                        {{form.nombreComercio}} {{form.lat}} {{form.lon}}
+                        <label for="supermercado">¿La nueva ubicación es un supermercado?</label><span style="color:red;">*</span>:<br>
+                        <span class="col-sm-3"><input checked type="radio" id="Si" name="supermercado"  value="si">
                             <label for="si">Si</label></span>
-                            <span class="col-sm-3"><input type="radio" id="No" name="supermercado"  value="no">
+                        <span class="col-sm-3"><input type="radio" id="No" name="supermercado"  value="no">
                             <label for="no">No</label></span><br>
-                            
+
                         <div style="display:block;" id="displayer2">
                             <div class="row">
-                            <label class="col-12" for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y
+                                <label class="col-12" for='text'>Dirección del comercio <span style="color:red;">*</span> (Busque la dirección y
                                 clique en el mapa el lugar.):</label>
                             </div>
                             <input id="buscador" type="text" placeholder="Calle Número, Poblacion, Ciudad" class="form-control"></input>
-                                <div class="row justify-content-center">
-                                    <div style=" height: 480px; margin-top: 2%" id="mapContainer">
-                                    </div>
+                            <div class="row justify-content-center">
+                                <div style=" height: 480px; margin-top: 2%" id="mapContainer">
                                 </div>
+                            </div>
                         </div>
                     </div>
-                <script type="text/javascript">
-                    let mapContainer = document.getElementById("mapContainer");
-                    let colMap = getComputedStyle(document.getElementById("colMap"));
-                    mapContainer.style.width = colMap.width;
-                    var displayer2 = document.getElementById("displayer2");
-                    setTimeout(()=>displayer2.style.display = "none", 1)
+                    <script type="text/javascript">
+                        let mapContainer = document.getElementById("mapContainer");
+                        let colMap = getComputedStyle(document.getElementById("colMap"));
+                        mapContainer.style.width = colMap.width;
+                        var displayer2 = document.getElementById("displayer2");
+                        setTimeout(() => displayer2.style.display = "none", 1)
 
-                    let No = document.getElementById("No");
-                    let Si = document.getElementById("Si");
-                    Si.onchange=()=>{supermercadochange()};
-                    No.onchange=()=>{supermercadochange()};
-                    window.onresize=(ev)=>{
+                        let No = document.getElementById("No");
+                        let Si = document.getElementById("Si");
+                        Si.onchange = () => {
+                            supermercadochange()
+                        };
+                        No.onchange = () => {
+                            supermercadochange()
+                        };
+                        window.onresize = (ev) => {
                             mapContainer.style.width = colMap.width;
-                            mapContainer.style.height = window.innerHeight*0.49+"px";
+                            mapContainer.style.height = window.innerHeight * 0.49 + "px";
                         }
-                    function supermercadochange(){
-                        displayer2 = document.getElementById("displayer2");
-                        if(No.checked){
-                            displayer2.style.display="block";
-                        }else{
-                            document.getElementById("id_lat").value = "0.0";
-                            document.getElementById("id_lon").value = "0.0";
-                            displayer2.style.display="none";
+
+                        function supermercadochange() {
+                            displayer2 = document.getElementById("displayer2");
+                            if (No.checked) {
+                                displayer2.style.display = "block";
+                            } else {
+                                document.getElementById("id_lat").value = "0.0";
+                                document.getElementById("id_lon").value = "0.0";
+                                displayer2.style.display = "none";
+                            }
                         }
-                    }
-                </script>
-                <div class="row mt-5 mb-5">
-                    <div class="col-auto m-auto" style="justify-content: center;">
-                        <a class="btn btn-danger" onclick="mostrarAlerta()">Cancelar</a>
-                        <button type="submit" class="save btn btn-warning">Guardar</button>
+                    </script>
+                    <div class="row mt-5 mb-5">
+                        <div class="col-auto m-auto" style="justify-content: center;">
+                            <a class="btn btn-danger" onclick="mostrarAlerta()">Cancelar</a>
+                            <button type="submit" class="save btn btn-warning">Guardar</button>
+                        </div>
                     </div>
-                </div>
-                <div class="row mt-5 mb-5">
-                    <div class="col-auto m-auto" style="justify-content: center;">
-                        <div class="col-sm-12"><label>*El producto será revisado antes de publicarse. &nbsp;</label></div>
+                    <div class="row mt-5 mb-5">
+                        <div class="col-auto m-auto" style="justify-content: center;">
+                            <div class="col-sm-12"><label>*El producto será revisado antes de publicarse. &nbsp;</label></div>
+                        </div>
                     </div>
-                </div>
 
 
                 </div>
@@ -153,7 +211,6 @@
 
 
 <script>
-
     function mostrarAlerta() {
         var retVal = confirm("¿Seguro que quieres cancelar el producto?");
         if (retVal == true) {
@@ -165,17 +222,18 @@
     }
 </script>
 <script type="text/javascript">
-    document.getElementById('id_foto').onchange = function () {
+    document.getElementById('id_foto').onchange = function() {
 
         document.getElementById("Archivo").innerText = document.getElementById('id_foto').files[0].name;
         previewFile();
     }
+
     function previewFile() {
         var preview = document.querySelector('#foto');
-        var file    = document.querySelector('#id_foto').files[0];
-        var reader  = new FileReader();
+        var file = document.querySelector('#id_foto').files[0];
+        var reader = new FileReader();
 
-        reader.onloadend = function () {
+        reader.onloadend = function() {
             preview.src = reader.result;
         }
 
@@ -200,6 +258,7 @@
         document.getElementById("id_nombreComercio").value = "";
         document.getElementById("buscador").value = "";
     }
+
     function validateUbicaciones() {
         var x = document.getElementById("id_nombreComercio").value;
         var y = id_ubicaciones.value;
@@ -207,7 +266,7 @@
         let No = document.getElementById("No");
         let value_long = document.getElementById("id_lon").value;
         let value_lat = document.getElementById("id_lat").value;
-        if (x.trim() == "" && y == "" && !z){
+        if (x.trim() == "" && y == "" && !z) {
             alert("Seleccione una foto y elija o cree una ubicación")
             return false;
         }
@@ -218,14 +277,15 @@
         if (!z) {
             alert("Elige una foto");
             return false;
-        } 
+        }
         if (value_long == "0.0" && value_lat == "0.0" && No.checked) {
             alert("Por favor, seleccione en el mapa una ubicación válida.");
             return false;
         }
-       
+
     }
     document.querySelector('#id_ubicaciones > option').innerText = "Añade una nueva ubicación";
+
     function mostrarMapa() {
 
         var displayer = document.getElementById("displayer");
@@ -252,10 +312,12 @@
     var map = new H.Map(
 
         document.getElementById('mapContainer'),
-        defaultLayers.vector.normal.map,
-        {
+        defaultLayers.vector.normal.map, {
             zoom: 13,
-            center: { lng: -3.7032700, lat: 40.4166400 } //ejemplo para marcar ubicacion
+            center: {
+                lng: -3.7032700,
+                lat: 40.4166400
+            } //ejemplo para marcar ubicacion
         });
 
 
@@ -267,7 +329,7 @@
 
 
     var lastmarker = "es";
-    map.addEventListener('tap', function (evt) {
+    map.addEventListener('tap', function(evt) {
         if (lastmarker != "es") {
             map.removeObject(lastmarker)
         }
@@ -289,7 +351,9 @@
         document.getElementById("id_lat").value = position["lat"]
         document.getElementById("id_lon").value = position["lng"]
         var icon = new H.map.Icon(svgMarkup)
-        var marker = new H.map.Marker(position, { icon: icon })
+        var marker = new H.map.Marker(position, {
+            icon: icon
+        })
         map.addObject(marker)
         lastmarker = marker
     });
@@ -381,8 +445,5 @@
         </svg>`;
         return svg;
     }
-
-
-
 </script>
 {% endblock %}
