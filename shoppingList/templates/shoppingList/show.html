@@ -14,7 +14,7 @@
     <!-- Productos en la lista -->
     <div class="row justify-content-center mt-3 shopping-list-cards">
         <div class="col-12">
-            {% if shoppingList %} {% for product in shoppingList.productos.all %}
+            {% if shoppingList and shoppingList.productos.all|length != 0 %} {% for product in shoppingList.productos.all %}
             <div class="row-12 d-flex-responsive mt-3 mb-3 product-card-descripcion p-3 shopping-list">
                 <div class="col" style="height: 5em;">
                     <a href="/product/show/{{product.id}}">
