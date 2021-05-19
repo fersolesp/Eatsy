@@ -721,3 +721,11 @@ input#id_dietas_5:checked::after {
   height: 30px;
   content:"";
 }
+
+.dropdown-menu-left {
+  right: auto;
+  left: 29%;
+  -webkit-transform: translate(-50%, 0);
+  -o-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
